@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: vwbot_controller
+Description: Description of vwbot_controller
+Version: 0.0.0
+Cflags: -I/usr/local/include
+Libs: -L/usr/local/lib 
+Requires: actionlib move_base_msgs roscpp roscpp std_msgs message_runtime
