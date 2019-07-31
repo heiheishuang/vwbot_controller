@@ -117,11 +117,11 @@
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="_vwbot_controller_generate_messages_check_deps_ball_state">
+			<Target title="_vwbot_controller_generate_messages_check_deps_PoseAndColor">
 				<Option working_dir="/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/Makefile&quot;  VERBOSE=1 _vwbot_controller_generate_messages_check_deps_ball_state"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/Makefile&quot;  VERBOSE=1 _vwbot_controller_generate_messages_check_deps_PoseAndColor"/>
 					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j8 -f &quot;/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -904,13 +904,13 @@
 		<Unit filename="/home/heihei/vwbot_ws/src/vwbot_controller/src/Flow.h">
 			<Option target="vwbot_node"/>
 		</Unit>
+		<Unit filename="/home/heihei/vwbot_ws/src/vwbot_controller/src/PoseAndColor.h">
+			<Option target="vwbot_node"/>
+		</Unit>
 		<Unit filename="/home/heihei/vwbot_ws/src/vwbot_controller/src/Task.cpp">
 			<Option target="vwbot_node"/>
 		</Unit>
 		<Unit filename="/home/heihei/vwbot_ws/src/vwbot_controller/src/Task.h">
-			<Option target="vwbot_node"/>
-		</Unit>
-		<Unit filename="/home/heihei/vwbot_ws/src/vwbot_controller/src/ball_state.h">
 			<Option target="vwbot_node"/>
 		</Unit>
 		<Unit filename="/home/heihei/vwbot_ws/src/vwbot_controller/src/vwbot_controller_node.cpp">

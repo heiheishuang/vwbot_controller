@@ -53,26 +53,26 @@ CMAKE_BINARY_DIR = /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug
 # Include the progress variables for this target.
 include CMakeFiles/vwbot_controller_generate_messages_eus.dir/progress.make
 
-CMakeFiles/vwbot_controller_generate_messages_eus: devel/share/roseus/ros/vwbot_controller/msg/ball_state.l
+CMakeFiles/vwbot_controller_generate_messages_eus: devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l
 CMakeFiles/vwbot_controller_generate_messages_eus: devel/share/roseus/ros/vwbot_controller/manifest.l
 
 
-devel/share/roseus/ros/vwbot_controller/msg/ball_state.l: /opt/ros/kinetic/lib/geneus/gen_eus.py
-devel/share/roseus/ros/vwbot_controller/msg/ball_state.l: ../msg/ball_state.msg
-devel/share/roseus/ros/vwbot_controller/msg/ball_state.l: /opt/ros/kinetic/share/geometry_msgs/msg/Quaternion.msg
-devel/share/roseus/ros/vwbot_controller/msg/ball_state.l: /opt/ros/kinetic/share/geometry_msgs/msg/PoseStamped.msg
-devel/share/roseus/ros/vwbot_controller/msg/ball_state.l: /opt/ros/kinetic/share/geometry_msgs/msg/Pose.msg
-devel/share/roseus/ros/vwbot_controller/msg/ball_state.l: /opt/ros/kinetic/share/std_msgs/msg/Header.msg
-devel/share/roseus/ros/vwbot_controller/msg/ball_state.l: /opt/ros/kinetic/share/geometry_msgs/msg/Point.msg
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating EusLisp code from vwbot_controller/ball_state.msg"
-	catkin_generated/env_cached.sh /usr/bin/python /opt/ros/kinetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg -Ivwbot_controller:/home/heihei/vwbot_ws/src/vwbot_controller/msg -Imove_base_msgs:/opt/ros/kinetic/share/move_base_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/kinetic/share/geometry_msgs/cmake/../msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/kinetic/share/actionlib_msgs/cmake/../msg -p vwbot_controller -o /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel/share/roseus/ros/vwbot_controller/msg
+devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l: /opt/ros/kinetic/lib/geneus/gen_eus.py
+devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l: ../msg/PoseAndColor.msg
+devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l: /opt/ros/kinetic/share/geometry_msgs/msg/Quaternion.msg
+devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l: /opt/ros/kinetic/share/geometry_msgs/msg/PoseStamped.msg
+devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l: /opt/ros/kinetic/share/geometry_msgs/msg/Pose.msg
+devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l: /opt/ros/kinetic/share/std_msgs/msg/Header.msg
+devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l: /opt/ros/kinetic/share/geometry_msgs/msg/Point.msg
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating EusLisp code from vwbot_controller/PoseAndColor.msg"
+	catkin_generated/env_cached.sh /usr/bin/python /opt/ros/kinetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg -Ivwbot_controller:/home/heihei/vwbot_ws/src/vwbot_controller/msg -Imove_base_msgs:/opt/ros/kinetic/share/move_base_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/kinetic/share/geometry_msgs/cmake/../msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/kinetic/share/actionlib_msgs/cmake/../msg -p vwbot_controller -o /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel/share/roseus/ros/vwbot_controller/msg
 
 devel/share/roseus/ros/vwbot_controller/manifest.l: /opt/ros/kinetic/lib/geneus/gen_eus.py
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating EusLisp manifest code for vwbot_controller"
 	catkin_generated/env_cached.sh /usr/bin/python /opt/ros/kinetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py -m -o /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel/share/roseus/ros/vwbot_controller vwbot_controller move_base_msgs geometry_msgs std_msgs
 
 vwbot_controller_generate_messages_eus: CMakeFiles/vwbot_controller_generate_messages_eus
-vwbot_controller_generate_messages_eus: devel/share/roseus/ros/vwbot_controller/msg/ball_state.l
+vwbot_controller_generate_messages_eus: devel/share/roseus/ros/vwbot_controller/msg/PoseAndColor.l
 vwbot_controller_generate_messages_eus: devel/share/roseus/ros/vwbot_controller/manifest.l
 vwbot_controller_generate_messages_eus: CMakeFiles/vwbot_controller_generate_messages_eus.dir/build.make
 

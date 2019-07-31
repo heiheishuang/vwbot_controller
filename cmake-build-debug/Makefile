@@ -259,17 +259,17 @@ vwbot_controller_gencpp/fast:
 .PHONY : vwbot_controller_gencpp/fast
 
 #=============================================================================
-# Target rules for targets named _vwbot_controller_generate_messages_check_deps_ball_state
+# Target rules for targets named _vwbot_controller_generate_messages_check_deps_PoseAndColor
 
 # Build rule for target.
-_vwbot_controller_generate_messages_check_deps_ball_state: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _vwbot_controller_generate_messages_check_deps_ball_state
-.PHONY : _vwbot_controller_generate_messages_check_deps_ball_state
+_vwbot_controller_generate_messages_check_deps_PoseAndColor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _vwbot_controller_generate_messages_check_deps_PoseAndColor
+.PHONY : _vwbot_controller_generate_messages_check_deps_PoseAndColor
 
 # fast build rule for target.
-_vwbot_controller_generate_messages_check_deps_ball_state/fast:
-	$(MAKE) -f CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/build.make CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/build
-.PHONY : _vwbot_controller_generate_messages_check_deps_ball_state/fast
+_vwbot_controller_generate_messages_check_deps_PoseAndColor/fast:
+	$(MAKE) -f CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/build.make CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/build
+.PHONY : _vwbot_controller_generate_messages_check_deps_PoseAndColor/fast
 
 #=============================================================================
 # Target rules for targets named geometry_msgs_generate_messages_py
@@ -1045,7 +1045,7 @@ help:
 	@echo "... list_install_components"
 	@echo "... vwbot_controller_generate_messages_eus"
 	@echo "... vwbot_controller_gencpp"
-	@echo "... _vwbot_controller_generate_messages_check_deps_ball_state"
+	@echo "... _vwbot_controller_generate_messages_check_deps_PoseAndColor"
 	@echo "... geometry_msgs_generate_messages_py"
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... geometry_msgs_generate_messages_cpp"

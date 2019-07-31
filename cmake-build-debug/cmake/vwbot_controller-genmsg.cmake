@@ -17,9 +17,9 @@ add_custom_target(vwbot_controller_generate_messages ALL)
 
 
 
-get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg" NAME_WE)
+get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg" NAME_WE)
 add_custom_target(_vwbot_controller_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "vwbot_controller" "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg" "geometry_msgs/Quaternion:geometry_msgs/PoseStamped:geometry_msgs/Pose:std_msgs/Header:geometry_msgs/Point"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "vwbot_controller" "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg" "geometry_msgs/Quaternion:geometry_msgs/PoseStamped:geometry_msgs/Pose:std_msgs/Header:geometry_msgs/Point"
 )
 
 #
@@ -29,7 +29,7 @@ add_custom_target(_vwbot_controller_generate_messages_check_deps_${_filename}
 ### Section generating for lang: gencpp
 ### Generating Messages
 _generate_msg_cpp(vwbot_controller
-  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg"
+  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/PoseStamped.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/vwbot_controller
@@ -49,7 +49,7 @@ add_custom_target(vwbot_controller_generate_messages_cpp
 add_dependencies(vwbot_controller_generate_messages vwbot_controller_generate_messages_cpp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg" NAME_WE)
+get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg" NAME_WE)
 add_dependencies(vwbot_controller_generate_messages_cpp _vwbot_controller_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -62,7 +62,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS vwbot_controller_generate_messages_
 ### Section generating for lang: geneus
 ### Generating Messages
 _generate_msg_eus(vwbot_controller
-  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg"
+  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/PoseStamped.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/vwbot_controller
@@ -82,7 +82,7 @@ add_custom_target(vwbot_controller_generate_messages_eus
 add_dependencies(vwbot_controller_generate_messages vwbot_controller_generate_messages_eus)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg" NAME_WE)
+get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg" NAME_WE)
 add_dependencies(vwbot_controller_generate_messages_eus _vwbot_controller_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -95,7 +95,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS vwbot_controller_generate_messages_
 ### Section generating for lang: genlisp
 ### Generating Messages
 _generate_msg_lisp(vwbot_controller
-  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg"
+  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/PoseStamped.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/vwbot_controller
@@ -115,7 +115,7 @@ add_custom_target(vwbot_controller_generate_messages_lisp
 add_dependencies(vwbot_controller_generate_messages vwbot_controller_generate_messages_lisp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg" NAME_WE)
+get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg" NAME_WE)
 add_dependencies(vwbot_controller_generate_messages_lisp _vwbot_controller_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -128,7 +128,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS vwbot_controller_generate_messages_
 ### Section generating for lang: gennodejs
 ### Generating Messages
 _generate_msg_nodejs(vwbot_controller
-  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg"
+  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/PoseStamped.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/vwbot_controller
@@ -148,7 +148,7 @@ add_custom_target(vwbot_controller_generate_messages_nodejs
 add_dependencies(vwbot_controller_generate_messages vwbot_controller_generate_messages_nodejs)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg" NAME_WE)
+get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg" NAME_WE)
 add_dependencies(vwbot_controller_generate_messages_nodejs _vwbot_controller_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -161,7 +161,7 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS vwbot_controller_generate_messages_
 ### Section generating for lang: genpy
 ### Generating Messages
 _generate_msg_py(vwbot_controller
-  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg"
+  "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/PoseStamped.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg;/opt/ros/kinetic/share/geometry_msgs/cmake/../msg/Point.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/vwbot_controller
@@ -181,7 +181,7 @@ add_custom_target(vwbot_controller_generate_messages_py
 add_dependencies(vwbot_controller_generate_messages vwbot_controller_generate_messages_py)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg" NAME_WE)
+get_filename_component(_filename "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg" NAME_WE)
 add_dependencies(vwbot_controller_generate_messages_py _vwbot_controller_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility

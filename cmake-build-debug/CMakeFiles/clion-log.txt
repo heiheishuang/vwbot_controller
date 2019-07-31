@@ -18,7 +18,7 @@
 -- Found the following Boost libraries:
 --   system
 -- vwbot_controller: 1 messages, 0 services
--- vwbot_controller: Found user-provided header '/home/heihei/vwbot_ws/src/vwbot_controller/include/vwbot_controller/ball_state.h' for message 'vwbot_controller/ball_state'. Skipping generation...
+-- vwbot_controller: Found user-provided header '/home/heihei/vwbot_ws/src/vwbot_controller/include/vwbot_controller/PoseAndColor.h' for message 'vwbot_controller/PoseAndColor'. Skipping generation...
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug

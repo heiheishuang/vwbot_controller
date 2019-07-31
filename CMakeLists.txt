@@ -52,7 +52,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 ## Generate messages in the 'msg' folder
 add_message_files(
    FILES
-   ball_state.msg
+   PoseAndColor.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -144,7 +144,7 @@ add_executable(vwbot_node src/vwbot_controller_node.cpp
         src/Task.h
         src/Flow.cpp
         src/Flow.h
-        src/ball_state.h)
+        src/PoseAndColor.h)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

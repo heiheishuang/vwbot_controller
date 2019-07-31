@@ -5,7 +5,7 @@
 #ifndef VWBOT_CONTROLLER_TASK_H_
 #define VWBOT_CONTROLLER_TASK_H_
 
-#include "ball_state.h"
+#include "PoseAndColor.h"
 #include <geometry_msgs/PoseStamped.h>
 #include "tf/transform_datatypes.h"
 #include "Action.h"
@@ -30,7 +30,6 @@ namespace vwpp
     enum TaskState
     {
         GOT_START,
-        GOT_FINSH,
         NO_START,
     };
 
@@ -52,15 +51,15 @@ namespace vwpp
 
         TaskState cur_task_state;
 
-        void sub_from_ball_cb(const vwbot_controller::ball_state::ConstPtr &msg);  //sub ball's pose and color
-        void sub_state_to_catchball_cb(const std_msgs::Bool::ConstPtr &msg);    //sub ball's state when catch the ball
-        void sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &msg);
+        void sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr &msg);  //sub ball's pose and color
+        void sub_catchball_state_cb(const std_msgs::Bool::ConstPtr &msg);    //sub ball's state when catch the ball
+        void sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &msg); //sub vwbot's pose
 
-        ros::Subscriber sub_ball_pose;  //sub ball's pose and color
+        ros::Subscriber sub_ball_pose_color;  //sub ball's pose and color
         ros::Subscriber sub_ball_state;  // sub ball'state when catch the ball
         ros::Subscriber sub_vwbot; //sub vwbot's pose
 
-        vwbot_controller::ball_state ball_pose; //ball's pose and color
+        vwbot_controller::PoseAndColor ball_pose; //ball's pose and color
         geometry_msgs::PoseStamped vwbot_pose;
         std_msgs::Bool ball_state; //ball's state when catch the ball
 

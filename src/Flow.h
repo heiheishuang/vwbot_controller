@@ -23,7 +23,7 @@ namespace vwpp
 
         FlowState getFlowState();
 
-        int flow();
+        void flow();
 
     private:
         FlowState cur_flow_state;

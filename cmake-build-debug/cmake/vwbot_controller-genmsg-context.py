@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
-messages_str = "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg"
+messages_str = "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg"
 services_str = ""
 pkg_name = "vwbot_controller"
 dependencies_str = "move_base_msgs;geometry_msgs;std_msgs"

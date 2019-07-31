@@ -13,6 +13,7 @@ int main(int argc, char** argv)
     while (ros::ok())
     {
         flow_controller.flow();
+        ROS_INFO("Now Star");
         if (flow_controller.getFlowState() == vwpp::FlowState::FLOW_FINSH)
         {
             break;

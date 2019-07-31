@@ -133,7 +133,7 @@ clean: CMakeFiles/vwbot_controller_gennodejs.dir/clean
 
 # All Build rule for target.
 CMakeFiles/vwbot_controller_generate_messages_py.dir/all: CMakeFiles/std_msgs_generate_messages_py.dir/all
-CMakeFiles/vwbot_controller_generate_messages_py.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/all
+CMakeFiles/vwbot_controller_generate_messages_py.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/all
 CMakeFiles/vwbot_controller_generate_messages_py.dir/all: CMakeFiles/geometry_msgs_generate_messages_py.dir/all
 CMakeFiles/vwbot_controller_generate_messages_py.dir/all: CMakeFiles/move_base_msgs_generate_messages_py.dir/all
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_py.dir/build.make CMakeFiles/vwbot_controller_generate_messages_py.dir/depend
@@ -169,7 +169,7 @@ clean: CMakeFiles/vwbot_controller_generate_messages_py.dir/clean
 # All Build rule for target.
 CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/all: CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/all
 CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/all: CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
-CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/all
+CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/all
 CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/all: CMakeFiles/move_base_msgs_generate_messages_nodejs.dir/all
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/build.make CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/depend
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/build.make CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/build
@@ -204,7 +204,7 @@ clean: CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/clean
 # All Build rule for target.
 CMakeFiles/vwbot_controller_generate_messages_lisp.dir/all: CMakeFiles/std_msgs_generate_messages_lisp.dir/all
 CMakeFiles/vwbot_controller_generate_messages_lisp.dir/all: CMakeFiles/move_base_msgs_generate_messages_lisp.dir/all
-CMakeFiles/vwbot_controller_generate_messages_lisp.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/all
+CMakeFiles/vwbot_controller_generate_messages_lisp.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/all
 CMakeFiles/vwbot_controller_generate_messages_lisp.dir/all: CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_lisp.dir/build.make CMakeFiles/vwbot_controller_generate_messages_lisp.dir/depend
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_lisp.dir/build.make CMakeFiles/vwbot_controller_generate_messages_lisp.dir/build
@@ -240,7 +240,7 @@ clean: CMakeFiles/vwbot_controller_generate_messages_lisp.dir/clean
 CMakeFiles/vwbot_controller_generate_messages_eus.dir/all: CMakeFiles/std_msgs_generate_messages_eus.dir/all
 CMakeFiles/vwbot_controller_generate_messages_eus.dir/all: CMakeFiles/move_base_msgs_generate_messages_eus.dir/all
 CMakeFiles/vwbot_controller_generate_messages_eus.dir/all: CMakeFiles/geometry_msgs_generate_messages_eus.dir/all
-CMakeFiles/vwbot_controller_generate_messages_eus.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/all
+CMakeFiles/vwbot_controller_generate_messages_eus.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/all
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_eus.dir/build.make CMakeFiles/vwbot_controller_generate_messages_eus.dir/depend
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_eus.dir/build.make CMakeFiles/vwbot_controller_generate_messages_eus.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles --progress-num=12,13 "Built target vwbot_controller_generate_messages_eus"
@@ -301,34 +301,34 @@ clean: CMakeFiles/vwbot_controller_gencpp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir
+# Target rules for target CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir
 
 # All Build rule for target.
-CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/all:
-	$(MAKE) -f CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/build.make CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/depend
-	$(MAKE) -f CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/build.make CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles --progress-num= "Built target _vwbot_controller_generate_messages_check_deps_ball_state"
-.PHONY : CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/all
+CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/all:
+	$(MAKE) -f CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/build.make CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/depend
+	$(MAKE) -f CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/build.make CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles --progress-num= "Built target _vwbot_controller_generate_messages_check_deps_PoseAndColor"
+.PHONY : CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/rule: cmake_check_build_system
+CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/rule
+.PHONY : CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/rule
 
 # Convenience name for target.
-_vwbot_controller_generate_messages_check_deps_ball_state: CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/rule
+_vwbot_controller_generate_messages_check_deps_PoseAndColor: CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/rule
 
-.PHONY : _vwbot_controller_generate_messages_check_deps_ball_state
-
-# clean rule for target.
-CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/clean:
-	$(MAKE) -f CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/build.make CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/clean
-.PHONY : CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/clean
+.PHONY : _vwbot_controller_generate_messages_check_deps_PoseAndColor
 
 # clean rule for target.
-clean: CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/clean
+CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/clean:
+	$(MAKE) -f CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/build.make CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/clean
+.PHONY : CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/clean
 
 .PHONY : clean
 
@@ -795,7 +795,7 @@ clean: CMakeFiles/actionlib_generate_messages_lisp.dir/clean
 # All Build rule for target.
 CMakeFiles/vwbot_controller_generate_messages_cpp.dir/all: CMakeFiles/std_msgs_generate_messages_cpp.dir/all
 CMakeFiles/vwbot_controller_generate_messages_cpp.dir/all: CMakeFiles/move_base_msgs_generate_messages_cpp.dir/all
-CMakeFiles/vwbot_controller_generate_messages_cpp.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/all
+CMakeFiles/vwbot_controller_generate_messages_cpp.dir/all: CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/all
 CMakeFiles/vwbot_controller_generate_messages_cpp.dir/all: CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_cpp.dir/build.make CMakeFiles/vwbot_controller_generate_messages_cpp.dir/depend
 	$(MAKE) -f CMakeFiles/vwbot_controller_generate_messages_cpp.dir/build.make CMakeFiles/vwbot_controller_generate_messages_cpp.dir/build

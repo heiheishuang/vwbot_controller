@@ -16,7 +16,7 @@ vwpp::Action::Action():
 
     }
 
-int vwpp::Action::send_to_move_base( geometry_msgs::PoseStamped send_goal)
+int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
 {
     MoveBaseClient ac("move_base", true);
 
@@ -27,7 +27,7 @@ int vwpp::Action::send_to_move_base( geometry_msgs::PoseStamped send_goal)
 
     move_base_msgs::MoveBaseGoal goal;
 
-    goal.target_pose = std::move(send_goal);
+    goal.target_pose = std::move(pose);
 
     ac.sendGoal(goal);
 
@@ -36,7 +36,7 @@ int vwpp::Action::send_to_move_base( geometry_msgs::PoseStamped send_goal)
     if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     {
         ROS_INFO("SUCCEEDED!");
-        // action move_base is all right
+        // Action move_base is all right
         //TODO
         cur_action_state = GOT_GOAL;
         return 0;

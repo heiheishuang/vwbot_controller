@@ -29,7 +29,7 @@ namespace vwpp
 
         Action();
 
-        int send_to_move_base(geometry_msgs::PoseStamped goal);
+        int action_move_base(geometry_msgs::PoseStamped _pose_stamped);
 
         void send_to_hand(const std_msgs::Bool &_ball);
 

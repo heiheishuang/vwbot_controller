@@ -129,7 +129,7 @@ file(INSTALL DESTINATION "/usr/local" TYPE FILE FILES "/home/heihei/vwbot_ws/src
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vwbot_controller/msg" TYPE FILE FILES "/home/heihei/vwbot_ws/src/vwbot_controller/msg/ball_state.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/vwbot_controller/msg" TYPE FILE FILES "/home/heihei/vwbot_ws/src/vwbot_controller/msg/PoseAndColor.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)

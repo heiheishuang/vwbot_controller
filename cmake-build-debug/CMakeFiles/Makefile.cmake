@@ -245,7 +245,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/vwbot_controller_generate_messages_lisp.dir/DependInfo.cmake"
   "CMakeFiles/vwbot_controller_generate_messages_eus.dir/DependInfo.cmake"
   "CMakeFiles/vwbot_controller_gencpp.dir/DependInfo.cmake"
-  "CMakeFiles/_vwbot_controller_generate_messages_check_deps_ball_state.dir/DependInfo.cmake"
+  "CMakeFiles/_vwbot_controller_generate_messages_check_deps_PoseAndColor.dir/DependInfo.cmake"
   "CMakeFiles/geometry_msgs_generate_messages_py.dir/DependInfo.cmake"
   "CMakeFiles/geometry_msgs_generate_messages_lisp.dir/DependInfo.cmake"
   "CMakeFiles/geometry_msgs_generate_messages_cpp.dir/DependInfo.cmake"

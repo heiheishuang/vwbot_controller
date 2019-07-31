@@ -16,7 +16,7 @@ vwpp::FlowState vwpp::FlowController::getFlowState()
     return cur_flow_state;
 }
 
-int vwpp::FlowController::flow()
+void vwpp::FlowController::flow()
 {
     Task now_task;
 
@@ -43,7 +43,12 @@ int vwpp::FlowController::flow()
             cur_task_state = now_task.getTaskState();
         }
     }
-
+    else if (cur_flow_state == FLOW_FINSH)
+    {
+        //TODO
+        //Need cur_flow_state = FLOW_FINSH
+        //When all the ball is over
+    }
 }
 
 
