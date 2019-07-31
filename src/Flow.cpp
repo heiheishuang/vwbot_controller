@@ -24,6 +24,7 @@ void vwpp::FlowController::flow()
     {
         if (cur_task_state == NO_START)
         {
+            ROS_INFO("Now cur_flow_state is FLOW_STARE , cur_task_state is NO_START , task is taskNoBall! ");
             now_task.taskNoBall();
             cur_task_state = now_task.getTaskState();
         }
@@ -34,11 +35,13 @@ void vwpp::FlowController::flow()
     {
         if (cur_task_state == NO_START)
         {
+            ROS_INFO("Now cur_flow_state if Flow_PROCESS, cur_task_state is NO_START , task is taskNoBall! ");
             now_task.taskNoBall();
             cur_task_state = now_task.getTaskState();
         }
         else if (cur_task_state == GOT_START)
         {
+            ROS_INFO("Now cur_flow_state if Flow_PROCESS, cur_task_state is GOT_START , task is taskGotBall! ");
             now_task.taskGotBall();
             cur_task_state = now_task.getTaskState();
         }

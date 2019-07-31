@@ -69,40 +69,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a386ad11-72c6-4dde-8bf9-ef0031250940" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeRuleHashes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeRuleHashes.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_eus.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_eus.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_eus.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_eus.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_lisp.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_lisp.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_lisp.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_lisp.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_nodejs.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_py.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_py.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_py.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_py.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/installspace/vwbot_controller-msg-extras.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/installspace/vwbot_controller-msg-extras.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/vwbot_controller-msg-extras.cmake.develspace.in" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/vwbot_controller-msg-extras.cmake.develspace.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/vwbot_controller-msg-extras.cmake.installspace.in" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/vwbot_controller-msg-extras.cmake.installspace.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake/vwbot_controller-genmsg-context.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake/vwbot_controller-genmsg-context.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake/vwbot_controller-genmsg.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake/vwbot_controller-genmsg.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/devel/share/vwbot_controller/cmake/vwbot_controller-msg-extras.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/devel/share/vwbot_controller/cmake/vwbot_controller-msg-extras.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/vwbot_controller.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/vwbot_controller.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vwbot_controller/ball_state.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/msg/ball_state.msg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Action.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Action.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Flow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Flow.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Flow.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Flow.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Task.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Task.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Task.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Task.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ball_state.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/vwbot_controller_node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/vwbot_controller_node.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -518,7 +488,7 @@
       <workItem from="1564455637238" duration="6126000" />
       <workItem from="1564471828069" duration="272000" />
       <workItem from="1564494679341" duration="1448000" />
-      <workItem from="1564537181048" duration="539000" />
+      <workItem from="1564537181048" duration="2236000" />
     </task>
     <servers />
   </component>

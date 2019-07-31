@@ -37,6 +37,7 @@ vwpp::Task::Task():
 void vwpp::Task::taskGotBall()
 {
 
+    ROS_INFO("Now in the taskGotBall!");
     vwbot_controller::PoseAndColor now_ball;
     geometry_msgs::PoseStamped now_vwbot;
 
@@ -188,16 +189,18 @@ void vwpp::Task::taskGotBall()
 
 void vwpp::Task::taskNoBall()
 {
+    ROS_INFO("Now in the taskNoball!");
+
     vwpp::Action task_action;
 
     while (vwpp::Task::getTaskState() == NO_START)
     {
+        ROS_INFO("Finding the ball , waiting~ ");
+        geometry_msgs::PoseStamped now_pose;
 
-       geometry_msgs::PoseStamped now_pose;
-
-       //TODO
-       //Judging coordinates
-       //sub now_pose
+        //TODO
+        //Judging coordinates
+        //sub now_pose
        now_pose = this->vwbot_pose;
 
        if (fabs(now_pose.pose.position.x - 3.0) <= 0.1 or (fabs(now_pose.pose.position.x) <= 0.1))
@@ -208,28 +211,28 @@ void vwpp::Task::taskNoBall()
        tf::Matrix3x3 mat(tf::Quaternion(now_pose.pose.orientation.x,now_pose.pose.orientation.y,
                                         now_pose.pose.orientation.z,now_pose.pose.orientation.w)) ;
 
-       double yaw, pitch, roll;
-       mat.getEulerYPR(yaw,pitch,roll);
+        double yaw, pitch, roll;
+        mat.getEulerYPR(yaw,pitch,roll);
 
-       yaw = yaw / 3.14 * 180 + 10 ;
-       yaw = yaw / 180 * 3.14 ;
+        yaw = yaw / 3.14 * 180 + 10 ;
+        yaw = yaw / 180 * 3.14 ;
 
-       tf::Quaternion q;
-       q.setRPY(roll, pitch, yaw);
+        tf::Quaternion q;
+        q.setRPY(roll, pitch, yaw);
 
-       now_pose.pose.orientation.x = q[0];
-       now_pose.pose.orientation.y = q[1];
-       now_pose.pose.orientation.z = q[2];
-       now_pose.pose.orientation.w = q[3];
-       now_pose.header.frame_id = "map";
-       now_pose.header.stamp = ros::Time::now();
+        now_pose.pose.orientation.x = q[0];
+        now_pose.pose.orientation.y = q[1];
+        now_pose.pose.orientation.z = q[2];
+        now_pose.pose.orientation.w = q[3];
+        now_pose.header.frame_id = "map";
+        now_pose.header.stamp = ros::Time::now();
 
         task_action.action_move_base(now_pose);
 
-       if (ball_pose.pose.pose.position.x != -1 and ball_pose.pose.pose.position.y != -1
-           and ball_pose.pose.pose.position.z != -1)
+        if (ball_pose.pose.pose.position.x != -1 and ball_pose.pose.pose.position.y != -1
+            and ball_pose.pose.pose.position.z != -1)
 
-           cur_task_state = GOT_START;
+            cur_task_state = GOT_START;
 
     }
 

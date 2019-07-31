@@ -18,6 +18,8 @@ vwpp::Action::Action():
 
 int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
 {
+    ROS_INFO("Now in the action move_base!");
+
     MoveBaseClient ac("move_base", true);
 
     while (!ac.waitForServer(ros::Duration(5.0)))
@@ -43,7 +45,7 @@ int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
     }
     else
     {
-        ROS_INFO("FAILED!");
+        ROS_WARN("FAILED!");
         cur_action_state = FAILED_TO_GOAL;
         return 0;
     }
@@ -52,6 +54,8 @@ int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
 
 void vwpp::Action::send_to_hand(const std_msgs::Bool &_ball)
 {
+
+    ROS_INFO("Now in the action send_to_hand!");
     this->pub_hand.publish(_ball);
 
 }
