@@ -22,12 +22,16 @@ namespace vwpp
         FlowController();
 
         FlowState getFlowState();
-        TaskState getTaskState();
+        // TaskState getTaskState();
+
         void flow();
+
+        // Task now_task;
 
     private:
         FlowState cur_flow_state;
-        TaskState cur_task_state;
+        Task *cur_task;
+       // TaskState cur_task_state;
 
     };
 }

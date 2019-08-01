@@ -19,7 +19,6 @@ int main(int argc, char** argv)
         flow_controller.flow();
 
         std::cout << "Now cur_flow_state is " << flow_controller.getFlowState() << '\n';
-        std::cout << "Now cur_task_state is " << flow_controller.getTaskState() << '\n';
 
         if (flow_controller.getFlowState() == vwpp::FlowState::FLOW_FINSH)
         {
