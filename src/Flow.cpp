@@ -16,6 +16,11 @@ vwpp::FlowState vwpp::FlowController::getFlowState()
     return cur_flow_state;
 }
 
+vwpp::TaskState vwpp::FlowController::getTaskState()
+{
+    return  cur_task_state;
+}
+
 void vwpp::FlowController::flow()
 {
     Task now_task;
@@ -28,8 +33,15 @@ void vwpp::FlowController::flow()
             now_task.taskNoBall();
             cur_task_state = now_task.getTaskState();
         }
+        else if (cur_task_state == GOT_START)
+        {
+            ROS_INFO("Now I GOT THE BALL!");
+            now_task.taskGotBall();
+            cur_task_state = now_task.getTaskState();
+        }
 
         cur_flow_state = FlOW_PROCESS;
+        ROS_INFO("Now cur_flow_state is FLOW_PROCESS");
     }
     else if (cur_flow_state == FlOW_PROCESS)
     {

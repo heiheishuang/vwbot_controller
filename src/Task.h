@@ -10,7 +10,7 @@
 #include "tf/transform_datatypes.h"
 #include "Action.h"
 
-#define MID_X 1.5
+#define MID_X 0.5
 #define MID_Y 0.0
 #define YELLOW_X 3.10
 #define YELLOW_Y 0.55
@@ -18,6 +18,14 @@
 #define RED_Y 0.00
 #define BLUE_X 3.10
 #define BLUE_Y -0.55
+
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define MAGENTA "\033[35m"
+#define CYAN "\033[36m"
+#define WHITE "\033[37m"
 
 namespace vwpp
 {

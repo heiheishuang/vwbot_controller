@@ -22,7 +22,7 @@ namespace vwpp
         FlowController();
 
         FlowState getFlowState();
-
+        TaskState getTaskState();
         void flow();
 
     private:

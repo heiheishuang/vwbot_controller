@@ -21,6 +21,7 @@ vwpp::Task::Task():
             ///vwbot_pose isn't the name of the topic
             sub_vwbot = nh.subscribe<geometry_msgs::PoseStamped>
                     ("/robot_pose",10,&Task::sub_from_vwbot_cb,this);
+            ROS_ERROR("subscribe created");
 
             ball_pose.pose.pose.position.x = -1;
             ball_pose.pose.pose.position.y = -1;
@@ -100,7 +101,9 @@ void vwpp::Task::taskGotBall()
                 door.pose.position.x = YELLOW_X;
                 door.pose.position.y = YELLOW_Y;
                 door.pose.orientation.w = 1;
+                std::cout<<YELLOW <<"I WILL MOVE TO YELLOW DOOR!";
                 push_action.action_move_base(door);
+
             }
             else if (now_ball.color == "blue")
             {
@@ -109,7 +112,9 @@ void vwpp::Task::taskGotBall()
                 door.pose.position.x = BLUE_X;
                 door.pose.position.y = BLUE_Y;
                 door.pose.orientation.w = 1;
+                std::cout<<BLUE <<"I WILL MOVE TO BLUE DOOR!";
                 push_action.action_move_base(door);
+
             }
             else if (now_ball.color == "red")
             {
@@ -118,12 +123,15 @@ void vwpp::Task::taskGotBall()
                 door.pose.position.x = RED_X;
                 door.pose.position.y = RED_Y;
                 door.pose.orientation.w = 1;
+                std::cout<<RED <<"I WILL MOVE TO RED DOOR!";
                 push_action.action_move_base(door);
+
             }
 
             //When vwbot get to the door successfully, it needs to go to MID.
             if (push_action.getActionState() == GOT_GOAL)
             {
+
                 // Put down the ball
                 ball_state.data = false;
                 task_action.send_to_hand(ball_state);
@@ -193,9 +201,9 @@ void vwpp::Task::taskNoBall()
 
     vwpp::Action task_action;
 
-    while (vwpp::Task::getTaskState() == NO_START)
+    if (vwpp::Task::getTaskState() == NO_START)
     {
-        ROS_INFO("Finding the ball , waiting~ ");
+        ROS_INFO("I'm finding the ball , waiting~ ");
         geometry_msgs::PoseStamped now_pose;
 
         //TODO
@@ -208,13 +216,15 @@ void vwpp::Task::taskNoBall()
        if (fabs(now_pose.pose.position.y - 2.0) <= 0.1 or fabs(now_pose.pose.position.y + 2.0) <= 0.1)
            now_pose.pose.position.y = MID_Y;
 
+       printf("Orientation %lf %lf \n",now_pose.pose.orientation.z,now_pose.pose.orientation.w);
+
        tf::Matrix3x3 mat(tf::Quaternion(now_pose.pose.orientation.x,now_pose.pose.orientation.y,
                                         now_pose.pose.orientation.z,now_pose.pose.orientation.w)) ;
 
         double yaw, pitch, roll;
         mat.getEulerYPR(yaw,pitch,roll);
 
-        yaw = yaw / 3.14 * 180 + 10 ;
+        yaw = yaw / 3.14 * 180 + 45 ;
         yaw = yaw / 180 * 3.14 ;
 
         tf::Quaternion q;
@@ -227,12 +237,23 @@ void vwpp::Task::taskNoBall()
         now_pose.header.frame_id = "map";
         now_pose.header.stamp = ros::Time::now();
 
+        printf("Orientation %lf %lf \n",now_pose.pose.orientation.z,now_pose.pose.orientation.w);
+
         task_action.action_move_base(now_pose);
 
         if (ball_pose.pose.pose.position.x != -1 and ball_pose.pose.pose.position.y != -1
             and ball_pose.pose.pose.position.z != -1)
+        {
 
             cur_task_state = GOT_START;
+            ROS_INFO("I find the ball and I will in the taskGotBall!");
+
+        }
+        else
+        {
+            cur_task_state = NO_START;
+            ROS_INFO("I didn't find the ball , taskNOBall is failed ! ");
+        }
 
     }
 
@@ -252,6 +273,8 @@ void vwpp::Task::sub_catchball_state_cb(const std_msgs::Bool::ConstPtr &msg)
 void vwpp::Task::sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &msg)
 {
     this->vwbot_pose = *msg;
+    ROS_INFO("########## %lf %lf",msg->pose.orientation.z,msg->pose.orientation.w);
+
 }
 
 void vwpp::Task::sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr &msg)
