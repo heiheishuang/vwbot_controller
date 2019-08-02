@@ -1,5 +1,6 @@
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/install/strip.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/vwbot_controller_node.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/vwbot_controller_genpy.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/vwbot_controller_gennodejs.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/vwbot_controller_generate_messages_py.dir
@@ -51,7 +52,6 @@
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/roscpp_generate_messages_eus.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/move_base_msgs_generate_messages_lisp.dir
-/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/vwbot_node.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/roscpp_generate_messages_lisp.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir
 /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/CMakeFiles/move_base_msgs_generate_messages_cpp.dir

@@ -20,6 +20,7 @@ namespace vwpp
     {
         NO_GOAL,
         GOT_GOAL,
+        PROCESSS_GOAL,
         FAILED_TO_GOAL
     };
 

@@ -4,12 +4,11 @@
     <generated>
       <config projectName="vwbot_controller" targetName="actionlib_generate_messages_eus" />
       <config projectName="vwbot_controller" targetName="gtest" />
-      <config projectName="vwbot_controller" targetName="_catkin_empty_exported_target" />
+      <config projectName="vwbot_controller" targetName="doxygen" />
       <config projectName="vwbot_controller" targetName="geometry_msgs_generate_messages_nodejs" />
-      <config projectName="vwbot_controller" targetName="roscpp_generate_messages_lisp" />
       <config projectName="vwbot_controller" targetName="vwbot_controller_generate_messages_eus" />
       <config projectName="vwbot_controller" targetName="gtest_main" />
-      <config projectName="vwbot_controller" targetName="vwbot_controller_genpy" />
+      <config projectName="vwbot_controller" targetName="roscpp_generate_messages_lisp" />
       <config projectName="vwbot_controller" targetName="gmock_main" />
       <config projectName="vwbot_controller" targetName="std_msgs_generate_messages_nodejs" />
       <config projectName="vwbot_controller" targetName="geometry_msgs_generate_messages_py" />
@@ -19,47 +18,48 @@
       <config projectName="vwbot_controller" targetName="vwbot_controller_gennodejs" />
       <config projectName="vwbot_controller" targetName="move_base_msgs_generate_messages_eus" />
       <config projectName="vwbot_controller" targetName="rosgraph_msgs_generate_messages_nodejs" />
-      <config projectName="vwbot_controller" targetName="rosgraph_msgs_generate_messages_cpp" />
-      <config projectName="vwbot_controller" targetName="vwbot_node" />
+      <config projectName="vwbot_controller" targetName="actionlib_msgs_generate_messages_nodejs" />
+      <config projectName="vwbot_controller" targetName="roscpp_generate_messages_nodejs" />
+      <config projectName="vwbot_controller" targetName="actionlib_msgs_generate_messages_eus" />
       <config projectName="vwbot_controller" targetName="gmock" />
       <config projectName="vwbot_controller" targetName="actionlib_generate_messages_cpp" />
       <config projectName="vwbot_controller" targetName="download_extra_data" />
       <config projectName="vwbot_controller" targetName="vwbot_controller_geneus" />
-      <config projectName="vwbot_controller" targetName="actionlib_generate_messages_nodejs" />
-      <config projectName="vwbot_controller" targetName="doxygen" />
+      <config projectName="vwbot_controller" targetName="tests" />
+      <config projectName="vwbot_controller" targetName="geometry_msgs_generate_messages_lisp" />
       <config projectName="vwbot_controller" targetName="vwbot_controller_generate_messages_cpp" />
       <config projectName="vwbot_controller" targetName="rosgraph_msgs_generate_messages_py" />
-      <config projectName="vwbot_controller" targetName="std_msgs_generate_messages_cpp" />
+      <config projectName="vwbot_controller" targetName="actionlib_generate_messages_py" />
       <config projectName="vwbot_controller" targetName="roscpp_generate_messages_eus" />
       <config projectName="vwbot_controller" targetName="geometry_msgs_generate_messages_cpp" />
-      <config projectName="vwbot_controller" targetName="roscpp_generate_messages_py" />
+      <config projectName="vwbot_controller" targetName="actionlib_generate_messages_nodejs" />
       <config projectName="vwbot_controller" targetName="std_msgs_generate_messages_lisp" />
-      <config projectName="vwbot_controller" targetName="actionlib_msgs_generate_messages_eus" />
-      <config projectName="vwbot_controller" targetName="move_base_msgs_generate_messages_cpp" />
+      <config projectName="vwbot_controller" targetName="rosgraph_msgs_generate_messages_eus" />
       <config projectName="vwbot_controller" targetName="vwbot_controller_generate_messages" />
-      <config projectName="vwbot_controller" targetName="actionlib_generate_messages_py" />
+      <config projectName="vwbot_controller" targetName="move_base_msgs_generate_messages_cpp" />
+      <config projectName="vwbot_controller" targetName="roscpp_generate_messages_cpp" />
       <config projectName="vwbot_controller" targetName="std_msgs_generate_messages_eus" />
-      <config projectName="vwbot_controller" targetName="geometry_msgs_generate_messages_lisp" />
+      <config projectName="vwbot_controller" targetName="_catkin_empty_exported_target" />
       <config projectName="vwbot_controller" targetName="move_base_msgs_generate_messages_lisp" />
       <config projectName="vwbot_controller" targetName="vwbot_controller_generate_messages_lisp" />
       <config projectName="vwbot_controller" targetName="vwbot_controller_gencpp" />
-      <config projectName="vwbot_controller" targetName="roscpp_generate_messages_cpp" />
       <config projectName="vwbot_controller" targetName="vwbot_controller_generate_messages_nodejs" />
       <config projectName="vwbot_controller" targetName="_vwbot_controller_generate_messages_check_deps_PoseAndColor" />
+      <config projectName="vwbot_controller" targetName="vwbot_controller_node" />
       <config projectName="vwbot_controller" targetName="move_base_msgs_generate_messages_py" />
       <config projectName="vwbot_controller" targetName="actionlib_msgs_generate_messages_py" />
       <config projectName="vwbot_controller" targetName="vwbot_controller_generate_messages_py" />
-      <config projectName="vwbot_controller" targetName="run_tests" />
+      <config projectName="vwbot_controller" targetName="rosgraph_msgs_generate_messages_lisp" />
       <config projectName="vwbot_controller" targetName="actionlib_msgs_generate_messages_lisp" />
-      <config projectName="vwbot_controller" targetName="actionlib_msgs_generate_messages_nodejs" />
+      <config projectName="vwbot_controller" targetName="run_tests" />
       <config projectName="vwbot_controller" targetName="actionlib_msgs_generate_messages_cpp" />
-      <config projectName="vwbot_controller" targetName="tests" />
-      <config projectName="vwbot_controller" targetName="roscpp_generate_messages_nodejs" />
+      <config projectName="vwbot_controller" targetName="std_msgs_generate_messages_py" />
+      <config projectName="vwbot_controller" targetName="vwbot_controller_genpy" />
       <config projectName="vwbot_controller" targetName="geometry_msgs_generate_messages_eus" />
       <config projectName="vwbot_controller" targetName="clean_test_results" />
-      <config projectName="vwbot_controller" targetName="rosgraph_msgs_generate_messages_eus" />
-      <config projectName="vwbot_controller" targetName="rosgraph_msgs_generate_messages_lisp" />
-      <config projectName="vwbot_controller" targetName="std_msgs_generate_messages_py" />
+      <config projectName="vwbot_controller" targetName="std_msgs_generate_messages_cpp" />
+      <config projectName="vwbot_controller" targetName="roscpp_generate_messages_py" />
+      <config projectName="vwbot_controller" targetName="rosgraph_msgs_generate_messages_cpp" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -70,8 +70,28 @@
   <component name="ChangeListManager">
     <list default="true" id="a386ad11-72c6-4dde-8bf9-ef0031250940" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/atomic_configure/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/atomic_configure/_setup_util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/generate_cached_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/generate_cached_setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/installspace/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/installspace/_setup_util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/installspace/vwbot_controllerConfig.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/installspace/vwbot_controllerConfig.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/setup_cached.sh" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/setup_cached.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/stamps/vwbot_controller/_setup_util.py.stamp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/catkin_generated/stamps/vwbot_controller/_setup_util.py.stamp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/devel/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/devel/_setup_util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/devel/share/vwbot_controller/cmake/vwbot_controllerConfig.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/devel/share/vwbot_controller/cmake/vwbot_controllerConfig.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/vwbot_controller.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/vwbot_controller.cbp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Action.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Action.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Action.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Flow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Flow.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Flow.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Flow.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Task.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Task.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Task.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/Task.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/vwbot_controller_node.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/vwbot_controller_node.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +114,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../vwbot_bringup/CMakeLists.txt" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/CMakeLists.txt" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -402,7 +422,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="vwbot_node" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="vwbot_controller" TARGET_NAME="vwbot_node" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="vwbot_controller" RUN_TARGET_NAME="vwbot_node">
+    <configuration name="vwbot_controller_node" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="vwbot_controller" TARGET_NAME="vwbot_controller_node" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="vwbot_controller" RUN_TARGET_NAME="vwbot_controller_node">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -461,7 +481,7 @@
       <item itemvalue="CMake Application.vwbot_controller_genlisp" />
       <item itemvalue="CMake Application.vwbot_controller_gennodejs" />
       <item itemvalue="CMake Application.vwbot_controller_genpy" />
-      <item itemvalue="CMake Application.vwbot_node" />
+      <item itemvalue="CMake Application.vwbot_controller_node" />
       <item itemvalue="CMake Application.gmock" />
       <item itemvalue="CMake Application.gmock_main" />
       <item itemvalue="CMake Application.gtest" />
@@ -500,7 +520,9 @@
       <workItem from="1564587133534" duration="1345000" />
       <workItem from="1564588938751" duration="277000" />
       <workItem from="1564616844721" duration="18172000" />
-      <workItem from="1564651641024" duration="7651000" />
+      <workItem from="1564651641024" duration="17558000" />
+      <workItem from="1564708630323" duration="17641000" />
+      <workItem from="1564740728263" duration="7117000" />
     </task>
     <servers />
   </component>

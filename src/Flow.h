@@ -6,12 +6,12 @@
 #define VWBOT_CONTROLLER_FLOW_H_
 
 #include "Task.h"
+
 namespace vwpp
 {
     enum FlowState
     {
         FLOW_START,
-        FlOW_PROCESS,
         FLOW_FINSH
     };
 
@@ -21,17 +21,16 @@ namespace vwpp
 
         FlowController();
 
+        virtual ~FlowController();
+
         FlowState getFlowState();
-        // TaskState getTaskState();
 
-        void flow();
-
-        // Task now_task;
+        void run();
 
     private:
+
         FlowState cur_flow_state;
-        Task *cur_task;
-       // TaskState cur_task_state;
+        Task* cur_task;
 
     };
 }

@@ -9,14 +9,14 @@ int main(int argc, char** argv)
 
     vwpp::FlowController flow_controller;
 
-    ros::Rate loop_rate(10);
+    ros::Rate loop_rate(2);
     while (ros::ok())
     {
         ROS_INFO("Now Start");
 
         ros::spinOnce();
 
-        flow_controller.flow();
+        flow_controller.run();
 
         std::cout << "Now cur_flow_state is " << flow_controller.getFlowState() << '\n';
 

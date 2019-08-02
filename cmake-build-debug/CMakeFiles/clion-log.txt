@@ -1,7 +1,7 @@
 /opt/clion-2019.2/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/heihei/vwbot_ws/src/vwbot_controller
 -- Using CATKIN_DEVEL_PREFIX: /home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel
--- Using CMAKE_PREFIX_PATH: /opt/ros/kinetic
--- This workspace overlays: /opt/ros/kinetic
+-- Using CMAKE_PREFIX_PATH: /home/heihei/cartographer_ws/devel;/home/heihei/vwbot_ws/devel;/opt/ros/kinetic
+-- This workspace overlays: /home/heihei/cartographer_ws/devel;/home/heihei/vwbot_ws/devel;/opt/ros/kinetic
 -- Using PYTHON_EXECUTABLE: /usr/bin/python
 -- Using Debian Python package layout
 -- Using empy: /usr/bin/empy

@@ -8,13 +8,13 @@ add_compile_options(-std=c++11)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  move_base_msgs
-  roscpp
-  std_msgs
-  geometry_msgs
-  message_generation
-)
+        actionlib
+        move_base_msgs
+        roscpp
+        std_msgs
+        geometry_msgs
+        message_generation
+        )
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
@@ -51,9 +51,9 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 ## Generate messages in the 'msg' folder
 add_message_files(
-   FILES
-   PoseAndColor.msg
- )
+        FILES
+        PoseAndColor.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -71,11 +71,11 @@ add_message_files(
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-   DEPENDENCIES
-   move_base_msgs
-   geometry_msgs
-   std_msgs
- )
+        DEPENDENCIES
+        move_base_msgs
+        geometry_msgs
+        std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -107,10 +107,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES vwbot_controller
-  CATKIN_DEPENDS actionlib move_base_msgs roscpp roscpp std_msgs message_runtime
-#  DEPENDS system_lib
+        #  INCLUDE_DIRS include
+        #  LIBRARIES vwbot_controller
+        CATKIN_DEPENDS actionlib move_base_msgs roscpp roscpp std_msgs message_runtime
+        #  DEPENDS system_lib
 )
 
 ###########
@@ -120,8 +120,9 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
+        # include
+        ${catkin_INCLUDE_DIRS}
+        ../../devel/include
 )
 
 ## Declare a C++ library
@@ -137,7 +138,8 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(vwbot_node src/vwbot_controller_node.cpp
+add_executable(vwbot_controller_node
+        src/vwbot_controller_node.cpp
         src/Action.h
         src/Action.cpp
         src/Task.cpp
@@ -157,9 +159,9 @@ add_executable(vwbot_node src/vwbot_controller_node.cpp
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(vwbot_node
-  ${catkin_LIBRARIES}
-)
+target_link_libraries(vwbot_controller_node
+        ${catkin_LIBRARIES}
+        )
 
 #############
 ## Install ##

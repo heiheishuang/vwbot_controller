@@ -6,23 +6,24 @@
 
 #include <utility>
 
-vwpp::Action::Action():
-    cur_action_state(NO_GOAL),
-    nh("~"),
-    loop_rate(20.0)
 
-    {
-        pub_hand = nh.advertise<std_msgs::Bool>("/send_to_hand",1);
+vwpp::Action::Action() :
+        cur_action_state(NO_GOAL),
+        nh("~"),
+        loop_rate(20.0)
+{
+    pub_hand = nh.advertise<std_msgs::Bool>("/send_to_hand", 1);
 
-    }
+}
+
 
 int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
 {
     ROS_INFO("Now in the action move_base!");
 
-    ROS_INFO("I got the goal! %lf %lf %lf ",pose.pose.position.x,pose.pose.position.y,pose.pose.position.z);
-    ROS_INFO("                %lf %lf %lf %lf ",pose.pose.orientation.x,pose.pose.orientation.y,
-            pose.pose.orientation.z,pose.pose.orientation.w);
+    ROS_INFO("I got the goal! %lf %lf %lf ", pose.pose.position.x, pose.pose.position.y, pose.pose.position.z);
+    ROS_INFO("                %lf %lf %lf %lf ", pose.pose.orientation.x, pose.pose.orientation.y,
+             pose.pose.orientation.z, pose.pose.orientation.w);
 
     MoveBaseClient ac("move_base", true);
 
@@ -36,30 +37,49 @@ int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
     goal.target_pose = std::move(pose);
 
     ac.sendGoal(goal);
-    ROS_INFO("I send the goal! %lf %lf %lf ",goal.target_pose.pose.position.x,goal.target_pose.pose.position.y,
-            goal.target_pose.pose.position.z);
-    ROS_INFO("                 %lf %lf %lf %lf ",goal.target_pose.pose.orientation.x,goal.target_pose.pose.orientation.y,
-            goal.target_pose.pose.orientation.z,goal.target_pose.pose.orientation.w);
+    ROS_INFO("I send the goal! %lf %lf %lf ", goal.target_pose.pose.position.x, goal.target_pose.pose.position.y,
+             goal.target_pose.pose.position.z);
+    ROS_INFO("                 %lf %lf %lf %lf ", goal.target_pose.pose.orientation.x,
+             goal.target_pose.pose.orientation.y,
+             goal.target_pose.pose.orientation.z, goal.target_pose.pose.orientation.w);
 
-    ac.waitForResult();
+    // ac.waitForResult();
+    //
+    // ROS_INFO("It's time to adjust!"); //need to delete
+    // if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+    // {
+    //     ROS_INFO("ACTION MOVE_BASE SUCCEEDED!");
+    //     Action move_base is all right
+    //     TODO
+    // cur_action_state = GOT_GOAL;
+    // return 0;
+    // }
+    // else
+    // {
+    //     ROS_WARN("FAILED TO GOAL!");
+    //     cur_action_state = FAILED_TO_GOAL;
+    //     return 0;
+    // }
+    cur_action_state = NO_GOAL;
 
-    ROS_INFO("It's time to adjust!"); //need to delete
+    ac.waitForResult(ros::Duration(0.5));
+
     if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     {
-        ROS_INFO("ACTION MOVE_BASE SUCCEEDED!");
-        // Action move_base is all right
-        //TODO
+        ROS_INFO("MOVE TO THE GOAL");
         cur_action_state = GOT_GOAL;
-        return 0;
+    }
+    if (ac.getState() == actionlib::SimpleClientGoalState::LOST)
+    {
+        ROS_INFO("move_base Failed!");
+        cur_action_state = FAILED_TO_GOAL;
     }
     else
     {
-        ROS_WARN("FAILED TO GOAL!");
-        cur_action_state = FAILED_TO_GOAL;
-        return 0;
+        cur_action_state = PROCESSS_GOAL;
     }
-
 }
+
 
 void vwpp::Action::send_to_hand(const std_msgs::Bool &_ball)
 {

@@ -168,6 +168,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named vwbot_controller_node
+
+# Build rule for target.
+vwbot_controller_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 vwbot_controller_node
+.PHONY : vwbot_controller_node
+
+# fast build rule for target.
+vwbot_controller_node/fast:
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/build
+.PHONY : vwbot_controller_node/fast
+
+#=============================================================================
 # Target rules for targets named vwbot_controller_genpy
 
 # Build rule for target.
@@ -779,19 +792,6 @@ move_base_msgs_generate_messages_lisp/fast:
 .PHONY : move_base_msgs_generate_messages_lisp/fast
 
 #=============================================================================
-# Target rules for targets named vwbot_node
-
-# Build rule for target.
-vwbot_node: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 vwbot_node
-.PHONY : vwbot_node
-
-# fast build rule for target.
-vwbot_node/fast:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/build
-.PHONY : vwbot_node/fast
-
-#=============================================================================
 # Target rules for targets named roscpp_generate_messages_lisp
 
 # Build rule for target.
@@ -927,7 +927,7 @@ src/Action.o: src/Action.cpp.o
 
 # target to build an object file
 src/Action.cpp.o:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Action.cpp.o
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Action.cpp.o
 .PHONY : src/Action.cpp.o
 
 src/Action.i: src/Action.cpp.i
@@ -936,7 +936,7 @@ src/Action.i: src/Action.cpp.i
 
 # target to preprocess a source file
 src/Action.cpp.i:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Action.cpp.i
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Action.cpp.i
 .PHONY : src/Action.cpp.i
 
 src/Action.s: src/Action.cpp.s
@@ -945,7 +945,7 @@ src/Action.s: src/Action.cpp.s
 
 # target to generate assembly for a file
 src/Action.cpp.s:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Action.cpp.s
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Action.cpp.s
 .PHONY : src/Action.cpp.s
 
 src/Flow.o: src/Flow.cpp.o
@@ -954,7 +954,7 @@ src/Flow.o: src/Flow.cpp.o
 
 # target to build an object file
 src/Flow.cpp.o:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Flow.cpp.o
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Flow.cpp.o
 .PHONY : src/Flow.cpp.o
 
 src/Flow.i: src/Flow.cpp.i
@@ -963,7 +963,7 @@ src/Flow.i: src/Flow.cpp.i
 
 # target to preprocess a source file
 src/Flow.cpp.i:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Flow.cpp.i
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Flow.cpp.i
 .PHONY : src/Flow.cpp.i
 
 src/Flow.s: src/Flow.cpp.s
@@ -972,7 +972,7 @@ src/Flow.s: src/Flow.cpp.s
 
 # target to generate assembly for a file
 src/Flow.cpp.s:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Flow.cpp.s
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Flow.cpp.s
 .PHONY : src/Flow.cpp.s
 
 src/Task.o: src/Task.cpp.o
@@ -981,7 +981,7 @@ src/Task.o: src/Task.cpp.o
 
 # target to build an object file
 src/Task.cpp.o:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Task.cpp.o
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Task.cpp.o
 .PHONY : src/Task.cpp.o
 
 src/Task.i: src/Task.cpp.i
@@ -990,7 +990,7 @@ src/Task.i: src/Task.cpp.i
 
 # target to preprocess a source file
 src/Task.cpp.i:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Task.cpp.i
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Task.cpp.i
 .PHONY : src/Task.cpp.i
 
 src/Task.s: src/Task.cpp.s
@@ -999,7 +999,7 @@ src/Task.s: src/Task.cpp.s
 
 # target to generate assembly for a file
 src/Task.cpp.s:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/Task.cpp.s
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/Task.cpp.s
 .PHONY : src/Task.cpp.s
 
 src/vwbot_controller_node.o: src/vwbot_controller_node.cpp.o
@@ -1008,7 +1008,7 @@ src/vwbot_controller_node.o: src/vwbot_controller_node.cpp.o
 
 # target to build an object file
 src/vwbot_controller_node.cpp.o:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/vwbot_controller_node.cpp.o
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/vwbot_controller_node.cpp.o
 .PHONY : src/vwbot_controller_node.cpp.o
 
 src/vwbot_controller_node.i: src/vwbot_controller_node.cpp.i
@@ -1017,7 +1017,7 @@ src/vwbot_controller_node.i: src/vwbot_controller_node.cpp.i
 
 # target to preprocess a source file
 src/vwbot_controller_node.cpp.i:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/vwbot_controller_node.cpp.i
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/vwbot_controller_node.cpp.i
 .PHONY : src/vwbot_controller_node.cpp.i
 
 src/vwbot_controller_node.s: src/vwbot_controller_node.cpp.s
@@ -1026,7 +1026,7 @@ src/vwbot_controller_node.s: src/vwbot_controller_node.cpp.s
 
 # target to generate assembly for a file
 src/vwbot_controller_node.cpp.s:
-	$(MAKE) -f CMakeFiles/vwbot_node.dir/build.make CMakeFiles/vwbot_node.dir/src/vwbot_controller_node.cpp.s
+	$(MAKE) -f CMakeFiles/vwbot_controller_node.dir/build.make CMakeFiles/vwbot_controller_node.dir/src/vwbot_controller_node.cpp.s
 .PHONY : src/vwbot_controller_node.cpp.s
 
 # Help Target
@@ -1037,6 +1037,7 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... edit_cache"
+	@echo "... vwbot_controller_node"
 	@echo "... vwbot_controller_genpy"
 	@echo "... vwbot_controller_gennodejs"
 	@echo "... vwbot_controller_generate_messages_py"
@@ -1088,7 +1089,6 @@ help:
 	@echo "... roscpp_generate_messages_eus"
 	@echo "... rosgraph_msgs_generate_messages_lisp"
 	@echo "... move_base_msgs_generate_messages_lisp"
-	@echo "... vwbot_node"
 	@echo "... roscpp_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_eus"
 	@echo "... move_base_msgs_generate_messages_cpp"

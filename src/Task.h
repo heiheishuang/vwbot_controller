@@ -29,16 +29,13 @@
 
 namespace vwpp
 {
-    // enum TaskID
-    // {
-    //     GOTBALL,
-    //     NOBALL;
-    // };
 
     enum TaskState
     {
-        GOT_START,
-        NO_START,
+        HAS_BALL_START,
+        NO_BALL_START,
+        PUT_BALL_START,
+        CHANGE_START
     };
 
 
@@ -46,11 +43,15 @@ namespace vwpp
     {
     public:
         Task();
+        virtual  ~Task();
 
-        void taskGotBall();  // Task1 When vwbot find the ball
+        void taskHasBall();  // Task1 When vwbot find the ball
         void taskNoBall();   // Task2 When vwbot didn't have ball
+        void taskPutBall();  // Task3 When vwbot in the right door
+        void taskChange();   // Task4 When vwbot need to change the task
 
         TaskState getTaskState();  // Got the ball's state
+
 
     private:
 
@@ -58,6 +59,8 @@ namespace vwpp
         ros::Rate loop_rate;
 
         TaskState cur_task_state;
+
+        Action* cur_action;
 
         void sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr &msg);  //sub ball's pose and color
         void sub_catchball_state_cb(const std_msgs::Bool::ConstPtr &msg);    //sub ball's state when catch the ball
@@ -71,6 +74,7 @@ namespace vwpp
         geometry_msgs::PoseStamped vwbot_pose;
         std_msgs::Bool ball_state; //ball's state when catch the ball
 
+        geometry_msgs::Point goal_point;
         //need to calculate the number of ball
     };
 

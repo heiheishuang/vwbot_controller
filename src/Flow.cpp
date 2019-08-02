@@ -4,38 +4,53 @@
 
 #include "Flow.h"
 
-vwpp::FlowController::FlowController():
+
+vwpp::FlowController::FlowController() :
         cur_flow_state(FLOW_START)
-        // cur_task_state(NO_START)
 {
-    this->cur_task = new Task;
+    this->cur_task = new Task();
 }
+
+
+vwpp::FlowController::~FlowController()
+{
+    delete this->cur_task;
+}
+
 
 vwpp::FlowState vwpp::FlowController::getFlowState()
 {
     return cur_flow_state;
 }
 
-// vwpp::TaskState vwpp::FlowController::getTaskState()
-// {
-//     return  cur_task_state;
-// }
 
-void vwpp::FlowController::flow()
+
+void vwpp::FlowController::run()
 {
 
     if (cur_flow_state == FLOW_START)
     {
-        if (this->cur_task->getTaskState() == NO_START)
+        if (this->cur_task->getTaskState() == NO_BALL_START)
         {
-            ROS_INFO("Now cur_flow_state is FLOW_STARE , cur_task_state is NO_START , task is taskNoBall! ");
+            ROS_INFO("Now cur_flow_state is FLOW_STARE , cur_task_state is NO_BALL_START , task is taskNoBall! ");
             this->cur_task->taskNoBall();
-            // cur_task_state = now_task.getTaskState();
+
         }
-        else if (this->cur_task->getTaskState() == GOT_START)
+        else if (this->cur_task->getTaskState() == HAS_BALL_START)
         {
             ROS_INFO("Now I GOT THE BALL!");
-            this->cur_task->taskGotBall();
+            this->cur_task->taskHasBall();
+
+        }
+        else if (this->cur_task->getTaskState() == PUT_BALL_START)
+        {
+            ROS_INFO("NOW I will put the ball!");
+            this->cur_task->taskPutBall();
+        }
+        else if (this->cur_task->getTaskState() == CHANGE_START)
+        {
+            ROS_INFO("Now I will change the task from taskPutBall to taskNoball ");
+            this->cur_task->taskChange();
         }
 
     }

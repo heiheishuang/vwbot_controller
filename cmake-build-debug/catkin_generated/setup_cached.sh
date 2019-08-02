@@ -11,5 +11,5 @@ export CMAKE_PREFIX_PATH="/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build
 export LD_LIBRARY_PATH="/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel/lib:$LD_LIBRARY_PATH"
 export PKG_CONFIG_PATH="/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PYTHONPATH="/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel/lib/python2.7/dist-packages:$PYTHONPATH"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel/share/common-lisp"
+export ROSLISP_PACKAGE_DIRECTORIES="/home/heihei/vwbot_ws/src/vwbot_controller/cmake-build-debug/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/heihei/vwbot_ws/src/vwbot_controller:$ROS_PACKAGE_PATH"
