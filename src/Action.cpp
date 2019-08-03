@@ -37,11 +37,6 @@ int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
     goal.target_pose = std::move(pose);
 
     ac.sendGoal(goal);
-    ROS_INFO("I send the goal! %lf %lf %lf ", goal.target_pose.pose.position.x, goal.target_pose.pose.position.y,
-             goal.target_pose.pose.position.z);
-    ROS_INFO("                 %lf %lf %lf %lf ", goal.target_pose.pose.orientation.x,
-             goal.target_pose.pose.orientation.y,
-             goal.target_pose.pose.orientation.z, goal.target_pose.pose.orientation.w);
 
     // ac.waitForResult();
     //
@@ -64,20 +59,40 @@ int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
 
     ac.waitForResult(ros::Duration(0.5));
 
-    if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    {
-        ROS_INFO("MOVE TO THE GOAL");
-        cur_action_state = GOT_GOAL;
-    }
+    // TODO
+    // Because the position is constantly changing, and the state is changing.
+    // The state is always the last one.
+
+    // if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+    // {
+    //     std::cout << GREEN << "Move to the goal"<< "\033[0m" << std::endl;
+    //     this->cur_action_state= GOT_GOAL;
+    //
+    // }
+    // if (ac.getState() == actionlib::SimpleClientGoalState::LOST)
+    // {
+    //     ROS_INFO("Move_base Failed!");
+    //     this->cur_action_state = FAILED_TO_GOAL;
+    // }
+    // else
+    // {
+    //     ROS_INFO("Move_base is processing! ");
+    //     this->cur_action_state = PROCESSS_GOAL;
+    // }
+
     if (ac.getState() == actionlib::SimpleClientGoalState::LOST)
     {
-        ROS_INFO("move_base Failed!");
-        cur_action_state = FAILED_TO_GOAL;
+        ROS_INFO("Move_base Failed!");
+        this->cur_action_state = FAILED_TO_GOAL;
     }
-    else
+    else if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     {
-        cur_action_state = PROCESSS_GOAL;
+        ROS_INFO("Move_base Succeeded!");
+        this->cur_action_state = GOT_GOAL;
     }
+
+    if (this->cur_action_state == GOT_GOAL)
+        ROS_WARN("cur_action_state == GOT_GOAL");
 }
 
 

@@ -91,12 +91,19 @@ void vwpp::Task::taskHasBall()
 
     this->cur_action->action_move_base(now_ball.pose);
 
+    //TODO
+    //Change the pose  orientation
+
+    ROS_WARN("! this");
     if (this->cur_action->getActionState() == GOT_GOAL)
     {
+        ROS_WARN("this->cur_action->getActionState() == GOT_GOAL");
         std_msgs::Bool catch_ball;
         // when the ball is in the right position
         catch_ball.data = true;
         this->cur_action->send_to_hand(catch_ball);
+        ROS_INFO("Put to hand to catch the ball");
+
 
         //TODO
         //Whether to add waiting time
@@ -151,7 +158,8 @@ void vwpp::Task::taskHasBall()
 
 
     }
-    //   not use
+    //  not use
+    //  TODO
     else if (this->cur_action->getActionState() == FAILED_TO_GOAL)
     {
         //move to ball failed
