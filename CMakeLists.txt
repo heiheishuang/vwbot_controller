@@ -140,13 +140,16 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(vwbot_controller_node
         src/vwbot_controller_node.cpp
-        src/Action.h
         src/Action.cpp
+        src/Action.h
         src/Task.cpp
         src/Task.h
         src/Flow.cpp
         src/Flow.h
-        src/PoseAndColor.h)
+        src/PoseAndColor.h
+        src/JudgeAchieveCounter.cpp
+        src/JudgeAchieveCounter.h
+        )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

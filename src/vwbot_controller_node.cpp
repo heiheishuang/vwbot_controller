@@ -12,13 +12,12 @@ int main(int argc, char** argv)
     ros::Rate loop_rate(2);
     while (ros::ok())
     {
-        ROS_INFO("Now Start");
+        std::cout << GREEN << "Now start the flow!"<< "\033[0m" << std::endl;
 
         ros::spinOnce();
 
         flow_controller.run();
 
-        std::cout << "Now cur_flow_state is " << flow_controller.getFlowState() << '\n';
 
         if (flow_controller.getFlowState() == vwpp::FlowState::FLOW_FINSH)
         {

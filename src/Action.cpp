@@ -10,7 +10,7 @@
 vwpp::Action::Action() :
         cur_action_state(NO_GOAL),
         nh("~"),
-        loop_rate(20.0)
+        loop_rate(9.0)
 {
     pub_hand = nh.advertise<std_msgs::Bool>("/send_to_hand", 1);
 
@@ -38,47 +38,9 @@ int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
 
     ac.sendGoal(goal);
 
-    // ac.waitForResult();
-    //
-    // ROS_INFO("It's time to adjust!"); //need to delete
-    // if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    // {
-    //     ROS_INFO("ACTION MOVE_BASE SUCCEEDED!");
-    //     Action move_base is all right
-    //     TODO
-    // cur_action_state = GOT_GOAL;
-    // return 0;
-    // }
-    // else
-    // {
-    //     ROS_WARN("FAILED TO GOAL!");
-    //     cur_action_state = FAILED_TO_GOAL;
-    //     return 0;
-    // }
     cur_action_state = NO_GOAL;
 
     ac.waitForResult(ros::Duration(0.5));
-
-    // TODO
-    // Because the position is constantly changing, and the state is changing.
-    // The state is always the last one.
-
-    // if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    // {
-    //     std::cout << GREEN << "Move to the goal"<< "\033[0m" << std::endl;
-    //     this->cur_action_state= GOT_GOAL;
-    //
-    // }
-    // if (ac.getState() == actionlib::SimpleClientGoalState::LOST)
-    // {
-    //     ROS_INFO("Move_base Failed!");
-    //     this->cur_action_state = FAILED_TO_GOAL;
-    // }
-    // else
-    // {
-    //     ROS_INFO("Move_base is processing! ");
-    //     this->cur_action_state = PROCESSS_GOAL;
-    // }
 
     if (ac.getState() == actionlib::SimpleClientGoalState::LOST)
     {
@@ -87,19 +49,17 @@ int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
     }
     else if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
     {
-        ROS_INFO("Move_base Succeeded!");
+        ROS_INFO("Move_base Succeeded! cur_action_state == COT_GOAL");
         this->cur_action_state = GOT_GOAL;
     }
 
-    if (this->cur_action_state == GOT_GOAL)
-        ROS_WARN("cur_action_state == GOT_GOAL");
 }
 
 
 void vwpp::Action::send_to_hand(const std_msgs::Bool &_ball)
 {
 
-    ROS_INFO("Now in the action send_to_hand!");
+    ROS_WARN("###   Now in the action send_to_hand!");
     this->pub_hand.publish(_ball);
 
 }

@@ -7,8 +7,7 @@
 
 vwpp::Task::Task() :
         nh("~"),
-        loop_rate(20.0),
-        cur_task_state(NO_BALL_START)
+        loop_rate(20.0)
 {
     //TODO
     ///ball isn't the name of the topic
@@ -32,144 +31,85 @@ vwpp::Task::Task() :
     vwbot_pose.pose.position.y = 0.0;
     vwbot_pose.pose.orientation.w = 1;
 
-    goal_point.x = 0;
-    goal_point.y = 0;
-    goal_point.z = 0;
-
     ball_state.data = false;  //Ball is not in the right place.
 
     this->cur_action = new Action;
 
+    task_has_ball_state = 0;
+
 }
+
 
 vwpp::Task::~Task()
 {
     delete this->cur_action;
 }
 
+
 void vwpp::Task::taskHasBall()
 {
 
     ROS_INFO("Now in the taskHasBall!");
-    // vwbot_controller::PoseAndColor now_ball;
-    // geometry_msgs::PoseStamped now_vwbot;
-    //
-    // now_ball = this->ball_pose;
-    // now_vwbot = this->vwbot_pose;
-    //
-    // double length, dis_x, dis_y, dis_length;
-    //
-    // dis_x = ball_pose.pose.pose.position.x - vwbot_pose.pose.position.x;
-    // dis_y = ball_pose.pose.pose.position.y - vwbot_pose.pose.position.y;
-    //
-    //
-    // The aim is to arrive at the destination more accurately.
 
-    // length = sqrt(dis_x * dis_x + dis_y * dis_y);
-    //
-    // if ( length > 0.80 )
-    // {
-    //     dis_length = length - 0.80;
-    //     dis_x = dis_x / length * dis_length;
-    //     dis_y = dis_y / length * dis_length;
-    // }
-    //
-    // now_vwbot.pose.position.x = now_vwbot.pose.position.x + dis_x;
-    // now_vwbot.pose.position.y = now_vwbot.pose.position.y + dis_y;
-    // now_vwbot.header.stamp = ros::Time::now();
-
-    // vwpp::Action task_action;
-    // vwpp::Action push_action;
-    //
-    // task_action.action_move_base(now_vwbot);
-
-    // this->cur_action->action_move_base(now_vwbot);
-
-    //Move to goal succeeded.
     vwbot_controller::PoseAndColor now_ball;
+    geometry_msgs::PoseStamped now_vwbot_pose;
+    geometry_msgs::PoseStamped target_pose;
+    now_vwbot_pose = this->vwbot_pose;
     now_ball = this->ball_pose;
 
-    this->cur_action->action_move_base(now_ball.pose);
+    double dis_yaw, dis_x, dis_y, dis_length;
+    dis_x = now_ball.pose.pose.position.x - now_vwbot_pose.pose.position.x;
+    dis_y = now_ball.pose.pose.position.y - now_vwbot_pose.pose.position.y;
+    dis_yaw = atan(dis_y / dis_x);
+    dis_length = sqrt(dis_x * dis_x +dis_y*dis_y);
 
-    //TODO
-    //Change the pose  orientation
+    tf::Matrix3x3 mat(tf::Quaternion(now_vwbot_pose.pose.orientation.x, now_vwbot_pose.pose.orientation.y,
+                                     now_vwbot_pose.pose.orientation.z, now_vwbot_pose.pose.orientation.w));
 
-    ROS_WARN("! this");
-    if (this->cur_action->getActionState() == GOT_GOAL)
-    {
-        ROS_WARN("this->cur_action->getActionState() == GOT_GOAL");
-        std_msgs::Bool catch_ball;
-        // when the ball is in the right position
-        catch_ball.data = true;
-        this->cur_action->send_to_hand(catch_ball);
-        ROS_INFO("Put to hand to catch the ball");
+    double yaw, pitch, roll;
+    mat.getEulerYPR(yaw, pitch, roll);
 
 
-        //TODO
-        //Whether to add waiting time
+    if ((dis_length >= 0.30 or (fabs(dis_yaw - yaw) /3.14*180 >= 15)) and task_has_ball_state == 0)
+    {    //TODO
+        //change the pose of the vwbot to ball
+        ROS_WARN("taskHasBall action 1!");
+        target_pose.pose = now_ball.pose.pose;
+        target_pose.pose.position.x = (dis_length - 0.30 ) / dis_length * dis_x + now_vwbot_pose.pose.position.x;
+        target_pose.pose.position.y = (dis_length - 0.30 ) / dis_length * dis_y + now_vwbot_pose.pose.position.y;
 
-        //sub ball's state
-        //Judge whether to go to the door or not
+        tf::Quaternion q;
+        q.setRPY(0, 0, yaw);
+        // target_pose.pose.orientation.x = q[0];
+        // target_pose.pose.orientation.y = q[1];
+        // target_pose.pose.orientation.z = q[2];
+        // target_pose.pose.orientation.w = q[3];
+        target_pose.header.frame_id = "map";
+        target_pose.header.stamp = ros::Time::now();
 
-        //push the ball to the goal
-        if (this->ball_state.data != 0)
-        {
-            // Success in catching the ball
-            if (now_ball.color == "yellow")
-            {
-                this->goal_point.x = YELLOW_X;
-                this->goal_point.y = YELLOW_Y;
+        target_pose.pose.orientation.x = 0;
+        target_pose.pose.orientation.y = 0;
+        target_pose.pose.orientation.z = 0;
+        target_pose.pose.orientation.w = 1;
 
-                std::cout << YELLOW << "I WILL MOVE TO YELLOW DOOR!"<< "\033[0m" << std::endl;
-                this->cur_task_state = PUT_BALL_START;
-                // this->cur_action->action_move_base(door);
-
-            }
-            else if (now_ball.color == "blue")
-            {
-                this->goal_point.x = BLUE_X;
-                this->goal_point.y = BLUE_Y;
-
-                std::cout << BLUE << "I WILL MOVE TO BLUE DOOR!"<< "\033[0m" << std::endl;
-                this->cur_task_state = PUT_BALL_START;
-                // this->cur_action->action_move_base(door);
-
-            }
-            else if (now_ball.color == "red")
-            {
-                this->goal_point.x = RED_X;
-                this->goal_point.y = RED_Y;
-
-                std::cout << RED << "I WILL MOVE TO RED DOOR!"<< "\033[0m" << std::endl;
-                this->cur_task_state = PUT_BALL_START;
-                // this->cur_action->action_move_base(door);
-
-            }
-
-        }
-        else if (ball_state.data == 0)
-        {
-            //Failure in catching the ball
-
-            this->cur_action->send_to_hand(ball_state);
-
-            this->cur_task_state = NO_BALL_START;
-        }
-
+        this->cur_action->action_move_base(target_pose);
 
     }
-    //  not use
-    //  TODO
-    else if (this->cur_action->getActionState() == FAILED_TO_GOAL)
+    else
     {
-        //move to ball failed
-        //need to find ball again
-        this->ball_state.data = false;
-        this->cur_task_state = NO_BALL_START;
+        ROS_WARN("taskHasBall action 2!");
+        target_pose.pose = now_ball.pose.pose;
+        target_pose.pose.orientation.x = 0;
+        target_pose.pose.orientation.y = 0;
+        target_pose.pose.orientation.z = 0;
+        target_pose.pose.orientation.w = 1;
+        this->cur_action->action_move_base(target_pose);
+        task_has_ball_state = 2;
+        if (this->cur_action->getActionState() == GOT_GOAL)
+            task_has_ball_state = 0;
     }
-
-
 }
+
 
 void vwpp::Task::taskPutBall()
 {
@@ -181,41 +121,38 @@ void vwpp::Task::taskPutBall()
     door.pose.orientation.x = 0;
     door.pose.orientation.y = 0;
     door.pose.orientation.z = 0;
-    door.pose.position = this->goal_point;
+
+    if (this->ball_pose.color == "yellow")
+    {
+        door.pose.position.x = YELLOW_X;
+        door.pose.position.y = YELLOW_Y;
+
+        std::cout << YELLOW << "I WILL MOVE TO YELLOW DOOR!" << "\033[0m" << std::endl;
+
+    }
+    else if (this->ball_pose.color == "blue")
+    {
+        door.pose.position.x = BLUE_X;
+        door.pose.position.y = BLUE_Y;
+
+        std::cout << BLUE << "I WILL MOVE TO BLUE DOOR!" << "\033[0m" << std::endl;
+
+    }
+    else if (this->ball_pose.color == "red")
+    {
+        door.pose.position.x = RED_X;
+        door.pose.position.y = RED_Y;
+
+        std::cout << RED << "I WILL MOVE TO RED DOOR!" << "\033[0m" << std::endl;
+
+    }
     door.header.frame_id = "map";
     door.header.stamp = ros::Time::now();
 
     this->cur_action->action_move_base(door);
 
-    //When vwbot get to the door successfully, it needs to go to MID.
-    if (this->cur_action->getActionState() == GOT_GOAL and this->cur_task_state == PUT_BALL_START)
-    {
-
-        // Put down the ball
-        ball_state.data = false;
-        this->cur_action->send_to_hand(ball_state);
-
-        //go to MID
-        this->goal_point.z = 0;
-        this->goal_point.x = MID_X;
-        this->goal_point.y = MID_Y;
-
-        this->cur_task_state = CHANGE_START;
-
-    }
-    else if (this->cur_action->getActionState() == FAILED_TO_GOAL)
-    {
-        // TODO
-        //Need to find a better way.
-
-        ball_state.data = false;
-        this->cur_action->send_to_hand(ball_state);
-
-        this->cur_task_state = NO_BALL_START;
-    }
-
-
 }
+
 
 void vwpp::Task::taskNoBall()
 {
@@ -226,65 +163,52 @@ void vwpp::Task::taskNoBall()
 
     // vwpp::Action task_action;
 
-    if (this->ball_pose.pose.pose.position.x != -1 and this->ball_pose.pose.pose.position.y != -1
-        and this->ball_pose.pose.pose.position.z != -1)
-    {
+    ROS_INFO("I'm finding the ball , waiting~ ");
+    geometry_msgs::PoseStamped cur_pose;
 
-        cur_task_state = HAS_BALL_START;
-        ROS_INFO("I find the ball and I will in the taskHasBall!");
+    //TODO
+    //Judging coordinates
+    //sub cur_pose
+    cur_pose = this->vwbot_pose;
 
-    }
-    else
-    {
-        cur_task_state = NO_BALL_START;
-        ROS_INFO("Still need to find the ball! ");
-    }
+    if (fabs(cur_pose.pose.position.x - 3.0) <= 0.1)
+        cur_pose.pose.position.x = cur_pose.pose.position.x - 0.3;
+    if (fabs(cur_pose.pose.position.x - 0) <= 0.1)
+        cur_pose.pose.position.x = cur_pose.pose.position.x + 0.3;
+    if (fabs(cur_pose.pose.position.y - 2.0) <= 0.1)
+        cur_pose.pose.position.y = cur_pose.pose.position.y - 0.3;
+    if (fabs(cur_pose.pose.position.y + 2.0) <= 0.1)
+        cur_pose.pose.position.y = cur_pose.pose.position.y + 0.3;
 
-    if (vwpp::Task::getTaskState() == NO_BALL_START)
-    {
-        ROS_INFO("I'm finding the ball , waiting~ ");
-        geometry_msgs::PoseStamped cur_pose;
+    printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
 
-        //TODO
-        //Judging coordinates
-        //sub cur_pose
-        cur_pose = this->vwbot_pose;
+    tf::Matrix3x3 mat(tf::Quaternion(cur_pose.pose.orientation.x, cur_pose.pose.orientation.y,
+                                     cur_pose.pose.orientation.z, cur_pose.pose.orientation.w));
 
-        if (fabs(cur_pose.pose.position.x - 3.0) <= 0.1 or (fabs(cur_pose.pose.position.x) <= 0.1))
-            cur_pose.pose.position.x = MID_X;
-        if (fabs(cur_pose.pose.position.y - 2.0) <= 0.1 or fabs(cur_pose.pose.position.y + 2.0) <= 0.1)
-            cur_pose.pose.position.y = MID_Y;
+    double yaw, pitch, roll;
+    mat.getEulerYPR(yaw, pitch, roll);
 
-        printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
+    yaw = yaw / 3.14 * 180 + 45;
+    yaw = yaw / 180 * 3.14;
 
-        tf::Matrix3x3 mat(tf::Quaternion(cur_pose.pose.orientation.x, cur_pose.pose.orientation.y,
-                                         cur_pose.pose.orientation.z, cur_pose.pose.orientation.w));
+    tf::Quaternion q;
+    q.setRPY(roll, pitch, yaw);
 
-        double yaw, pitch, roll;
-        mat.getEulerYPR(yaw, pitch, roll);
+    cur_pose.pose.orientation.x = q[0];
+    cur_pose.pose.orientation.y = q[1];
+    cur_pose.pose.orientation.z = q[2];
+    cur_pose.pose.orientation.w = q[3];
+    cur_pose.header.frame_id = "map";
+    cur_pose.header.stamp = ros::Time::now();
 
-        yaw = yaw / 3.14 * 180 + 45;
-        yaw = yaw / 180 * 3.14;
+    printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
 
-        tf::Quaternion q;
-        q.setRPY(roll, pitch, yaw);
+    this->cur_action->action_move_base(cur_pose); //pub the aim goal
+    // task_action.action_move_base(cur_pose);
 
-        cur_pose.pose.orientation.x = q[0];
-        cur_pose.pose.orientation.y = q[1];
-        cur_pose.pose.orientation.z = q[2];
-        cur_pose.pose.orientation.w = q[3];
-        cur_pose.header.frame_id = "map";
-        cur_pose.header.stamp = ros::Time::now();
-
-        printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
-
-        this->cur_action->action_move_base(cur_pose); //pub the aim goal
-        // task_action.action_move_base(cur_pose);
-
-
-    }
 
 }
+
 
 void vwpp::Task::taskChange()
 {
@@ -293,45 +217,63 @@ void vwpp::Task::taskChange()
     geometry_msgs::PoseStamped goal;
     goal.header.frame_id = "map";
     goal.header.stamp = ros::Time::now();
-    goal.pose.position = this->goal_point;
-    goal.pose.orientation.w = 1;
+    goal.pose.orientation.w = 0;
     goal.pose.orientation.x = 0;
     goal.pose.orientation.y = 0;
-    goal.pose.orientation.z = 0;
+    goal.pose.orientation.z = 1;
+    goal.pose.position.x = MID_X;
+    goal.pose.position.y = MID_Y;
 
     // changeTask 1 from taskPutBall to taskNoBall
     this->cur_action->action_move_base(goal);
 
-    if (this->cur_action->getActionState() == GOT_GOAL and this->cur_task_state == CHANGE_START)
-    {
-        //change the TaskState
-        this->cur_task_state = NO_BALL_START;
-
-    }
-    else if (this->cur_action->getActionState() == FAILED_TO_GOAL)
-    {
-
-        this->cur_task_state = NO_BALL_START;
-
-    }
 }
 
-vwpp::TaskState vwpp::Task::getTaskState()
+
+void vwpp::Task::taskCatchBall(bool state)
 {
-    return cur_task_state;
+
+    std_msgs::Bool hand_state;
+    hand_state.data = state;
+    this->cur_action->send_to_hand(hand_state);
+
+}
+
+
+vwbot_controller::PoseAndColor vwpp::Task::getBallPose()
+{
+    return this->ball_pose;
+}
+
+
+std_msgs::Bool vwpp::Task::getBallState()
+{
+    return ball_state;
+}
+
+int vwpp::Task::getTaskHasBallState()
+{
+    return  task_has_ball_state;
+}
+
+int vwpp::Task::getActionState()
+{
+    return this->cur_action->getActionState();
 }
 
 
 void vwpp::Task::sub_catchball_state_cb(const std_msgs::Bool::ConstPtr &msg)
 {
+
     this->ball_state = *msg;
+
 }
 
 
 void vwpp::Task::sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &msg)
 {
+
     this->vwbot_pose = *msg;
-    ROS_INFO("########## %lf %lf", msg->pose.orientation.z, msg->pose.orientation.w);
 
 }
 
@@ -339,4 +281,7 @@ void vwpp::Task::sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &m
 void vwpp::Task::sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr &msg)
 {
     this->ball_pose = *msg;
+    ROS_WARN("#### ball_pose   %lf %lf %lf", this->ball_pose.pose.pose.position.x, this->ball_pose.pose.pose.position.y,
+             this->ball_pose.pose.pose.position.z);
+
 }

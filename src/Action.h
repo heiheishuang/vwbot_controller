@@ -50,7 +50,6 @@ namespace vwpp
         ros::NodeHandle nh;
         ros::Rate loop_rate;
         ros::Publisher pub_hand;
-
     };
 }
 

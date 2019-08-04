@@ -6,7 +6,8 @@
 
 
 vwpp::FlowController::FlowController() :
-        cur_flow_state(FLOW_START)
+        cur_flow_state(FLOW_START),
+        cur_task_state(NO_BALL_START)
 {
     this->cur_task = new Task();
 }
@@ -30,27 +31,123 @@ void vwpp::FlowController::run()
 
     if (cur_flow_state == FLOW_START)
     {
-        if (this->cur_task->getTaskState() == NO_BALL_START)
+        if (cur_task_state == NO_BALL_START)
         {
-            ROS_INFO("Now cur_flow_state is FLOW_STARE , cur_task_state is NO_BALL_START , task is taskNoBall! ");
+            ROS_INFO("NOW cur_task_state is NO_BALL_START ");
+
+            if (this->cur_task->getBallPose().pose.pose.position.x >= 0)
+            {
+
+                cur_task_state = HAS_BALL_START;
+
+            }
+
             this->cur_task->taskNoBall();
 
         }
-        else if (this->cur_task->getTaskState() == HAS_BALL_START)
+        else if (cur_task_state == HAS_BALL_START)
         {
-            ROS_INFO("Now I GOT THE BALL!");
+
+            if (this->cur_task->getActionState() == GOT_GOAL and this->cur_task->getTaskHasBallState() == 2)
+            {
+
+                ROS_WARN("HasBall got goal ");
+                cur_task_state = CATCH_BALL_START_CATCH;
+
+            }
+            else if(this->cur_task->getActionState() == FAILED_TO_GOAL)
+            {
+
+                ROS_WARN("HasBall failed to goal");
+                cur_task_state = NO_BALL_START;
+
+            }
+
+            if (this->cur_task->getBallPose().pose.pose.position.x < 0)
+            {
+
+                ROS_INFO("From HasBall to NoBall!");
+                cur_task_state = NO_BALL_START;
+
+            }
+
+            ROS_WARN("HasBall processing!");
             this->cur_task->taskHasBall();
 
         }
-        else if (this->cur_task->getTaskState() == PUT_BALL_START)
+        else if (cur_task_state == CATCH_BALL_START_CATCH)
         {
-            ROS_INFO("NOW I will put the ball!");
-            this->cur_task->taskPutBall();
+
+            this->cur_task->taskCatchBall(true);
+
+            static JudgeAchieveCounter judge_achieve_counter(20);
+
+            if (judge_achieve_counter.isAchieve())
+            {
+
+                if (this->cur_task->getBallState().data != 0)
+                {
+
+                    cur_task_state = PUT_BALL_START;
+
+                }
+                else
+                {
+
+                    cur_task_state = NO_BALL_START;
+
+                }
+
+            }
+
         }
-        else if (this->cur_task->getTaskState() == CHANGE_START)
+        else if (cur_task_state == CATCH_BALL_START_PUT)
         {
-            ROS_INFO("Now I will change the task from taskPutBall to taskNoball ");
+
+            this->cur_task->taskCatchBall(false);
+
+            static JudgeAchieveCounter judge_achieve_counter(20);
+
+            if (judge_achieve_counter.isAchieve())
+            {
+
+             cur_task_state = CHANGE_START;
+
+            }
+
+        }
+        else if (cur_task_state == PUT_BALL_START)
+        {
+
+            if (this->cur_task->getActionState() == GOT_GOAL)
+            {
+
+                cur_task_state = CATCH_BALL_START_PUT;
+
+            }
+            else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
+            {
+
+                cur_task_state = CATCH_BALL_START_PUT;
+                //TODO
+            }
+
+            this->cur_task->taskPutBall();
+
+        }
+        else if (cur_task_state == CHANGE_START)
+        {
+            if (this->cur_task->getActionState() == GOT_GOAL)
+            {
+                cur_task_state = NO_BALL_START;
+            }
+            else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
+            {
+                cur_task_state = NO_BALL_START;
+            }
+
             this->cur_task->taskChange();
+
         }
 
     }

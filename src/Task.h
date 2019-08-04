@@ -7,10 +7,10 @@
 
 #include "PoseAndColor.h"
 #include <geometry_msgs/PoseStamped.h>
-#include "tf/transform_datatypes.h"
+#include <tf/transform_datatypes.h>
 #include "Action.h"
 
-#define MID_X 0.5
+#define MID_X 1.5
 #define MID_Y 0.0
 #define YELLOW_X 3.10
 #define YELLOW_Y 0.55
@@ -30,13 +30,7 @@
 namespace vwpp
 {
 
-    enum TaskState
-    {
-        HAS_BALL_START,
-        NO_BALL_START,
-        PUT_BALL_START,
-        CHANGE_START
-    };
+
 
 
     class Task
@@ -49,16 +43,18 @@ namespace vwpp
         void taskNoBall();   // Task2 When vwbot didn't have ball
         void taskPutBall();  // Task3 When vwbot in the right door
         void taskChange();   // Task4 When vwbot need to change the task
+        void taskCatchBall(bool state); //Task5 When vwbot need to control the hand
 
-        TaskState getTaskState();  // Got the ball's state
-
+        vwbot_controller::PoseAndColor getBallPose();
+        std_msgs::Bool getBallState();
+        int getActionState();
+        int getTaskHasBallState();
 
     private:
 
         ros::NodeHandle nh;
         ros::Rate loop_rate;
 
-        TaskState cur_task_state;
 
         Action* cur_action;
 
@@ -74,7 +70,8 @@ namespace vwpp
         geometry_msgs::PoseStamped vwbot_pose;
         std_msgs::Bool ball_state; //ball's state when catch the ball
 
-        geometry_msgs::Point goal_point;
+        int task_has_ball_state;
+
         //need to calculate the number of ball
     };
 
