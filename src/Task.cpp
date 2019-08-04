@@ -70,9 +70,11 @@ void vwpp::Task::taskHasBall()
     mat.getEulerYPR(yaw, pitch, roll);
 
 
-    if ((dis_length >= 0.30 or (fabs(dis_yaw - yaw) /3.14*180 >= 15)) and task_has_ball_state == 0)
+    if (this->cur_action->getActionState() != GOT_GOAL and this->task_has_ball_state == 0)
     {    //TODO
         //change the pose of the vwbot to ball
+        std::cout << YELLOW << "##########   %lf  #####" <<fabs(dis_yaw - yaw) /3.14*180 <<"\033[0m" << std::endl;
+
         ROS_WARN("taskHasBall action 1!");
         target_pose.pose = now_ball.pose.pose;
         target_pose.pose.position.x = (dis_length - 0.30 ) / dis_length * dis_x + now_vwbot_pose.pose.position.x;
@@ -98,15 +100,15 @@ void vwpp::Task::taskHasBall()
     else
     {
         ROS_WARN("taskHasBall action 2!");
+        target_pose.header.frame_id = "map";
+        target_pose.header.stamp = ros::Time::now();
         target_pose.pose = now_ball.pose.pose;
         target_pose.pose.orientation.x = 0;
         target_pose.pose.orientation.y = 0;
         target_pose.pose.orientation.z = 0;
         target_pose.pose.orientation.w = 1;
         this->cur_action->action_move_base(target_pose);
-        task_has_ball_state = 2;
-        if (this->cur_action->getActionState() == GOT_GOAL)
-            task_has_ball_state = 0;
+        this->task_has_ball_state = 2;
     }
 }
 
@@ -281,7 +283,12 @@ void vwpp::Task::sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &m
 void vwpp::Task::sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr &msg)
 {
     this->ball_pose = *msg;
-    ROS_WARN("#### ball_pose   %lf %lf %lf", this->ball_pose.pose.pose.position.x, this->ball_pose.pose.pose.position.y,
-             this->ball_pose.pose.pose.position.z);
+    ROS_WARN("#### ball_pose   %lf %lf %lf", this->ball_pose.pose.pose.position.x,
+            this->ball_pose.pose.pose.position.y, this->ball_pose.pose.pose.position.z);
 
+}
+
+void vwpp::Task::sendToTaskBall(int state)
+{
+    this->task_has_ball_state = state;
 }

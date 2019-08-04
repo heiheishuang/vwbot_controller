@@ -49,6 +49,7 @@ namespace vwpp
         std_msgs::Bool getBallState();
         int getActionState();
         int getTaskHasBallState();
+        void sendToTaskBall(int state);
 
     private:
 
