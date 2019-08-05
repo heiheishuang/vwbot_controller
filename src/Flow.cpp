@@ -32,12 +32,14 @@ void vwpp::FlowController::run()
     {
         if (cur_task_state == NO_BALL_START)
         {
-            ROS_INFO("NOW cur_task_state is NO_BALL_START ");
+            ROS_INFO("Now cur_task_state is NO_BALL_START !");
 
             if (this->cur_task->getBallPose().pose.pose.position.x >= 0)
             {
 
+                ROS_INFO("Now cur_task_state is from NO_BALL_START to HAS_BALL_START!");
                 cur_task_state = HAS_BALL_START;
+                this->cur_task->initBallOrientation();
 
             }
 
@@ -46,13 +48,16 @@ void vwpp::FlowController::run()
         }
         else if (cur_task_state == HAS_BALL_START)
         {
-            ROS_WARN("####  getTaskHasBallState = %d  ######", this->cur_task->getTaskHasBallState());
-            ROS_WARN("####  getActionState = %d  ######", this->cur_task->getActionState());
+
+            ROS_INFO("Now cur_task_state is HAS_BALL_START !");
+
+            ROS_WARN("Now HAS_BALL_START is processing!");
+            this->cur_task->taskHasBall();
 
             if (this->cur_task->getActionState() == GOT_GOAL and this->cur_task->getTaskHasBallState() == 2)
             {
 
-                ROS_WARN("HasBall got goal ");
+                ROS_INFO("Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
                 this->cur_task->sendToTaskBall(0);
                 cur_task_state = CATCH_BALL_START_CATCH;
 
@@ -60,7 +65,7 @@ void vwpp::FlowController::run()
             else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
             {
 
-                ROS_WARN("HasBall failed to goal");
+                ROS_INFO("Now cur_task_state is from HAS_BALL_START to NO_BALL_START!");
                 cur_task_state = NO_BALL_START;
 
             }
@@ -68,21 +73,21 @@ void vwpp::FlowController::run()
             if (this->cur_task->getBallPose().pose.pose.position.x < 0)
             {
 
-                ROS_INFO("From HasBall to NoBall!");
+                ROS_INFO("Now cur_task_state is from HAS_BALL_START to NO_BALL_START!");
                 cur_task_state = NO_BALL_START;
 
             }
 
-            ROS_WARN("HasBall processing!");
-            this->cur_task->taskHasBall();
 
         }
         else if (cur_task_state == CATCH_BALL_START_CATCH)
         {
 
+            ROS_INFO("Now cur_task_state is CATCH_BALL_START_CATCH !");
+
             this->cur_task->taskCatchBall(true);
 
-            static JudgeAchieveCounter judge_achieve_counter(10);
+            static JudgeAchieveCounter judge_achieve_counter(5);
 
             if (judge_achieve_counter.isAchieve())
             {
@@ -90,18 +95,15 @@ void vwpp::FlowController::run()
                 if (this->cur_task->getBallState().data != 0)
                 {
 
+                    ROS_INFO("Now cur_task_state is from CATCH_BALL_START_CATCH to PUT_BALL_START!");
                     cur_task_state = PUT_BALL_START;
 
                 }
                 else
                 {
 
-                    this->cur_task->taskCatchBall(false);
-                    static JudgeAchieveCounter judge_achieve_counter2(10);
-                    if (judge_achieve_counter2.isAchieve())
-                    {
-                        cur_task_state = NO_BALL_START;
-                    }
+                    ROS_INFO("Now cur_task_state is from CATCH_BALL_START_CATCH to CATCH_BALL_START_PUT!");
+                    cur_task_state = CATCH_BALL_START_PUT;
 
                 }
 
@@ -111,12 +113,16 @@ void vwpp::FlowController::run()
         else if (cur_task_state == CATCH_BALL_START_PUT)
         {
 
+            ROS_INFO("Now cur_task_state is CATCH_BALL_START_PUT !");
+
             this->cur_task->taskCatchBall(false);
 
-            static JudgeAchieveCounter judge_achieve_counter(20);
+            static JudgeAchieveCounter judge_achieve_counter(5);
 
             if (judge_achieve_counter.isAchieve())
             {
+
+                ROS_INFO("Now cur_task_state is from CATCH_BALL_START_PUT to CHANGE_START!");
 
                 cur_task_state = CHANGE_START;
 
@@ -126,8 +132,13 @@ void vwpp::FlowController::run()
         else if (cur_task_state == PUT_BALL_START)
         {
 
+            ROS_INFO("Now cur_task_state is PUT_BALL_START !");
+            this->cur_task->taskPutBall();
+
+
             if (this->cur_task->getActionState() == GOT_GOAL)
             {
+                ROS_INFO("Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is GOT_GOAL!");
 
                 cur_task_state = CATCH_BALL_START_PUT;
 
@@ -135,25 +146,32 @@ void vwpp::FlowController::run()
             else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
             {
 
+                ROS_INFO("Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is FAILED_TO_GOAL!");
                 cur_task_state = CATCH_BALL_START_PUT;
                 //TODO
             }
 
-            this->cur_task->taskPutBall();
+
 
         }
         else if (cur_task_state == CHANGE_START)
         {
+            ROS_INFO("Now cur_task_state is CHANGE_START !");
+
+            ROS_INFO("Now CHANGE_START is starting!");
+            this->cur_task->taskChange();
+
             if (this->cur_task->getActionState() == GOT_GOAL)
             {
+                ROS_INFO("Now cur_task_state is from CHANGE_START to NO_BALL_START!");
                 cur_task_state = NO_BALL_START;
             }
             else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
             {
+                ROS_INFO("Now cur_task_state is from CHANGE_START to NO_BALL_START!");
                 cur_task_state = NO_BALL_START;
             }
 
-            this->cur_task->taskChange();
 
         }
 

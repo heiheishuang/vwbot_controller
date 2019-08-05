@@ -51,6 +51,8 @@ namespace vwpp
         int getTaskHasBallState();
         void sendToTaskBall(int state);
 
+        void initBallOrientation();
+
     private:
 
         ros::NodeHandle nh;
@@ -69,10 +71,10 @@ namespace vwpp
 
         vwbot_controller::PoseAndColor ball_pose; //ball's pose and color
         geometry_msgs::PoseStamped vwbot_pose;
+        geometry_msgs::PoseStamped ball_orientation;
         std_msgs::Bool ball_state; //ball's state when catch the ball
 
         int task_has_ball_state;
-
         //need to calculate the number of ball
     };
 

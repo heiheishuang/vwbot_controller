@@ -31,6 +31,11 @@ vwpp::Task::Task() :
     vwbot_pose.pose.position.y = 0.0;
     vwbot_pose.pose.orientation.w = 1;
 
+    ball_orientation.pose.orientation.x = 0;
+    ball_orientation.pose.orientation.y = 0;
+    ball_orientation.pose.orientation.z = 0;
+    ball_orientation.pose.orientation.w = 1;
+
     ball_state.data = false;  //Ball is not in the right place.
 
     this->cur_action = new Action;
@@ -60,53 +65,74 @@ void vwpp::Task::taskHasBall()
     double dis_yaw, dis_x, dis_y, dis_length;
     dis_x = now_ball.pose.pose.position.x - now_vwbot_pose.pose.position.x;
     dis_y = now_ball.pose.pose.position.y - now_vwbot_pose.pose.position.y;
-    dis_yaw = atan(dis_y / dis_x);
-    dis_length = sqrt(dis_x * dis_x +dis_y*dis_y);
+    dis_yaw = atan2(dis_y , dis_x);
+
+    dis_length = sqrt(dis_x * dis_x +dis_y * dis_y);
 
     tf::Matrix3x3 mat(tf::Quaternion(now_vwbot_pose.pose.orientation.x, now_vwbot_pose.pose.orientation.y,
                                      now_vwbot_pose.pose.orientation.z, now_vwbot_pose.pose.orientation.w));
 
     double yaw, pitch, roll;
+
     mat.getEulerYPR(yaw, pitch, roll);
 
+    std::cout << YELLOW << "####   DIS_YAW  %lf  #### " <<  fabs(dis_yaw - yaw) << "\033[0m" << std::endl;
 
     if (this->cur_action->getActionState() != GOT_GOAL and this->task_has_ball_state == 0)
     {    //TODO
         //change the pose of the vwbot to ball
-        std::cout << YELLOW << "##########   %lf  #####" <<fabs(dis_yaw - yaw) /3.14*180 <<"\033[0m" << std::endl;
 
         ROS_WARN("taskHasBall action 1!");
         target_pose.pose = now_ball.pose.pose;
         target_pose.pose.position.x = (dis_length - 0.30 ) / dis_length * dis_x + now_vwbot_pose.pose.position.x;
         target_pose.pose.position.y = (dis_length - 0.30 ) / dis_length * dis_y + now_vwbot_pose.pose.position.y;
 
+        // NEW in 8.4
+        // TODO
         tf::Quaternion q;
-        q.setRPY(0, 0, yaw);
-        // target_pose.pose.orientation.x = q[0];
-        // target_pose.pose.orientation.y = q[1];
-        // target_pose.pose.orientation.z = q[2];
-        // target_pose.pose.orientation.w = q[3];
+        q.setRPY(0, 0, dis_yaw);
+        target_pose.pose.orientation.x = q[0];
+        target_pose.pose.orientation.y = q[1];
+        target_pose.pose.orientation.z = q[2];
+        target_pose.pose.orientation.w = q[3];
+
         target_pose.header.frame_id = "map";
         target_pose.header.stamp = ros::Time::now();
 
-        target_pose.pose.orientation.x = 0;
-        target_pose.pose.orientation.y = 0;
-        target_pose.pose.orientation.z = 0;
-        target_pose.pose.orientation.w = 1;
+
+        ball_orientation.pose = target_pose.pose;
 
         this->cur_action->action_move_base(target_pose);
 
     }
     else
     {
+        // length less than 30cm has problem
+        // TODO
         ROS_WARN("taskHasBall action 2!");
         target_pose.header.frame_id = "map";
         target_pose.header.stamp = ros::Time::now();
         target_pose.pose = now_ball.pose.pose;
-        target_pose.pose.orientation.x = 0;
-        target_pose.pose.orientation.y = 0;
-        target_pose.pose.orientation.z = 0;
-        target_pose.pose.orientation.w = 1;
+
+        //At first less than 30cm
+        target_pose.pose.orientation = ball_orientation.pose.orientation;
+
+        // NEW in 8.5
+        // TODO
+        // tf::Quaternion q;
+        // q.setRPY(0, 0, yaw);
+        // target_pose.pose.orientation.x = q[0];
+        // target_pose.pose.orientation.y = q[1];
+        // target_pose.pose.orientation.z = q[2];
+        // target_pose.pose.orientation.w = q[3];
+
+
+        // target_pose.pose.orientation.x = 0;
+        // target_pose.pose.orientation.y = 0;
+        // target_pose.pose.orientation.z = 0;
+        // target_pose.pose.orientation.w = 1;
+        // NEW in 8.5
+
         this->cur_action->action_move_base(target_pose);
         this->task_has_ball_state = 2;
     }
@@ -190,7 +216,7 @@ void vwpp::Task::taskNoBall()
     double yaw, pitch, roll;
     mat.getEulerYPR(yaw, pitch, roll);
 
-    yaw = yaw / 3.14 * 180 + 45;
+    yaw = yaw / 3.14 * 180 + 20;
     yaw = yaw / 180 * 3.14;
 
     tf::Quaternion q;
@@ -291,4 +317,33 @@ void vwpp::Task::sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr
 void vwpp::Task::sendToTaskBall(int state)
 {
     this->task_has_ball_state = state;
+}
+
+void vwpp::Task::initBallOrientation()
+{
+
+    vwbot_controller::PoseAndColor now_ball;
+    geometry_msgs::PoseStamped now_vwbot_pose;
+    geometry_msgs::PoseStamped target_pose;
+
+    now_vwbot_pose = this->vwbot_pose;
+    now_ball = this->ball_pose;
+
+    double dis_yaw, dis_x, dis_y;
+    dis_x = now_ball.pose.pose.position.x - now_vwbot_pose.pose.position.x;
+    dis_y = now_ball.pose.pose.position.y - now_vwbot_pose.pose.position.y;
+    dis_yaw = atan(dis_y / dis_x);
+
+    tf::Quaternion q;
+    q.setRPY(0, 0, dis_yaw);
+    target_pose.pose.orientation.x = q[0];
+    target_pose.pose.orientation.y = q[1];
+    target_pose.pose.orientation.z = q[2];
+    target_pose.pose.orientation.w = q[3];
+
+    target_pose.pose.position = now_ball.pose.pose.position;
+
+    this->ball_orientation = target_pose;
+
+
 }
