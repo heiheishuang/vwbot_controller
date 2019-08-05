@@ -49,6 +49,7 @@ namespace vwpp
         std_msgs::Bool getBallState();
         int getActionState();
         int getTaskHasBallState();
+        double getLengthBetweenBallAndVwbot();
         void sendToTaskBall(int state);
 
         void initBallOrientation();

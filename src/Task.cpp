@@ -100,7 +100,7 @@ void vwpp::Task::taskHasBall()
         target_pose.header.stamp = ros::Time::now();
 
 
-        ball_orientation.pose = target_pose.pose;
+        ball_orientation.pose.orientation = target_pose.pose.orientation;
 
         this->cur_action->action_move_base(target_pose);
 
@@ -114,7 +114,8 @@ void vwpp::Task::taskHasBall()
         target_pose.header.stamp = ros::Time::now();
         target_pose.pose = now_ball.pose.pose;
 
-        //At first less than 30cm
+        //Less than 30cm using the goal at 30cm
+        // target_pose.pose.position = ball_orientation.pose.position;
         target_pose.pose.orientation = ball_orientation.pose.orientation;
 
         // NEW in 8.5
@@ -289,6 +290,14 @@ int vwpp::Task::getActionState()
     return this->cur_action->getActionState();
 }
 
+double vwpp::Task::getLengthBetweenBallAndVwbot()
+{
+    double dis_yaw, dis_x, dis_y, dis_length;
+    dis_x = this->ball_pose.pose.pose.position.x - this->vwbot_pose.pose.position.x;
+    dis_y = this->ball_pose.pose.pose.position.y - this->vwbot_pose.pose.position.y;
+    dis_length = sqrt(dis_x * dis_x + dis_y * dis_y);
+    return dis_length;
+}
 
 void vwpp::Task::sub_catchball_state_cb(const std_msgs::Bool::ConstPtr &msg)
 {

@@ -40,7 +40,7 @@ int vwpp::Action::action_move_base(geometry_msgs::PoseStamped pose)
 
     cur_action_state = NO_GOAL;
 
-    ac.waitForResult(ros::Duration(0.5));
+    ac.waitForResult(ros::Duration(0.2));
 
     if (ac.getState() == actionlib::SimpleClientGoalState::LOST)
     {
