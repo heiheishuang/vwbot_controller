@@ -71,6 +71,7 @@ namespace vwpp
         ros::Subscriber sub_vwbot; //sub vwbot's pose
 
         vwbot_controller::PoseAndColor ball_pose; //ball's pose and color
+        std::string now_color;
         geometry_msgs::PoseStamped vwbot_pose;
         geometry_msgs::PoseStamped ball_orientation;
         std_msgs::Bool ball_state; //ball's state when catch the ball

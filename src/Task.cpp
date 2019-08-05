@@ -42,6 +42,8 @@ vwpp::Task::Task() :
 
     task_has_ball_state = 0;
 
+    now_color = "";
+
 }
 
 
@@ -61,6 +63,9 @@ void vwpp::Task::taskHasBall()
     geometry_msgs::PoseStamped target_pose;
     now_vwbot_pose = this->vwbot_pose;
     now_ball = this->ball_pose;
+
+    //now_color
+    now_color = this->ball_pose.color;
 
     double dis_yaw, dis_x, dis_y, dis_length;
     dis_x = now_ball.pose.pose.position.x - now_vwbot_pose.pose.position.x;
@@ -151,7 +156,7 @@ void vwpp::Task::taskPutBall()
     door.pose.orientation.y = 0;
     door.pose.orientation.z = 0;
 
-    if (this->ball_pose.color == "yellow")
+    if (this->now_color == "yellow")
     {
         door.pose.position.x = YELLOW_X;
         door.pose.position.y = YELLOW_Y;
@@ -159,7 +164,7 @@ void vwpp::Task::taskPutBall()
         std::cout << YELLOW << "I WILL MOVE TO YELLOW DOOR!" << "\033[0m" << std::endl;
 
     }
-    else if (this->ball_pose.color == "blue")
+    else if (this->now_color == "blue")
     {
         door.pose.position.x = BLUE_X;
         door.pose.position.y = BLUE_Y;
@@ -167,7 +172,7 @@ void vwpp::Task::taskPutBall()
         std::cout << BLUE << "I WILL MOVE TO BLUE DOOR!" << "\033[0m" << std::endl;
 
     }
-    else if (this->ball_pose.color == "red")
+    else if (this->now_color == "red")
     {
         door.pose.position.x = RED_X;
         door.pose.position.y = RED_Y;
