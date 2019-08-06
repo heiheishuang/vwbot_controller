@@ -54,10 +54,33 @@ void vwpp::FlowController::run()
             ROS_WARN("Now HAS_BALL_START is processing!");
             this->cur_task->taskHasBall();
 
-            if (this->cur_task->getActionState() == GOT_GOAL and this->cur_task->getTaskHasBallState() == 2)
+            // if (this->cur_task->getActionState() == GOT_GOAL and this->cur_task->getTaskHasBallState() == 2)
+            // {
+            if (this->cur_task->getBallState().data != 0)
+            {
+                //TODO
+                //Need to adjust the color and push the correct area.
+                std::cout << RED << "Now the color is " << this->cur_task->getBallState().color <<  "\033[0m" << std::endl;
+
+                this->cur_task->sendToColor(this->cur_task->getBallState().color);
+
+                ROS_ERROR("SPECIALLY ! Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
+                this->cur_task->sendToTaskBall(0);
+                cur_task_state = CATCH_BALL_START_CATCH;
+
+            }
+            else if (this->cur_task->getLengthBetweenBallAndVwbot() <= 0.05 and this->cur_task->getTaskHasBallState() == 2)
+            {
+                ROS_INFO("Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
+                this->cur_task->sendToTaskBall(0);
+                cur_task_state = CATCH_BALL_START_CATCH;
+
+            }
+
+            else if (this->cur_task->getActionState() == GOT_GOAL and this->cur_task->getTaskHasBallState() == 2)
             {
 
-                ROS_INFO("Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
+                ROS_INFO("Now GOT_GOAL ! Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
                 this->cur_task->sendToTaskBall(0);
                 cur_task_state = CATCH_BALL_START_CATCH;
 
@@ -87,7 +110,7 @@ void vwpp::FlowController::run()
 
             this->cur_task->taskCatchBall(true);
 
-            static JudgeAchieveCounter judge_achieve_counter(5);
+            static JudgeAchieveCounter judge_achieve_counter(3);
 
             if (judge_achieve_counter.isAchieve())
             {
@@ -117,7 +140,7 @@ void vwpp::FlowController::run()
 
             this->cur_task->taskCatchBall(false);
 
-            static JudgeAchieveCounter judge_achieve_counter(5);
+            static JudgeAchieveCounter judge_achieve_counter(3);
 
             if (judge_achieve_counter.isAchieve())
             {
@@ -146,11 +169,11 @@ void vwpp::FlowController::run()
             else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
             {
 
-                ROS_INFO("Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is FAILED_TO_GOAL!");
+                ROS_INFO(
+                        "Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is FAILED_TO_GOAL!");
                 cur_task_state = CATCH_BALL_START_PUT;
                 //TODO
             }
-
 
 
         }
@@ -161,7 +184,19 @@ void vwpp::FlowController::run()
             ROS_INFO("Now CHANGE_START is starting!");
             this->cur_task->taskChange();
 
-            if (this->cur_task->getActionState() == GOT_GOAL)
+            if (this->cur_task->getBallState().data != 0)
+            {
+                //TODO
+                //Need to adjust the color and push the correct area.
+
+                ROS_ERROR("SPECIALLY ! Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
+                std::cout << RED << "Now the color is " << this->cur_task->getBallState().color <<  "\033[0m" << std::endl;
+                this->cur_task->sendToColor(this->cur_task->getBallState().color);
+                this->cur_task->sendToTaskBall(0);
+                cur_task_state = CATCH_BALL_START_CATCH;
+
+            }
+            else if (this->cur_task->getActionState() == GOT_GOAL)
             {
                 ROS_INFO("Now cur_task_state is from CHANGE_START to NO_BALL_START!");
                 cur_task_state = NO_BALL_START;
@@ -171,7 +206,6 @@ void vwpp::FlowController::run()
                 ROS_INFO("Now cur_task_state is from CHANGE_START to NO_BALL_START!");
                 cur_task_state = NO_BALL_START;
             }
-
 
         }
 

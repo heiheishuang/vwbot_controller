@@ -9,6 +9,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_datatypes.h>
 #include "Action.h"
+#include "ColorBool.h"
 
 #define MID_X 1.5
 #define MID_Y 0.0
@@ -46,12 +47,12 @@ namespace vwpp
         void taskCatchBall(bool state); //Task5 When vwbot need to control the hand
 
         vwbot_controller::PoseAndColor getBallPose();
-        std_msgs::Bool getBallState();
+        dector::ColorBool getBallState();
         int getActionState();
         int getTaskHasBallState();
         double getLengthBetweenBallAndVwbot();
         void sendToTaskBall(int state);
-
+        void sendToColor(std::string color);
         void initBallOrientation();
 
     private:
@@ -63,7 +64,7 @@ namespace vwpp
         Action* cur_action;
 
         void sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr &msg);  //sub ball's pose and color
-        void sub_catchball_state_cb(const std_msgs::Bool::ConstPtr &msg);    //sub ball's state when catch the ball
+        void sub_catchball_state_cb(const dector::ColorBool::ConstPtr &msg);    //sub ball's state when catch the ball
         void sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &msg); //sub vwbot's pose
 
         ros::Subscriber sub_ball_pose_color;  //sub ball's pose and color
@@ -74,7 +75,7 @@ namespace vwpp
         std::string now_color;
         geometry_msgs::PoseStamped vwbot_pose;
         geometry_msgs::PoseStamped ball_orientation;
-        std_msgs::Bool ball_state; //ball's state when catch the ball
+        dector::ColorBool ball_state; //ball's state when catch the ball
 
         int task_has_ball_state;
         //need to calculate the number of ball

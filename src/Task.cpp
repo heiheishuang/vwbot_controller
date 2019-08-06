@@ -4,6 +4,8 @@
 
 #include "Task.h"
 
+#include <utility>
+
 
 vwpp::Task::Task() :
         nh("~"),
@@ -15,7 +17,7 @@ vwpp::Task::Task() :
             ("/ball", 1, &Task::sub_from_ball_cb, this);
     //TODO
     //ball_state isn't the name of the topic
-    sub_ball_state = nh.subscribe<std_msgs::Bool>
+    sub_ball_state = nh.subscribe<dector::ColorBool>
             ("/ball_state", 10, &Task::sub_catchball_state_cb, this);
     //TODO
     ///vwbot_pose isn't the name of the topic
@@ -117,7 +119,10 @@ void vwpp::Task::taskHasBall()
         ROS_WARN("taskHasBall action 2!");
         target_pose.header.frame_id = "map";
         target_pose.header.stamp = ros::Time::now();
+
         target_pose.pose = now_ball.pose.pose;
+        target_pose.pose.position.x = (dis_length + 0.03) / dis_length * dis_x + now_vwbot_pose.pose.position.x;
+        target_pose.pose.position.y = (dis_length + 0.03) / dis_length * dis_y + now_vwbot_pose.pose.position.y;
 
         //Less than 30cm using the goal at 30cm
         // target_pose.pose.position = ball_orientation.pose.position;
@@ -156,7 +161,7 @@ void vwpp::Task::taskPutBall()
     door.pose.orientation.y = 0;
     door.pose.orientation.z = 0;
 
-    if (this->now_color == "yellow")
+    if (this->now_color == "green")
     {
         door.pose.position.x = YELLOW_X;
         door.pose.position.y = YELLOW_Y;
@@ -206,13 +211,13 @@ void vwpp::Task::taskNoBall()
     cur_pose = this->vwbot_pose;
 
     if (fabs(cur_pose.pose.position.x - 3.0) <= 0.1)
-        cur_pose.pose.position.x = cur_pose.pose.position.x - 0.3;
+        cur_pose.pose.position.x = cur_pose.pose.position.x - 0.5;
     if (fabs(cur_pose.pose.position.x - 0) <= 0.1)
-        cur_pose.pose.position.x = cur_pose.pose.position.x + 0.3;
+        cur_pose.pose.position.x = cur_pose.pose.position.x + 0.5;
     if (fabs(cur_pose.pose.position.y - 2.0) <= 0.1)
-        cur_pose.pose.position.y = cur_pose.pose.position.y - 0.3;
+        cur_pose.pose.position.y = cur_pose.pose.position.y - 0.5;
     if (fabs(cur_pose.pose.position.y + 2.0) <= 0.1)
-        cur_pose.pose.position.y = cur_pose.pose.position.y + 0.3;
+        cur_pose.pose.position.y = cur_pose.pose.position.y + 0.5;
 
     printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
 
@@ -280,7 +285,7 @@ vwbot_controller::PoseAndColor vwpp::Task::getBallPose()
 }
 
 
-std_msgs::Bool vwpp::Task::getBallState()
+dector::ColorBool vwpp::Task::getBallState()
 {
     return ball_state;
 }
@@ -304,7 +309,7 @@ double vwpp::Task::getLengthBetweenBallAndVwbot()
     return dis_length;
 }
 
-void vwpp::Task::sub_catchball_state_cb(const std_msgs::Bool::ConstPtr &msg)
+void vwpp::Task::sub_catchball_state_cb(const dector::ColorBool::ConstPtr &msg)
 {
 
     this->ball_state = *msg;
@@ -330,7 +335,13 @@ void vwpp::Task::sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr
 
 void vwpp::Task::sendToTaskBall(int state)
 {
+
     this->task_has_ball_state = state;
+
+}
+void vwpp::Task::sendToColor(std::string color)
+{
+    this->now_color = std::move(color);
 }
 
 void vwpp::Task::initBallOrientation()
