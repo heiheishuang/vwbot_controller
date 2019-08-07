@@ -64,6 +64,7 @@ namespace vwpp
         int getTaskHasBallState();
         int getTaskNoBallState();
         double getLengthBetweenBallAndVwbot();
+        double getYawBetweenBallAndVwbot();
 
         void sendToTaskHasBall(int state);
         void sendToTaskNoBall(int state);

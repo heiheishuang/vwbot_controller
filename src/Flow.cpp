@@ -32,6 +32,7 @@ void vwpp::FlowController::run()
     {
         if (cur_task_state == NO_BALL_START)
         {
+
             ROS_INFO("Now cur_task_state is NO_BALL_START !");
 
             this->cur_task->taskNoBall();
@@ -78,12 +79,12 @@ void vwpp::FlowController::run()
                 cur_task_state = CATCH_BALL_START_CATCH;
 
             }
-            else if (this->cur_task->getLengthBetweenBallAndVwbot() <= 0.05)
+            else if (this->cur_task->getLengthBetweenBallAndVwbot() <= DIS_LENGTH_WHEN_CATCH)
                 // TODO
                 //New in 8.6
                 //else if (this->cur_task->getLengthBetweenBallAndVwbot() <= 0.05 and this->cur_task->getTaskHasBallState() == 2)
             {
-                ROS_INFO("Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH! getLengthBetweenBallAndVwbot()<=0.05 ");
+                ROS_INFO("Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH! getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH");
                 this->cur_task->sendToTaskHasBall(0);
                 cur_task_state = CATCH_BALL_START_CATCH;
 
@@ -104,6 +105,13 @@ void vwpp::FlowController::run()
                 this->cur_task->sendToTaskHasBall(0);
                 cur_task_state = NO_BALL_START;
 
+            }
+            else if (this->cur_task->getTaskHasBallState() == 3 and
+                    (this->cur_task->getLengthBetweenBallAndVwbot() >= 0.30 or this->cur_task->getYawBetweenBallAndVwbot() / 3.14 * 180 >= 15 ))
+            {
+                ROS_INFO( "Now cur_task_state is from HAS_BALL_START to NO_BALL_START");
+                this->cur_task->sendToTaskHasBall(0);
+                cur_task_state = NO_BALL_START;
             }
 
             ROS_ERROR("######## %lf  #####",this->cur_task->getBallPose().pose.pose.position.x);

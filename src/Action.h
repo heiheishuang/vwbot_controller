@@ -8,6 +8,7 @@
 #include <actionlib/client/simple_action_client.h>
 #include <move_base_msgs/MoveBaseAction.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <std_msgs/Bool.h>
 #include <ros/ros.h>
 
@@ -41,6 +42,10 @@ namespace vwpp
 
         void send_to_hand(const std_msgs::Bool &_ball);
 
+        void send_flow_state(const std_msgs::Bool &_flow);
+
+        void send_cmd_vel(const geometry_msgs::Twist &_vel);
+
         ActionState getActionState();
 
     private:
@@ -50,6 +55,9 @@ namespace vwpp
         ros::NodeHandle nh;
         ros::Rate loop_rate;
         ros::Publisher pub_hand;
+        ros::Publisher pub_flow;
+        ros::Publisher pub_cmd_vel;
+
     };
 }
 

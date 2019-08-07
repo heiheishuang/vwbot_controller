@@ -10,9 +10,12 @@
 vwpp::Action::Action() :
         cur_action_state(NO_GOAL),
         nh("~"),
-        loop_rate(9.0)
+        loop_rate(10.0)
 {
+
     pub_hand = nh.advertise<std_msgs::Bool>("/send_to_hand", 1);
+    pub_flow = nh.advertise<std_msgs::Bool>("/send_flow_state",1);
+    pub_cmd_vel = nh.advertise<geometry_msgs::Twist>("/cmd_vel_unstamped",1);
 
 }
 
@@ -64,7 +67,20 @@ void vwpp::Action::send_to_hand(const std_msgs::Bool &_ball)
 
 }
 
+void vwpp::Action::send_flow_state(const std_msgs::Bool &_flow)
+{
 
+    ROS_ERROR("### Now in the action send_to_flow_state");
+    this->pub_flow.publish(_flow);
+
+}
+void vwpp::Action::send_cmd_vel(const geometry_msgs::Twist &_vel)
+{
+
+    ROS_ERROR("### Now in tje action send_to_cmd_vel");
+    this->pub_cmd_vel.publish(_vel);
+
+}
 vwpp::ActionState vwpp::Action::getActionState()
 {
     return cur_action_state;

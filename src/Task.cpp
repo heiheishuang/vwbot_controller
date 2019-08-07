@@ -23,6 +23,8 @@ vwpp::Task::Task() :
     ///vwbot_pose isn't the name of the topic
     sub_vwbot = nh.subscribe<geometry_msgs::PoseStamped>
             ("/robot_pose", 10, &Task::sub_from_vwbot_cb, this);
+
+
     ROS_ERROR("subscribe created");
 
 
@@ -67,6 +69,10 @@ void vwpp::Task::taskHasBall()
 {
 
     ROS_INFO("Now in the taskHasBall!");
+
+    std_msgs::Bool flow_state;
+    flow_state.data = true;
+    this->cur_action->send_flow_state(flow_state);
 
     vwbot_controller::PoseAndColor now_ball;
     geometry_msgs::PoseStamped now_vwbot_pose;
@@ -128,8 +134,8 @@ void vwpp::Task::taskHasBall()
         target_pose.header.stamp = ros::Time::now();
 
         target_pose.pose = now_ball.pose.pose;
-        target_pose.pose.position.x = (dis_length - 0.30) / dis_length * dis_x * FAST_ACTION_2 + now_vwbot_pose.pose.position.x;
-        target_pose.pose.position.y = (dis_length - 0.30) / dis_length * dis_y * FAST_ACTION_2 + now_vwbot_pose.pose.position.y;
+        target_pose.pose.position.x = (dis_length - 0.20) / dis_length * dis_x * FAST_ACTION_2 + now_vwbot_pose.pose.position.x;
+        target_pose.pose.position.y = (dis_length - 0.20) / dis_length * dis_y * FAST_ACTION_2 + now_vwbot_pose.pose.position.y;
 
         //Less than 30cm using the goal at 30cm
         // target_pose.pose.position = ball_orientation.pose.position;
@@ -149,7 +155,7 @@ void vwpp::Task::taskHasBall()
         std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m" << std::endl;
         std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
 
-        if (dis_length <= 0.30 and fabs(dis_yaw - yaw) / 3.14 * 180 <= 15 )
+        if (dis_length <= 0.25 and fabs(dis_yaw - yaw) / 3.14 * 180 <= 15 )
         {
             this->task_has_ball_state = 2;
         }
@@ -159,22 +165,26 @@ void vwpp::Task::taskHasBall()
     {
 
         ROS_WARN("taskHasBall action 3!");
+        //
+        // target_pose.pose.position.x = dis_x * FAST_ACTION_3 + now_vwbot_pose.pose.position.x;
+        // target_pose.pose.position.y = dis_y * FAST_ACTION_3 + now_vwbot_pose.pose.position.y;
+        //
+        // target_pose.header.frame_id = "map";
+        // target_pose.header.stamp = ros::Time::now();
+        //
+        // target_pose.pose.orientation = ball_orientation.pose.orientation;
+        // this->cur_action->action_move_base(target_pose);
+        geometry_msgs::Twist vel;
+        vel.linear.x = 0.3;
+        vel.linear.y = 0.0;
+        vel.angular.x = 0.0;
+        vel.angular.y = 0.0;
+        vel.angular.z = 0.0;
 
-        target_pose.pose.position.x = dis_x * FAST_ACTION_3 + now_vwbot_pose.pose.position.x;
-        target_pose.pose.position.y = dis_y * FAST_ACTION_3 + now_vwbot_pose.pose.position.y;
+        this->cur_action->send_cmd_vel(vel);
+        task_has_ball_state = 3;
 
-        // tf::Quaternion q;
-        // q.setRPY(0, 0, dis_yaw);
-        // target_pose.pose.orientation.x = q[0];
-        // target_pose.pose.orientation.y = q[1];
-        // target_pose.pose.orientation.z = q[2];
-        // target_pose.pose.orientation.w = q[3];
 
-        target_pose.header.frame_id = "map";
-        target_pose.header.stamp = ros::Time::now();
-
-        target_pose.pose.orientation = ball_orientation.pose.orientation;
-        this->cur_action->action_move_base(target_pose);
     }
 
 }
@@ -184,6 +194,9 @@ void vwpp::Task::taskPutBall()
 {
 
     ROS_INFO("Now in the taskPutBall!");
+    std_msgs::Bool flow_state;
+    flow_state.data = true;
+    this->cur_action->send_flow_state(flow_state);
     geometry_msgs::PoseStamped door;
 
     door.pose.orientation.w = 1;
@@ -226,6 +239,9 @@ void vwpp::Task::taskPutBall()
 void vwpp::Task::taskNoBall()
 {
 
+    std_msgs::Bool flow_state;
+    flow_state.data = false;
+    this->cur_action->send_flow_state(flow_state);
     //TODO
     //Plan 2 taskNoBall can use the velocity
     ROS_INFO("Now in the taskNoball!");
@@ -305,6 +321,9 @@ void vwpp::Task::taskNoBall()
 void vwpp::Task::taskChange()
 {
     ROS_INFO("Now in the changeTask!");
+    std_msgs::Bool flow_state;
+    flow_state.data = false;
+    this->cur_action->send_flow_state(flow_state);
 
     geometry_msgs::PoseStamped goal;
 
@@ -358,6 +377,9 @@ void vwpp::Task::taskChange()
 void vwpp::Task::taskCatchBall(bool state)
 {
 
+    std_msgs::Bool flow_state;
+    flow_state.data = true;
+    this->cur_action->send_flow_state(flow_state);
     std_msgs::Bool hand_state;
     hand_state.data = state;
     this->cur_action->send_to_hand(hand_state);
@@ -406,6 +428,27 @@ geometry_msgs::PoseStamped vwpp::Task::getVwbotPose()
     return this->vwbot_pose;
 }
 
+double vwpp::Task::getYawBetweenBallAndVwbot()
+{
+    double dis_yaw, dis_x, dis_y;
+
+    vwbot_controller::PoseAndColor now_ball;
+    geometry_msgs::PoseStamped now_vwbot_pose;
+    now_vwbot_pose = this->vwbot_pose;
+    now_ball = this->ball_pose;
+
+    tf::Matrix3x3 mat(tf::Quaternion(now_vwbot_pose.pose.orientation.x, now_vwbot_pose.pose.orientation.y,
+                                     now_vwbot_pose.pose.orientation.z, now_vwbot_pose.pose.orientation.w));
+
+    double yaw, pitch, roll;
+    mat.getEulerYPR(yaw, pitch, roll);
+
+    dis_x = now_ball.pose.pose.position.x - now_vwbot_pose.pose.position.x;
+    dis_y = now_ball.pose.pose.position.y - now_vwbot_pose.pose.position.y;
+    dis_yaw = atan2(dis_y, dis_x);
+    return fabs(dis_yaw -yaw);
+
+}
 
 double vwpp::Task::getLengthBetweenBallAndVwbot()
 {
