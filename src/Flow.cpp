@@ -34,16 +34,25 @@ void vwpp::FlowController::run()
         {
             ROS_INFO("Now cur_task_state is NO_BALL_START !");
 
-            if (this->cur_task->getBallPose().pose.pose.position.x >= 0)
+            this->cur_task->taskNoBall();
+
+            if (this->cur_task->getBallPose().pose.pose.position.x > 0)
             {
 
                 ROS_INFO("Now cur_task_state is from NO_BALL_START to HAS_BALL_START!");
+                this->cur_task->sendToTaskNoBall(0);
                 cur_task_state = HAS_BALL_START;
                 this->cur_task->initBallOrientation();
 
             }
-
-            this->cur_task->taskNoBall();
+            else if (this->cur_task->getActionState() == GOT_GOAL and this->cur_task->getTaskNoBallState() == 2)
+            {
+                ROS_INFO("Now taskNOBall Failed ! Now cur_task_state is from NO_BALL_START to CHANGE_START!");
+                this->cur_task->sendToTaskNoBall(0);
+                cur_task_state = CHANGE_START;
+            //     Need to change the CHANGE_START number
+            //     TODO
+            }
 
         }
         else if (cur_task_state == HAS_BALL_START)
@@ -58,21 +67,24 @@ void vwpp::FlowController::run()
             // {
             if (this->cur_task->getBallState().data != 0)
             {
-                //TODO
-                //Need to adjust the color and push the correct area.
-                std::cout << RED << "Now the color is " << this->cur_task->getBallState().color <<  "\033[0m" << std::endl;
+
+                std::cout << RED << "Now the color is " << this->cur_task->getBallState().color << "\033[0m"
+                          << std::endl;
 
                 this->cur_task->sendToColor(this->cur_task->getBallState().color);
 
                 ROS_ERROR("SPECIALLY ! Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
-                this->cur_task->sendToTaskBall(0);
+                this->cur_task->sendToTaskHasBall(0);  //change the task_has_ball_state
                 cur_task_state = CATCH_BALL_START_CATCH;
 
             }
-            else if (this->cur_task->getLengthBetweenBallAndVwbot() <= 0.05 and this->cur_task->getTaskHasBallState() == 2)
+            else if (this->cur_task->getLengthBetweenBallAndVwbot() <= 0.05)
+                // TODO
+                //New in 8.6
+                //else if (this->cur_task->getLengthBetweenBallAndVwbot() <= 0.05 and this->cur_task->getTaskHasBallState() == 2)
             {
-                ROS_INFO("Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
-                this->cur_task->sendToTaskBall(0);
+                ROS_INFO("Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH! getLengthBetweenBallAndVwbot()<=0.05 ");
+                this->cur_task->sendToTaskHasBall(0);
                 cur_task_state = CATCH_BALL_START_CATCH;
 
             }
@@ -81,7 +93,7 @@ void vwpp::FlowController::run()
             {
 
                 ROS_INFO("Now GOT_GOAL ! Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
-                this->cur_task->sendToTaskBall(0);
+                this->cur_task->sendToTaskHasBall(0);
                 cur_task_state = CATCH_BALL_START_CATCH;
 
             }
@@ -89,14 +101,18 @@ void vwpp::FlowController::run()
             {
 
                 ROS_INFO("Now cur_task_state is from HAS_BALL_START to NO_BALL_START!");
+                this->cur_task->sendToTaskHasBall(0);
                 cur_task_state = NO_BALL_START;
 
             }
+
+            ROS_ERROR("######## %lf  #####",this->cur_task->getBallPose().pose.pose.position.x);
 
             if (this->cur_task->getBallPose().pose.pose.position.x < 0)
             {
 
                 ROS_INFO("Now cur_task_state is from HAS_BALL_START to NO_BALL_START!");
+                this->cur_task->sendToTaskHasBall(0);
                 cur_task_state = NO_BALL_START;
 
             }
@@ -110,7 +126,7 @@ void vwpp::FlowController::run()
 
             this->cur_task->taskCatchBall(true);
 
-            static JudgeAchieveCounter judge_achieve_counter(3);
+            static JudgeAchieveCounter judge_achieve_counter(WAIT_TIME);
 
             if (judge_achieve_counter.isAchieve())
             {
@@ -140,7 +156,7 @@ void vwpp::FlowController::run()
 
             this->cur_task->taskCatchBall(false);
 
-            static JudgeAchieveCounter judge_achieve_counter(3);
+            static JudgeAchieveCounter judge_achieve_counter(WAIT_TIME);
 
             if (judge_achieve_counter.isAchieve())
             {
@@ -182,28 +198,50 @@ void vwpp::FlowController::run()
             ROS_INFO("Now cur_task_state is CHANGE_START !");
 
             ROS_INFO("Now CHANGE_START is starting!");
+
+
             this->cur_task->taskChange();
 
-            if (this->cur_task->getBallState().data != 0)
+            if (this->cur_task->getBallState().data != 0 and
+                fabs(this->cur_task->getVwbotPose().pose.position.x - 3.10) >= 0.30)
             {
-                //TODO
-                //Need to adjust the color and push the correct area.
 
                 ROS_ERROR("SPECIALLY ! Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
-                std::cout << RED << "Now the color is " << this->cur_task->getBallState().color <<  "\033[0m" << std::endl;
+                std::cout << RED << "Now the color is " << this->cur_task->getBallState().color << "\033[0m"
+                          << std::endl;
                 this->cur_task->sendToColor(this->cur_task->getBallState().color);
-                this->cur_task->sendToTaskBall(0);
                 cur_task_state = CATCH_BALL_START_CATCH;
+
+            }
+            else if (this->cur_task->getBallPose().pose.pose.position.x > 0 and
+                    this->cur_task->getBallPose().pose.pose.position.x < 2.8)
+            {
+
+                ROS_INFO("Now cur_task_state is from CHANGE_START to HAS_BALL_START!");
+                cur_task_state = HAS_BALL_START;
+                this->cur_task->initBallOrientation();
 
             }
             else if (this->cur_task->getActionState() == GOT_GOAL)
             {
                 ROS_INFO("Now cur_task_state is from CHANGE_START to NO_BALL_START!");
+
+                int change_state;
+                change_state = this->cur_task->getTaskChangeState() + 1;
+                change_state = change_state % 3;
+                this->cur_task->sendToTaskChange(change_state);   //Change the static point
+
                 cur_task_state = NO_BALL_START;
             }
             else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
             {
                 ROS_INFO("Now cur_task_state is from CHANGE_START to NO_BALL_START!");
+
+                int change_state;
+                change_state = this->cur_task->getTaskChangeState() + 1;
+                change_state = change_state % 3;
+                this->cur_task->sendToTaskChange(change_state);   //Change the static point
+
                 cur_task_state = NO_BALL_START;
             }
 

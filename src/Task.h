@@ -13,6 +13,18 @@
 
 #define MID_X 1.5
 #define MID_Y 0.0
+
+#define CHANGE_1_X 1.5
+#define CHANGE_1_Y -1.0
+#define CHANGE_2_X 1.5
+#define CHANGE_2_Y 0.0
+#define CHANGE_3_X 1.5
+#define CHANGE_3_Y 1.0
+
+#define FAST_ACTION_2 1
+#define FAST_ACTION_3 1      //Using in the taskHasBall in order to improve the speed
+#define WAIT_TIME 5 //Waiting for the hand to catch ball
+
 #define YELLOW_X 3.10
 #define YELLOW_Y 0.55
 #define RED_X 3.10
@@ -31,9 +43,6 @@
 namespace vwpp
 {
 
-
-
-
     class Task
     {
     public:
@@ -47,12 +56,20 @@ namespace vwpp
         void taskCatchBall(bool state); //Task5 When vwbot need to control the hand
 
         vwbot_controller::PoseAndColor getBallPose();
+        geometry_msgs::PoseStamped getVwbotPose();
         dector::ColorBool getBallState();
+
         int getActionState();
+        int getTaskChangeState();
         int getTaskHasBallState();
+        int getTaskNoBallState();
         double getLengthBetweenBallAndVwbot();
-        void sendToTaskBall(int state);
+
+        void sendToTaskHasBall(int state);
+        void sendToTaskNoBall(int state);
+        void sendToTaskChange(int state);
         void sendToColor(std::string color);
+
         void initBallOrientation();
 
     private:
@@ -78,6 +95,9 @@ namespace vwpp
         dector::ColorBool ball_state; //ball's state when catch the ball
 
         int task_has_ball_state;
+        int task_no_ball_state;
+        int task_change_point_state;
+
         //need to calculate the number of ball
     };
 

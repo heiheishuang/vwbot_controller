@@ -25,6 +25,7 @@ vwpp::Task::Task() :
             ("/robot_pose", 10, &Task::sub_from_vwbot_cb, this);
     ROS_ERROR("subscribe created");
 
+
     ball_pose.pose.pose.position.x = -1;
     ball_pose.pose.pose.position.y = -1;
     ball_pose.pose.pose.position.z = -1;
@@ -42,9 +43,16 @@ vwpp::Task::Task() :
 
     this->cur_action = new Action;
 
+    std_msgs::Bool hand_state;
+    hand_state.data = false;
+    this->cur_action->send_to_hand(hand_state);
+
     task_has_ball_state = 0;
+    task_no_ball_state = 0;
+    task_change_point_state = 0;
 
     now_color = "";
+
 
 }
 
@@ -69,12 +77,13 @@ void vwpp::Task::taskHasBall()
     //now_color
     now_color = this->ball_pose.color;
 
+
     double dis_yaw, dis_x, dis_y, dis_length;
     dis_x = now_ball.pose.pose.position.x - now_vwbot_pose.pose.position.x;
     dis_y = now_ball.pose.pose.position.y - now_vwbot_pose.pose.position.y;
-    dis_yaw = atan2(dis_y , dis_x);
+    dis_yaw = atan2(dis_y, dis_x);
 
-    dis_length = sqrt(dis_x * dis_x +dis_y * dis_y);
+    dis_length = sqrt(dis_x * dis_x + dis_y * dis_y);
 
     tf::Matrix3x3 mat(tf::Quaternion(now_vwbot_pose.pose.orientation.x, now_vwbot_pose.pose.orientation.y,
                                      now_vwbot_pose.pose.orientation.z, now_vwbot_pose.pose.orientation.w));
@@ -83,21 +92,13 @@ void vwpp::Task::taskHasBall()
 
     mat.getEulerYPR(yaw, pitch, roll);
 
-    std::cout << YELLOW << "####   DIS_YAW  %lf  #### " <<  fabs(dis_yaw - yaw) << "\033[0m" << std::endl;
-
-    if (this->cur_action->getActionState() != GOT_GOAL and this->task_has_ball_state == 0)
-    {    //TODO
-        //change the pose of the vwbot to ball
+    if (this->task_has_ball_state == 0)
+    {
 
         ROS_WARN("taskHasBall action 1!");
-        target_pose.pose = now_ball.pose.pose;
-        target_pose.pose.position.x = (dis_length - 0.30 ) / dis_length * dis_x + now_vwbot_pose.pose.position.x;
-        target_pose.pose.position.y = (dis_length - 0.30 ) / dis_length * dis_y + now_vwbot_pose.pose.position.y;
-
-        // NEW in 8.4
-        // TODO
         tf::Quaternion q;
         q.setRPY(0, 0, dis_yaw);
+        target_pose.pose.position = vwbot_pose.pose.position;
         target_pose.pose.orientation.x = q[0];
         target_pose.pose.orientation.y = q[1];
         target_pose.pose.orientation.z = q[2];
@@ -106,13 +107,19 @@ void vwpp::Task::taskHasBall()
         target_pose.header.frame_id = "map";
         target_pose.header.stamp = ros::Time::now();
 
-
         ball_orientation.pose.orientation = target_pose.pose.orientation;
 
         this->cur_action->action_move_base(target_pose);
 
+        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m" << std::endl;
+
+        if (fabs(dis_yaw -yaw) / 3.14 * 180 <= 15)
+        {
+            this->task_has_ball_state = 1;
+        }
+
     }
-    else
+    else if (this->task_has_ball_state == 1 )
     {
         // length less than 30cm has problem
         // TODO
@@ -121,32 +128,55 @@ void vwpp::Task::taskHasBall()
         target_pose.header.stamp = ros::Time::now();
 
         target_pose.pose = now_ball.pose.pose;
-        target_pose.pose.position.x = (dis_length + 0.03) / dis_length * dis_x + now_vwbot_pose.pose.position.x;
-        target_pose.pose.position.y = (dis_length + 0.03) / dis_length * dis_y + now_vwbot_pose.pose.position.y;
+        target_pose.pose.position.x = (dis_length - 0.30) / dis_length * dis_x * FAST_ACTION_2 + now_vwbot_pose.pose.position.x;
+        target_pose.pose.position.y = (dis_length - 0.30) / dis_length * dis_y * FAST_ACTION_2 + now_vwbot_pose.pose.position.y;
 
         //Less than 30cm using the goal at 30cm
         // target_pose.pose.position = ball_orientation.pose.position;
-        target_pose.pose.orientation = ball_orientation.pose.orientation;
+        tf::Quaternion q;
+        q.setRPY(0, 0, dis_yaw);
+        target_pose.pose.orientation.x = q[0];
+        target_pose.pose.orientation.y = q[1];
+        target_pose.pose.orientation.z = q[2];
+        target_pose.pose.orientation.w = q[3];
 
-        // NEW in 8.5
-        // TODO
+        ball_orientation.pose.orientation = target_pose.pose.orientation;
+
+
+
+        this->cur_action->action_move_base(target_pose);
+
+        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m" << std::endl;
+        std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
+
+        if (dis_length <= 0.30 and fabs(dis_yaw - yaw) / 3.14 * 180 <= 15 )
+        {
+            this->task_has_ball_state = 2;
+        }
+
+    }
+    else
+    {
+
+        ROS_WARN("taskHasBall action 3!");
+
+        target_pose.pose.position.x = dis_x * FAST_ACTION_3 + now_vwbot_pose.pose.position.x;
+        target_pose.pose.position.y = dis_y * FAST_ACTION_3 + now_vwbot_pose.pose.position.y;
+
         // tf::Quaternion q;
-        // q.setRPY(0, 0, yaw);
+        // q.setRPY(0, 0, dis_yaw);
         // target_pose.pose.orientation.x = q[0];
         // target_pose.pose.orientation.y = q[1];
         // target_pose.pose.orientation.z = q[2];
         // target_pose.pose.orientation.w = q[3];
 
+        target_pose.header.frame_id = "map";
+        target_pose.header.stamp = ros::Time::now();
 
-        // target_pose.pose.orientation.x = 0;
-        // target_pose.pose.orientation.y = 0;
-        // target_pose.pose.orientation.z = 0;
-        // target_pose.pose.orientation.w = 1;
-        // NEW in 8.5
-
+        target_pose.pose.orientation = ball_orientation.pose.orientation;
         this->cur_action->action_move_base(target_pose);
-        this->task_has_ball_state = 2;
     }
+
 }
 
 
@@ -219,31 +249,54 @@ void vwpp::Task::taskNoBall()
     if (fabs(cur_pose.pose.position.y + 2.0) <= 0.1)
         cur_pose.pose.position.y = cur_pose.pose.position.y + 0.5;
 
-    printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
+    //###################
+    // printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
+    //
+    // tf::Matrix3x3 mat(tf::Quaternion(cur_pose.pose.orientation.x, cur_pose.pose.orientation.y,
+    //                                  cur_pose.pose.orientation.z, cur_pose.pose.orientation.w));
+    //
+    // double yaw, pitch, roll;
+    // mat.getEulerYPR(yaw, pitch, roll);
+    //
+    // yaw = yaw / 3.14 * 180 + 20;
+    // yaw = yaw / 180 * 3.14;
+    //
+    // tf::Quaternion q;
+    // q.setRPY(roll, pitch, yaw);
+    //
+    // cur_pose.pose.orientation.x = q[0];
+    // cur_pose.pose.orientation.y = q[1];
+    // cur_pose.pose.orientation.z = q[2];
+    // cur_pose.pose.orientation.w = q[3];
+    // cur_pose.header.frame_id = "map";
+    // cur_pose.header.stamp = ros::Time::now();
+    //
+    // printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
+    //
+    // this->cur_action->action_move_base(cur_pose); //pub the aim goal
+    //####################
 
-    tf::Matrix3x3 mat(tf::Quaternion(cur_pose.pose.orientation.x, cur_pose.pose.orientation.y,
-                                     cur_pose.pose.orientation.z, cur_pose.pose.orientation.w));
-
-    double yaw, pitch, roll;
-    mat.getEulerYPR(yaw, pitch, roll);
-
-    yaw = yaw / 3.14 * 180 + 20;
-    yaw = yaw / 180 * 3.14;
-
-    tf::Quaternion q;
-    q.setRPY(roll, pitch, yaw);
-
-    cur_pose.pose.orientation.x = q[0];
-    cur_pose.pose.orientation.y = q[1];
-    cur_pose.pose.orientation.z = q[2];
-    cur_pose.pose.orientation.w = q[3];
-    cur_pose.header.frame_id = "map";
-    cur_pose.header.stamp = ros::Time::now();
-
-    printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
-
-    this->cur_action->action_move_base(cur_pose); //pub the aim goal
-    // task_action.action_move_base(cur_pose);
+    if (this->cur_action->getActionState() != GOT_GOAL and this->task_no_ball_state == 0)
+    {
+        cur_pose.header.frame_id = "map";
+        cur_pose.header.stamp = ros::Time::now();
+        cur_pose.pose.orientation.x = 0;
+        cur_pose.pose.orientation.y = 0;
+        cur_pose.pose.orientation.z = 0;
+        cur_pose.pose.orientation.w = 1;
+        this->cur_action->action_move_base(cur_pose);
+    }
+    else
+    {
+        cur_pose.header.frame_id = "map";
+        cur_pose.header.stamp = ros::Time::now();
+        cur_pose.pose.orientation.x = 0;
+        cur_pose.pose.orientation.y = 0;
+        cur_pose.pose.orientation.z = 1;
+        cur_pose.pose.orientation.w = 0;
+        task_no_ball_state = 2;
+        this->cur_action->action_move_base(cur_pose);
+    }
 
 
 }
@@ -254,14 +307,47 @@ void vwpp::Task::taskChange()
     ROS_INFO("Now in the changeTask!");
 
     geometry_msgs::PoseStamped goal;
-    goal.header.frame_id = "map";
-    goal.header.stamp = ros::Time::now();
-    goal.pose.orientation.w = 0;
-    goal.pose.orientation.x = 0;
-    goal.pose.orientation.y = 0;
-    goal.pose.orientation.z = 1;
-    goal.pose.position.x = MID_X;
-    goal.pose.position.y = MID_Y;
+
+
+    if (this->task_change_point_state == 1)
+    {
+
+        goal.header.frame_id = "map";
+        goal.header.stamp = ros::Time::now();
+        goal.pose.orientation.w = 0;
+        goal.pose.orientation.x = 0;
+        goal.pose.orientation.y = 0;
+        goal.pose.orientation.z = 1;
+        goal.pose.position.x = CHANGE_1_X;
+        goal.pose.position.y = CHANGE_1_Y;
+
+    }
+    else if (this->task_change_point_state == 2)
+    {
+
+        goal.header.frame_id = "map";
+        goal.header.stamp = ros::Time::now();
+        goal.pose.orientation.w = 0;
+        goal.pose.orientation.x = 0;
+        goal.pose.orientation.y = 0;
+        goal.pose.orientation.z = 1;
+        goal.pose.position.x = CHANGE_2_X;
+        goal.pose.position.y = CHANGE_2_Y;
+
+    }
+    else
+    {
+
+        goal.header.frame_id = "map";
+        goal.header.stamp = ros::Time::now();
+        goal.pose.orientation.w = 0;
+        goal.pose.orientation.x = 0;
+        goal.pose.orientation.y = 0;
+        goal.pose.orientation.z = 1;
+        goal.pose.position.x = CHANGE_3_X;
+        goal.pose.position.y = CHANGE_3_Y;
+
+    }
 
     // changeTask 1 from taskPutBall to taskNoBall
     this->cur_action->action_move_base(goal);
@@ -290,15 +376,36 @@ dector::ColorBool vwpp::Task::getBallState()
     return ball_state;
 }
 
+
 int vwpp::Task::getTaskHasBallState()
 {
-    return  task_has_ball_state;
+    return task_has_ball_state;
 }
+
+
+int vwpp::Task::getTaskNoBallState()
+{
+    return task_no_ball_state;
+}
+
+
+int vwpp::Task::getTaskChangeState()
+{
+    return this->task_change_point_state;
+}
+
 
 int vwpp::Task::getActionState()
 {
     return this->cur_action->getActionState();
 }
+
+
+geometry_msgs::PoseStamped vwpp::Task::getVwbotPose()
+{
+    return this->vwbot_pose;
+}
+
 
 double vwpp::Task::getLengthBetweenBallAndVwbot()
 {
@@ -308,6 +415,7 @@ double vwpp::Task::getLengthBetweenBallAndVwbot()
     dis_length = sqrt(dis_x * dis_x + dis_y * dis_y);
     return dis_length;
 }
+
 
 void vwpp::Task::sub_catchball_state_cb(const dector::ColorBool::ConstPtr &msg)
 {
@@ -328,21 +436,38 @@ void vwpp::Task::sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &m
 void vwpp::Task::sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr &msg)
 {
     this->ball_pose = *msg;
-    ROS_WARN("#### ball_pose   %lf %lf %lf", this->ball_pose.pose.pose.position.x,
-            this->ball_pose.pose.pose.position.y, this->ball_pose.pose.pose.position.z);
+
+    std::cout << YELLOW << "#### ball_pose  " << this->ball_pose.pose.pose.position.x << "  " <<
+              this->ball_pose.pose.pose.position.y << "   " << this->ball_pose.color << " ####  \033[0m" << std::endl;
 
 }
 
-void vwpp::Task::sendToTaskBall(int state)
+
+void vwpp::Task::sendToTaskHasBall(int state)
 {
 
     this->task_has_ball_state = state;
 
 }
+
+
+void vwpp::Task::sendToTaskNoBall(int state)
+{
+    this->task_no_ball_state = state;
+}
+
+
+void vwpp::Task::sendToTaskChange(int state)
+{
+    this->task_change_point_state = state;
+}
+
+
 void vwpp::Task::sendToColor(std::string color)
 {
     this->now_color = std::move(color);
 }
+
 
 void vwpp::Task::initBallOrientation()
 {
