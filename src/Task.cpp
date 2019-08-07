@@ -24,6 +24,16 @@ vwpp::Task::Task() :
     sub_vwbot = nh.subscribe<geometry_msgs::PoseStamped>
             ("/robot_pose", 10, &Task::sub_from_vwbot_cb, this);
 
+    sub_red = nh.subscribe<std_msgs::Float32>
+            ("/red_angular", 10 ,&Task::sub_red_angular_cb, this);
+
+    sub_yellow = nh.subscribe<std_msgs::Float32>
+            ("/green_angular",10,&Task::sub_yellow_angular_cb, this);
+
+    sub_blue = nh.subscribe<std_msgs::Float32>
+            ("/blue_angular",10,&Task::sub_blue_angular_cb, this);
+
+
 
     ROS_ERROR("subscribe created");
 
@@ -54,6 +64,8 @@ vwpp::Task::Task() :
     task_change_point_state = 0;
 
     now_color = "";
+
+    angular_last = 0;
 
 
 }
@@ -174,16 +186,27 @@ void vwpp::Task::taskHasBall()
         //
         // target_pose.pose.orientation = ball_orientation.pose.orientation;
         // this->cur_action->action_move_base(target_pose);
+
+        std_msgs::Float32 angular;
+        if (this->ball_pose.color == "red") angular = this->red_angular;
+        if (this->ball_pose.color == "green") angular = this->yellow_angular;
+        if (this->ball_pose.color == "blue") angular = this->blue_angular;
+
         geometry_msgs::Twist vel;
+
+        static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P,PID_ANGULAR_I,PID_ANGULAR_D);
+
+        pid_controller_toward_angular.setTarget(0.0);
+        pid_controller_toward_angular.update(angular.data);
+
         vel.linear.x = 0.3;
         vel.linear.y = 0.0;
         vel.angular.x = 0.0;
         vel.angular.y = 0.0;
-        vel.angular.z = 0.0;
+        vel.angular.z = pid_controller_toward_angular.output();
 
         this->cur_action->send_cmd_vel(vel);
         task_has_ball_state = 3;
-
 
     }
 
@@ -511,6 +534,10 @@ void vwpp::Task::sendToColor(std::string color)
     this->now_color = std::move(color);
 }
 
+void vwpp::Task::sendToAngularLast(double angular)
+{
+    this->angular_last = angular;
+}
 
 void vwpp::Task::initBallOrientation()
 {
@@ -539,4 +566,17 @@ void vwpp::Task::initBallOrientation()
     this->ball_orientation = target_pose;
 
 
+}
+
+void vwpp::Task::sub_red_angular_cb(const std_msgs::Float32::ConstPtr &msg)
+{
+    this->red_angular.data = -msg->data;
+}
+void vwpp::Task::sub_blue_angular_cb(const std_msgs::Float32::ConstPtr &msg)
+{
+    this->blue_angular.data = -msg->data;
+}
+void vwpp::Task::sub_yellow_angular_cb(const std_msgs::Float32::ConstPtr &msg)
+{
+    this->yellow_angular.data = -msg->data;
 }

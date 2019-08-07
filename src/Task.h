@@ -6,6 +6,8 @@
 #define VWBOT_CONTROLLER_TASK_H_
 
 #include "PoseAndColor.h"
+#include "PIDController.h"
+#include <std_msgs/Float32.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_datatypes.h>
 #include "Action.h"
@@ -13,6 +15,10 @@
 
 #define MID_X 1.5
 #define MID_Y 0.0
+
+#define PID_ANGULAR_P 1.0
+#define PID_ANGULAR_I 0
+#define PID_ANGULAR_D 0
 
 #define CHANGE_1_X 1.5
 #define CHANGE_1_Y -1.0
@@ -70,6 +76,7 @@ namespace vwpp
         void sendToTaskNoBall(int state);
         void sendToTaskChange(int state);
         void sendToColor(std::string color);
+        void sendToAngularLast(double angular);
 
         void initBallOrientation();
 
@@ -84,10 +91,18 @@ namespace vwpp
         void sub_from_ball_cb(const vwbot_controller::PoseAndColor::ConstPtr &msg);  //sub ball's pose and color
         void sub_catchball_state_cb(const dector::ColorBool::ConstPtr &msg);    //sub ball's state when catch the ball
         void sub_from_vwbot_cb(const geometry_msgs::PoseStamped::ConstPtr &msg); //sub vwbot's pose
+        void sub_red_angular_cb(const std_msgs::Float32::ConstPtr &msg );
+        void sub_yellow_angular_cb(const std_msgs::Float32::ConstPtr &msg);
+        void sub_blue_angular_cb(const std_msgs::Float32::ConstPtr &msg);
+
 
         ros::Subscriber sub_ball_pose_color;  //sub ball's pose and color
         ros::Subscriber sub_ball_state;  // sub ball'state when catch the ball
         ros::Subscriber sub_vwbot; //sub vwbot's pose
+
+        ros::Subscriber sub_red;
+        ros::Subscriber sub_yellow;
+        ros::Subscriber sub_blue;
 
         vwbot_controller::PoseAndColor ball_pose; //ball's pose and color
         std::string now_color;
@@ -95,9 +110,15 @@ namespace vwpp
         geometry_msgs::PoseStamped ball_orientation;
         dector::ColorBool ball_state; //ball's state when catch the ball
 
+        std_msgs::Float32 red_angular;
+        std_msgs::Float32 yellow_angular;
+        std_msgs::Float32 blue_angular;
+
         int task_has_ball_state;
         int task_no_ball_state;
         int task_change_point_state;
+
+        double angular_last;
 
         //need to calculate the number of ball
     };

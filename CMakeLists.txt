@@ -150,6 +150,8 @@ add_executable(vwbot_controller_node
         src/JudgeAchieveCounter.cpp
         src/JudgeAchieveCounter.h
         src/ColorBool.h
+        src/PIDController.cpp
+        src/PIDController.h
         )
 
 ## Rename C++ executable without prefix
