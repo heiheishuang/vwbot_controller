@@ -16,6 +16,7 @@ vwpp::Action::Action() :
     pub_hand = nh.advertise<std_msgs::Bool>("/send_to_hand", 1);
     pub_flow = nh.advertise<std_msgs::Bool>("/send_flow_state",1);
     pub_cmd_vel = nh.advertise<geometry_msgs::Twist>("/cmd_vel_unstamped",1);
+    pub_goal_id = nh.advertise<actionlib_msgs::GoalID>("/move_base/cancel",1);
 
 }
 
@@ -81,6 +82,11 @@ void vwpp::Action::send_cmd_vel(const geometry_msgs::Twist &_vel)
     ROS_ERROR("%lf %lf ",_vel.angular.z,_vel.linear.x);
     this->pub_cmd_vel.publish(_vel);
 
+}
+void vwpp::Action::send_cancel(const actionlib_msgs::GoalID &_goal_id)
+{
+    ROS_ERROR("##########Now Cancel");
+    this->pub_goal_id.publish(_goal_id);
 }
 vwpp::ActionState vwpp::Action::getActionState()
 {

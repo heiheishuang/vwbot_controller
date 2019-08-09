@@ -178,15 +178,6 @@ void vwpp::Task::taskHasBall()
         }
 
     }
-    else if (this->task_has_ball_state == 2 or this->task_has_ball_state == 1 or this->task_has_ball_state == 0)
-    {
-        this->cur_action->action_move_base(this->vwbot_pose);
-        if (this->cur_action->getActionState() == GOT_GOAL)
-        {
-            this->task_has_ball_state = 3;
-        }
-
-    }
     else
     {
 
@@ -196,6 +187,17 @@ void vwpp::Task::taskHasBall()
             // this->sendToTaskHasBall(0);
             this->task_has_ball_state = 0;
         }
+
+        //Cancel the goal
+        if (this->task_has_ball_state == 2 )
+        {
+            actionlib_msgs::GoalID goal_id;
+            this->cur_action->send_cancel(goal_id);
+            this->task_has_ball_state = this->task_has_ball_state + 1;
+
+
+        }
+
         ROS_WARN("taskHasBall action 3!");
         //
         // target_pose.pose.position.x = dis_x * FAST_ACTION_3 + now_vwbot_pose.pose.position.x;

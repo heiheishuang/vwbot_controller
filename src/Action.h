@@ -46,6 +46,8 @@ namespace vwpp
 
         void send_cmd_vel(const geometry_msgs::Twist &_vel);
 
+        void send_cancel(const actionlib_msgs::GoalID &_goal_id);
+
         ActionState getActionState();
 
     private:
@@ -57,6 +59,7 @@ namespace vwpp
         ros::Publisher pub_hand;
         ros::Publisher pub_flow;
         ros::Publisher pub_cmd_vel;
+        ros::Publisher pub_goal_id;
 
     };
 }
