@@ -62,6 +62,8 @@ vwpp::Task::Task() :
     task_has_ball_state = 0;
     task_no_ball_state = 0;
     task_change_point_state = 0;
+    //TODO
+    task_ball_cancel = 0;
 
     now_color = "";
 
@@ -136,10 +138,12 @@ void vwpp::Task::taskHasBall()
         if (fabs(dis_yaw - yaw) / 3.14 * 180 <= 15)
         {
             this->task_has_ball_state = 1;
+            this->task_ball_cancel = 1;
         }
 
     }
-    else if (this->task_has_ball_state == 1)
+
+    if (this->task_has_ball_state == 1)
     {
         // length less than 30cm has problem
         // TODO
@@ -178,7 +182,8 @@ void vwpp::Task::taskHasBall()
         }
 
     }
-    else
+
+    if(this->task_has_ball_state == 2 )
     {
 
         if (this->getLengthBetweenBallAndVwbot() >= 0.30 or this->getYawBetweenBallAndVwbot() / 3.14 * 180 >= 15)
@@ -189,11 +194,11 @@ void vwpp::Task::taskHasBall()
         }
 
         //Cancel the goal
-        if (this->task_has_ball_state == 2 )
+        if (this->task_ball_cancel == 1 )
         {
             actionlib_msgs::GoalID goal_id;
             this->cur_action->send_cancel(goal_id);
-            this->task_has_ball_state = this->task_has_ball_state + 1;
+            this->task_ball_cancel = 0;
 
 
         }
@@ -235,6 +240,52 @@ void vwpp::Task::taskHasBall()
         // vel.angular.z = 0.1;
 
         this->cur_action->send_cmd_vel(vel);
+        if (angular.data < -500)
+        {
+            this->task_has_ball_state = 3;
+        }
+
+        aim_angle = yaw + angular.data;
+
+    }
+    if (this->task_has_ball_state == 3 )
+    {
+
+        ROS_ERROR("Now action 4");
+
+        geometry_msgs::Twist vel;
+
+        std_msgs::Float32 angular;
+        if (this->ball_pose.color == "red") angular = this->red_angular;
+        if (this->ball_pose.color == "green") angular = this->yellow_angular;
+        if (this->ball_pose.color == "blue") angular = this->blue_angular;
+
+
+        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
+                  << std::endl;
+        std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
+
+
+        static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
+
+        pid_controller_toward_angular.setTarget(aim_angle);
+        ROS_ERROR("Aim angle data: %lf", aim_angle);
+
+        vel.linear.x = 0.0;
+        vel.linear.y = 0.0;
+        vel.angular.x = 0.0;
+        vel.angular.y = 0.0;
+        vel.angular.z = pid_controller_toward_angular.output();
+        // vel.angular.z = 0.1;
+        this->cur_action->send_cmd_vel(vel);
+
+        if (angular.data > -500)
+        {
+            this->task_has_ball_state = 1;
+            this->task_ball_cancel = 1;
+        }
+
+
 
     }
 
@@ -360,8 +411,8 @@ void vwpp::Task::taskNoBall()
         cur_pose.header.stamp = ros::Time::now();
         cur_pose.pose.orientation.x = 0;
         cur_pose.pose.orientation.y = 0;
-        cur_pose.pose.orientation.z = 1;
-        cur_pose.pose.orientation.w = 0;
+        cur_pose.pose.orientation.z = 0;
+        cur_pose.pose.orientation.w = 1;
 
         tf::Matrix3x3 mat(tf::Quaternion(this->vwbot_pose.pose.orientation.x, this->vwbot_pose.pose.orientation.y,
                                          this->vwbot_pose.pose.orientation.z, this->vwbot_pose.pose.orientation.w));

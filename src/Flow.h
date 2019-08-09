@@ -6,7 +6,7 @@
 #define VWBOT_CONTROLLER_FLOW_H_
 
 
-#define  DIS_LENGTH_WHEN_CATCH 0.10
+#define  DIS_LENGTH_WHEN_CATCH 0.05
 
 #include "Task.h"
 #include "JudgeAchieveCounter.h"

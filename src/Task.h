@@ -118,9 +118,10 @@ namespace vwpp
         int task_has_ball_state;
         int task_no_ball_state;
         int task_change_point_state;
+        int task_ball_cancel;
 
         double angular_last;
-
+        double aim_angle;
         //need to calculate the number of ball
     };
 
