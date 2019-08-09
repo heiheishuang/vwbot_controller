@@ -80,7 +80,7 @@ void vwpp::FlowController::run()
             this->cur_task->taskHasBall();
 
 
-            if (this->cur_task->getBallState().data != 0)
+            if (this->cur_task->getBallState().data != 0 and this->cur_task->getVwbotPose().pose.position.x <= 2.8)
             {
 
                 std::cout << RED << "Now the color is " << this->cur_task->getBallState().color << "\033[0m"
@@ -100,12 +100,13 @@ void vwpp::FlowController::run()
                 //New in 8.6
                 //else if (this->cur_task->getLengthBetweenBallAndVwbot() <= 0.05 and this->cur_task->getTaskHasBallState() == 2)
             {
-                ROS_INFO(
-                        "Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH! getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH");
+
+                std::cout << GREEN << "getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH "  << "\033[0m" << std::endl;
                 this->cur_task->sendToTaskHasBall(0);
                 cur_task_state = CATCH_BALL_START_CATCH;
 
             }
+
 
 
             if (this->cur_task->getBallPose().pose.pose.position.x < 0)
