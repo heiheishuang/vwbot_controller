@@ -77,7 +77,8 @@ void vwpp::Action::send_flow_state(const std_msgs::Bool &_flow)
 void vwpp::Action::send_cmd_vel(const geometry_msgs::Twist &_vel)
 {
 
-    ROS_ERROR("### Now in tje action send_to_cmd_vel");
+    ROS_ERROR("### Now in the action send_to_cmd_vel");
+    ROS_ERROR("%lf %lf ",_vel.angular.z,_vel.linear.x);
     this->pub_cmd_vel.publish(_vel);
 
 }

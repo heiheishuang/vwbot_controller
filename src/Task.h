@@ -16,9 +16,10 @@
 #define MID_X 1.5
 #define MID_Y 0.0
 
-#define PID_ANGULAR_P 1.0
-#define PID_ANGULAR_I 0
-#define PID_ANGULAR_D 0
+#define PID_ANGULAR_P 1.3
+#define PID_ANGULAR_I 0.0
+#define PID_ANGULAR_D 0.55
+#define PID_VEL 0.30
 
 #define CHANGE_1_X 1.5
 #define CHANGE_1_Y -1.0

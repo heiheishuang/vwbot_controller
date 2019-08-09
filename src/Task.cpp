@@ -25,13 +25,13 @@ vwpp::Task::Task() :
             ("/robot_pose", 10, &Task::sub_from_vwbot_cb, this);
 
     sub_red = nh.subscribe<std_msgs::Float32>
-            ("/red_angular", 10 ,&Task::sub_red_angular_cb, this);
+            ("/red_angle", 10, &Task::sub_red_angular_cb, this);
 
     sub_yellow = nh.subscribe<std_msgs::Float32>
-            ("/green_angular",10,&Task::sub_yellow_angular_cb, this);
+            ("/green_angle", 10, &Task::sub_yellow_angular_cb, this);
 
     sub_blue = nh.subscribe<std_msgs::Float32>
-            ("/blue_angular",10,&Task::sub_blue_angular_cb, this);
+            ("/blue_angle", 10, &Task::sub_blue_angular_cb, this);
 
 
 
@@ -110,7 +110,8 @@ void vwpp::Task::taskHasBall()
 
     mat.getEulerYPR(yaw, pitch, roll);
 
-    if (this->task_has_ball_state == 0)
+
+    if (this->task_has_ball_state == 0 )
     {
 
         ROS_WARN("taskHasBall action 1!");
@@ -129,15 +130,16 @@ void vwpp::Task::taskHasBall()
 
         this->cur_action->action_move_base(target_pose);
 
-        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m" << std::endl;
+        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
+                  << std::endl;
 
-        if (fabs(dis_yaw -yaw) / 3.14 * 180 <= 15)
+        if (fabs(dis_yaw - yaw) / 3.14 * 180 <= 15)
         {
             this->task_has_ball_state = 1;
         }
 
     }
-    else if (this->task_has_ball_state == 1 )
+    else if (this->task_has_ball_state == 1)
     {
         // length less than 30cm has problem
         // TODO
@@ -146,8 +148,10 @@ void vwpp::Task::taskHasBall()
         target_pose.header.stamp = ros::Time::now();
 
         target_pose.pose = now_ball.pose.pose;
-        target_pose.pose.position.x = (dis_length - 0.20) / dis_length * dis_x * FAST_ACTION_2 + now_vwbot_pose.pose.position.x;
-        target_pose.pose.position.y = (dis_length - 0.20) / dis_length * dis_y * FAST_ACTION_2 + now_vwbot_pose.pose.position.y;
+        target_pose.pose.position.x =
+                (dis_length - 0.20) / dis_length * dis_x * FAST_ACTION_2 + now_vwbot_pose.pose.position.x;
+        target_pose.pose.position.y =
+                (dis_length - 0.20) / dis_length * dis_y * FAST_ACTION_2 + now_vwbot_pose.pose.position.y;
 
         //Less than 30cm using the goal at 30cm
         // target_pose.pose.position = ball_orientation.pose.position;
@@ -164,18 +168,34 @@ void vwpp::Task::taskHasBall()
 
         this->cur_action->action_move_base(target_pose);
 
-        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m" << std::endl;
+        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
+                  << std::endl;
         std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
 
-        if (dis_length <= 0.25 and fabs(dis_yaw - yaw) / 3.14 * 180 <= 15 )
+        if (dis_length <= 0.25 and fabs(dis_yaw - yaw) / 3.14 * 180 <= 15)
         {
             this->task_has_ball_state = 2;
+        }
+
+    }
+    else if (this->task_has_ball_state == 2 or this->task_has_ball_state == 1 or this->task_has_ball_state == 0)
+    {
+        this->cur_action->action_move_base(this->vwbot_pose);
+        if (this->cur_action->getActionState() == GOT_GOAL)
+        {
+            this->task_has_ball_state = 3;
         }
 
     }
     else
     {
 
+        if (this->getLengthBetweenBallAndVwbot() >= 0.30 or this->getYawBetweenBallAndVwbot() / 3.14 * 180 >= 15)
+        {
+            // ROS_INFO( "Now cur_task_state is from HAS_BALL_START to NO_BALL_START");
+            // this->sendToTaskHasBall(0);
+            this->task_has_ball_state = 0;
+        }
         ROS_WARN("taskHasBall action 3!");
         //
         // target_pose.pose.position.x = dis_x * FAST_ACTION_3 + now_vwbot_pose.pose.position.x;
@@ -194,19 +214,25 @@ void vwpp::Task::taskHasBall()
 
         geometry_msgs::Twist vel;
 
-        static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P,PID_ANGULAR_I,PID_ANGULAR_D);
+        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
+                  << std::endl;
+        std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
+
+
+        static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
 
         pid_controller_toward_angular.setTarget(0.0);
-        pid_controller_toward_angular.update(angular.data);
+        ROS_ERROR("Current angular data: %lf", angular.data);
+        pid_controller_toward_angular.update(-(angular.data * M_PI / 180.));
 
-        vel.linear.x = 0.3;
+        vel.linear.x = PID_VEL;
         vel.linear.y = 0.0;
         vel.angular.x = 0.0;
         vel.angular.y = 0.0;
         vel.angular.z = pid_controller_toward_angular.output();
+        // vel.angular.z = 0.1;
 
         this->cur_action->send_cmd_vel(vel);
-        task_has_ball_state = 3;
 
     }
 
@@ -321,9 +347,10 @@ void vwpp::Task::taskNoBall()
         cur_pose.header.stamp = ros::Time::now();
         cur_pose.pose.orientation.x = 0;
         cur_pose.pose.orientation.y = 0;
-        cur_pose.pose.orientation.z = 0;
-        cur_pose.pose.orientation.w = 1;
+        cur_pose.pose.orientation.z = 1;
+        cur_pose.pose.orientation.w = 0;
         this->cur_action->action_move_base(cur_pose);
+        ROS_ERROR("###################NO BALL 1");
     }
     else
     {
@@ -333,8 +360,19 @@ void vwpp::Task::taskNoBall()
         cur_pose.pose.orientation.y = 0;
         cur_pose.pose.orientation.z = 1;
         cur_pose.pose.orientation.w = 0;
-        task_no_ball_state = 2;
+
+        tf::Matrix3x3 mat(tf::Quaternion(this->vwbot_pose.pose.orientation.x, this->vwbot_pose.pose.orientation.y,
+                                         this->vwbot_pose.pose.orientation.z, this->vwbot_pose.pose.orientation.w));
+
+        double yaw, pitch, roll;
+
+        mat.getEulerYPR(yaw, pitch, roll);
+
+        if (fabs(yaw / 3.14 * 180) - 180 < 15)
+            task_no_ball_state = 2;
         this->cur_action->action_move_base(cur_pose);
+        ROS_ERROR("###################NO BALL 2");
+
     }
 
 
@@ -451,6 +489,7 @@ geometry_msgs::PoseStamped vwpp::Task::getVwbotPose()
     return this->vwbot_pose;
 }
 
+
 double vwpp::Task::getYawBetweenBallAndVwbot()
 {
     double dis_yaw, dis_x, dis_y;
@@ -469,9 +508,10 @@ double vwpp::Task::getYawBetweenBallAndVwbot()
     dis_x = now_ball.pose.pose.position.x - now_vwbot_pose.pose.position.x;
     dis_y = now_ball.pose.pose.position.y - now_vwbot_pose.pose.position.y;
     dis_yaw = atan2(dis_y, dis_x);
-    return fabs(dis_yaw -yaw);
+    return fabs(dis_yaw - yaw);
 
 }
+
 
 double vwpp::Task::getLengthBetweenBallAndVwbot()
 {
@@ -534,10 +574,12 @@ void vwpp::Task::sendToColor(std::string color)
     this->now_color = std::move(color);
 }
 
+
 void vwpp::Task::sendToAngularLast(double angular)
 {
     this->angular_last = angular;
 }
+
 
 void vwpp::Task::initBallOrientation()
 {
@@ -568,14 +610,19 @@ void vwpp::Task::initBallOrientation()
 
 }
 
+
 void vwpp::Task::sub_red_angular_cb(const std_msgs::Float32::ConstPtr &msg)
 {
     this->red_angular.data = -msg->data;
 }
+
+
 void vwpp::Task::sub_blue_angular_cb(const std_msgs::Float32::ConstPtr &msg)
 {
     this->blue_angular.data = -msg->data;
 }
+
+
 void vwpp::Task::sub_yellow_angular_cb(const std_msgs::Float32::ConstPtr &msg)
 {
     this->yellow_angular.data = -msg->data;
