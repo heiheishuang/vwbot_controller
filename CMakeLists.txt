@@ -152,6 +152,9 @@ add_executable(vwbot_controller_node
         src/ColorBool.h
         src/PIDController.cpp
         src/PIDController.h
+        src/PointServer.h
+        src/PointServerRequest.h
+        src/PointServerResponse.h
         )
 
 ## Rename C++ executable without prefix

@@ -40,6 +40,15 @@ void vwpp::FlowController::run()
         std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
                   << std::endl;
 
+        //New in 8.11
+        if (cur_task_state == HAS_BALL_START and this->cur_task->getCountPoseChange() >= 10)
+        {
+
+            this->cur_task->taskDeletePoint();
+            cur_task_state = NO_BALL_START;
+
+        }
+        //New in 8.11
         if (cur_task_state == NO_BALL_START)
         {
 

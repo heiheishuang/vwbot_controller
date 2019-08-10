@@ -33,7 +33,7 @@ vwpp::Task::Task() :
     sub_blue = nh.subscribe<std_msgs::Float32>
             ("/blue_angle", 10, &Task::sub_blue_angular_cb, this);
 
-
+    client_change_point = nh.serviceClient<dector::PointServer>("check_point");
 
     ROS_ERROR("subscribe created");
 
@@ -68,6 +68,10 @@ vwpp::Task::Task() :
     now_color = "";
 
     angular_last = 0;
+    aim_angle = 0;
+
+    count_pose_change = 0;
+    last_pose = vwbot_pose;
 
 
 }
@@ -112,6 +116,10 @@ void vwpp::Task::taskHasBall()
 
     mat.getEulerYPR(yaw, pitch, roll);
 
+    //New in 8.11 add the last pose;
+    //*****************************
+    if (getChange() <= 0.10)
+        this->count_pose_change = this->count_pose_change + 1;
 
     if (this->task_has_ball_state == 0 )
     {
@@ -288,6 +296,7 @@ void vwpp::Task::taskHasBall()
 
 
     }
+    this->last_pose = this->vwbot_pose;
 
 }
 
@@ -482,8 +491,20 @@ void vwpp::Task::taskChange()
 
     }
 
-    // changeTask 1 from taskPutBall to taskNoBall
-    this->cur_action->action_move_base(goal);
+    dector::PointServer srv;
+
+    srv.request.point = goal.pose.position;
+    // changeTask 1 from taskPutBall to
+    if (client_change_point.call(srv))
+    {
+
+        this->cur_action->action_move_base(goal);
+    }
+    else
+    {
+        ROS_ERROR("change the change goal");
+        goal.pose.position.x = goal.pose.position.x - 0.1;
+    }
 
 }
 
@@ -500,6 +521,13 @@ void vwpp::Task::taskCatchBall(bool state)
 
 }
 
+void vwpp::Task::taskDeletePoint()
+{
+    std_msgs::Bool delete_point;
+    delete_point.data = true;
+    this->cur_action->send_delete(delete_point);
+    this->count_pose_change = 0;
+}
 
 vwbot_controller::PoseAndColor vwpp::Task::getBallPose()
 {
@@ -575,6 +603,10 @@ double vwpp::Task::getLengthBetweenBallAndVwbot()
     return dis_length;
 }
 
+int vwpp::Task::getCountPoseChange()
+{
+    return this->count_pose_change;
+}
 
 void vwpp::Task::sub_catchball_state_cb(const dector::ColorBool::ConstPtr &msg)
 {
@@ -675,8 +707,24 @@ void vwpp::Task::sub_blue_angular_cb(const std_msgs::Float32::ConstPtr &msg)
     this->blue_angular.data = -msg->data;
 }
 
-
 void vwpp::Task::sub_yellow_angular_cb(const std_msgs::Float32::ConstPtr &msg)
 {
     this->yellow_angular.data = -msg->data;
+}
+
+double vwpp::Task::getChange()
+{
+    double change;
+    change = sqrt((this->vwbot_pose.pose.position.x - this->last_pose.pose.position.x) *
+                (this->vwbot_pose.pose.position.x - this->last_pose.pose.position.x)
+             +(this->vwbot_pose.pose.position.y - this->last_pose.pose.position.y) *
+                (this->vwbot_pose.pose.position.y - this->last_pose.pose.position.y)
+             +(this->vwbot_pose.pose.orientation.x - this->last_pose.pose.orientation.x) *
+                (this->vwbot_pose.pose.orientation.x - this->last_pose.pose.orientation.x)
+             +(this->vwbot_pose.pose.orientation.y - this->last_pose.pose.orientation.y) *
+                (this->vwbot_pose.pose.orientation.y - this->last_pose.pose.orientation.y)
+             +(this->vwbot_pose.pose.orientation.z - this->last_pose.pose.orientation.z) *
+                (this->vwbot_pose.pose.orientation.z - this->last_pose.pose.orientation.z)
+             +(this->vwbot_pose.pose.orientation.w - this->last_pose.pose.orientation.w) *
+                (this->vwbot_pose.pose.orientation.w - this->last_pose.pose.orientation.w));
 }

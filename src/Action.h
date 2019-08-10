@@ -48,6 +48,8 @@ namespace vwpp
 
         void send_cancel(const actionlib_msgs::GoalID &_goal_id);
 
+        void send_delete(const std_msgs::Bool &_delete);
+
         ActionState getActionState();
 
     private:
@@ -60,6 +62,7 @@ namespace vwpp
         ros::Publisher pub_flow;
         ros::Publisher pub_cmd_vel;
         ros::Publisher pub_goal_id;
+        ros::Publisher pub_delete_point;
 
     };
 }

@@ -7,6 +7,9 @@
 
 #include "PoseAndColor.h"
 #include "PIDController.h"
+#include "PointServer.h"
+#include "PointServerRequest.h"
+#include "PointServerResponse.h"
 #include <std_msgs/Float32.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_datatypes.h>
@@ -61,6 +64,7 @@ namespace vwpp
         void taskPutBall();  // Task3 When vwbot in the right door
         void taskChange();   // Task4 When vwbot need to change the task
         void taskCatchBall(bool state); //Task5 When vwbot need to control the hand
+        void taskDeletePoint();
 
         vwbot_controller::PoseAndColor getBallPose();
         geometry_msgs::PoseStamped getVwbotPose();
@@ -70,6 +74,8 @@ namespace vwpp
         int getTaskChangeState();
         int getTaskHasBallState();
         int getTaskNoBallState();
+        int getCountPoseChange();
+        double getChange();
         double getLengthBetweenBallAndVwbot();
         double getYawBetweenBallAndVwbot();
 
@@ -95,11 +101,13 @@ namespace vwpp
         void sub_red_angular_cb(const std_msgs::Float32::ConstPtr &msg );
         void sub_yellow_angular_cb(const std_msgs::Float32::ConstPtr &msg);
         void sub_blue_angular_cb(const std_msgs::Float32::ConstPtr &msg);
-
+        void sub_check_point(bool check);
 
         ros::Subscriber sub_ball_pose_color;  //sub ball's pose and color
         ros::Subscriber sub_ball_state;  // sub ball'state when catch the ball
         ros::Subscriber sub_vwbot; //sub vwbot's pose
+        ros::ServiceClient client_change_point;
+
 
         ros::Subscriber sub_red;
         ros::Subscriber sub_yellow;
@@ -122,6 +130,8 @@ namespace vwpp
 
         double angular_last;
         double aim_angle;
+        int count_pose_change;
+        geometry_msgs::PoseStamped last_pose;
         //need to calculate the number of ball
     };
 

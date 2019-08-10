@@ -17,6 +17,7 @@ vwpp::Action::Action() :
     pub_flow = nh.advertise<std_msgs::Bool>("/send_flow_state",1);
     pub_cmd_vel = nh.advertise<geometry_msgs::Twist>("/cmd_vel_unstamped",1);
     pub_goal_id = nh.advertise<actionlib_msgs::GoalID>("/move_base/cancel",1);
+    pub_delete_point = nh.advertise<std_msgs::Bool>("/delete_current_point",1);
 
 }
 
@@ -87,6 +88,12 @@ void vwpp::Action::send_cancel(const actionlib_msgs::GoalID &_goal_id)
 {
     ROS_ERROR("##########Now Cancel");
     this->pub_goal_id.publish(_goal_id);
+}
+
+void vwpp::Action::send_delete(const std_msgs::Bool &_delete)
+{
+    ROS_ERROR("########Delete the point");
+    this->pub_delete_point.publish(_delete);
 }
 vwpp::ActionState vwpp::Action::getActionState()
 {

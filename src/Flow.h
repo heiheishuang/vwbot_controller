@@ -26,7 +26,7 @@ namespace vwpp
         PUT_BALL_START,
         CHANGE_START,
         CATCH_BALL_START_CATCH,
-        CATCH_BALL_START_PUT
+        CATCH_BALL_START_PUT,
     };
 
     class FlowController
