@@ -31,6 +31,15 @@ void vwpp::FlowController::run()
     if (cur_flow_state == FLOW_START)
     {
 
+        std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
+                  << std::endl;
+        std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
+                  << std::endl;
+        std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
+                  << std::endl;
+        std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
+                  << std::endl;
+
         if (cur_task_state == NO_BALL_START)
         {
 
