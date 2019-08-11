@@ -118,10 +118,13 @@ void vwpp::Task::taskHasBall()
 
     //New in 8.11 add the last pose;
     //*****************************
-    if (getChange() <= 0.10)
+    if (getChange() <= 0.03)
         this->count_pose_change = this->count_pose_change + 1;
+    else
+        this->count_pose_change = 0;
 
-    if (this->task_has_ball_state == 0 )
+
+    if (this->task_has_ball_state == 0)
     {
 
         ROS_WARN("taskHasBall action 1!");
@@ -191,7 +194,7 @@ void vwpp::Task::taskHasBall()
 
     }
 
-    if(this->task_has_ball_state == 2 )
+    if (this->task_has_ball_state == 2)
     {
 
         if (this->getLengthBetweenBallAndVwbot() >= 0.30 or this->getYawBetweenBallAndVwbot() / 3.14 * 180 >= 15)
@@ -201,8 +204,8 @@ void vwpp::Task::taskHasBall()
             this->task_has_ball_state = 0;
         }
 
-        //Cancel the goal
-        if (this->task_ball_cancel == 1 )
+        //Cancel the navigation goal
+        if (this->task_ball_cancel == 1)
         {
             actionlib_msgs::GoalID goal_id;
             this->cur_action->send_cancel(goal_id);
@@ -256,7 +259,7 @@ void vwpp::Task::taskHasBall()
         aim_angle = yaw + angular.data;
 
     }
-    if (this->task_has_ball_state == 3 )
+    if (this->task_has_ball_state == 3)
     {
 
         ROS_ERROR("Now action 4");
@@ -292,7 +295,6 @@ void vwpp::Task::taskHasBall()
             this->task_has_ball_state = 1;
             this->task_ball_cancel = 1;
         }
-
 
 
     }
@@ -379,11 +381,7 @@ void vwpp::Task::taskNoBall()
     //###################
     // printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
     //
-    // tf::Matrix3x3 mat(tf::Quaternion(cur_pose.pose.orientation.x, cur_pose.pose.orientation.y,
-    //                                  cur_pose.pose.orientation.z, cur_pose.pose.orientation.w));
     //
-    // double yaw, pitch, roll;
-    // mat.getEulerYPR(yaw, pitch, roll);
     //
     // yaw = yaw / 3.14 * 180 + 20;
     // yaw = yaw / 180 * 3.14;
@@ -510,7 +508,7 @@ void vwpp::Task::taskChange()
         goal.pose.position.x = goal.pose.position.x - 0.15;
 
         this->cur_action->action_move_base(goal);
-        ROS_ERROR("%lf %lf ",goal.pose.position.x, goal.pose.position.y);
+        ROS_ERROR("%lf %lf ", goal.pose.position.x, goal.pose.position.y);
     }
 
 }
@@ -525,8 +523,10 @@ void vwpp::Task::taskCatchBall(bool state)
     std_msgs::Bool hand_state;
     hand_state.data = state;
     this->cur_action->send_to_hand(hand_state);
+    this->deletePoint();
 
 }
+
 
 void vwpp::Task::deletePoint()
 {
@@ -535,6 +535,7 @@ void vwpp::Task::deletePoint()
     this->cur_action->send_delete(delete_point);
     this->count_pose_change = 0;
 }
+
 
 vwbot_controller::PoseAndColor vwpp::Task::getBallPose()
 {
@@ -610,10 +611,12 @@ double vwpp::Task::getLengthBetweenBallAndVwbot()
     return dis_length;
 }
 
+
 int vwpp::Task::getCountPoseChange()
 {
     return this->count_pose_change;
 }
+
 
 void vwpp::Task::sub_catchball_state_cb(const dector::ColorBool::ConstPtr &msg)
 {
@@ -714,27 +717,46 @@ void vwpp::Task::sub_blue_angular_cb(const std_msgs::Float32::ConstPtr &msg)
     this->blue_angular.data = -msg->data;
 }
 
+
 void vwpp::Task::sub_yellow_angular_cb(const std_msgs::Float32::ConstPtr &msg)
 {
     this->yellow_angular.data = -msg->data;
 }
 
+
 double vwpp::Task::getChange()
 {
-    double change;
-    change = sqrt((this->vwbot_pose.pose.position.x - this->last_pose.pose.position.x) *
-                (this->vwbot_pose.pose.position.x - this->last_pose.pose.position.x)
-             +(this->vwbot_pose.pose.position.y - this->last_pose.pose.position.y) *
-                (this->vwbot_pose.pose.position.y - this->last_pose.pose.position.y)
-             +(this->vwbot_pose.pose.orientation.x - this->last_pose.pose.orientation.x) *
-                (this->vwbot_pose.pose.orientation.x - this->last_pose.pose.orientation.x)
-             +(this->vwbot_pose.pose.orientation.y - this->last_pose.pose.orientation.y) *
-                (this->vwbot_pose.pose.orientation.y - this->last_pose.pose.orientation.y)
-             +(this->vwbot_pose.pose.orientation.z - this->last_pose.pose.orientation.z) *
-                (this->vwbot_pose.pose.orientation.z - this->last_pose.pose.orientation.z)
-             +(this->vwbot_pose.pose.orientation.w - this->last_pose.pose.orientation.w) *
-                (this->vwbot_pose.pose.orientation.w - this->last_pose.pose.orientation.w));
-    ROS_ERROR("%lf ", change);
-    return  change;
+    double change_position, change_orientation, change_yaw;
+    change_position = sqrt((this->vwbot_pose.pose.position.x - this->last_pose.pose.position.x) *
+                           (this->vwbot_pose.pose.position.x - this->last_pose.pose.position.x)
+                           + (this->vwbot_pose.pose.position.y - this->last_pose.pose.position.y) *
+                             (this->vwbot_pose.pose.position.y - this->last_pose.pose.position.y));
+    change_orientation = 10 * sqrt((this->vwbot_pose.pose.orientation.x - this->last_pose.pose.orientation.x) *
+                              (this->vwbot_pose.pose.orientation.x - this->last_pose.pose.orientation.x)
+                              + (this->vwbot_pose.pose.orientation.y - this->last_pose.pose.orientation.y) *
+                                (this->vwbot_pose.pose.orientation.y - this->last_pose.pose.orientation.y)
+                              + (this->vwbot_pose.pose.orientation.z - this->last_pose.pose.orientation.z) *
+                                (this->vwbot_pose.pose.orientation.z - this->last_pose.pose.orientation.z)
+                              + (this->vwbot_pose.pose.orientation.w - this->last_pose.pose.orientation.w) *
+                                (this->vwbot_pose.pose.orientation.w - this->last_pose.pose.orientation.w));
+
+    tf::Matrix3x3 mat(tf::Quaternion(this->vwbot_pose.pose.orientation.x, this->vwbot_pose.pose.orientation.y,
+                                      this->vwbot_pose.pose.orientation.z, this->vwbot_pose.pose.orientation.w));
+
+    double yaw, pitch, roll;
+    mat.getEulerYPR(yaw, pitch, roll);
+
+    tf::Matrix3x3 mat_last(tf::Quaternion(this->last_pose.pose.orientation.x, this->last_pose.pose.orientation.y,
+                                     this->last_pose.pose.orientation.z, this->last_pose.pose.orientation.w));
+
+    double last_yaw, last_pitch, last_roll;
+    mat_last.getEulerYPR(last_yaw, last_pitch, last_roll);
+
+    change_yaw = last_yaw - yaw;
+
+
+    ROS_ERROR("%lf    %lf   %lf", change_orientation, change_position, change_yaw);
+    return sqrt(change_yaw  * change_yaw + change_position * change_position);
+
 
 }

@@ -116,6 +116,8 @@ void vwpp::FlowController::run()
 
             }
 
+            ROS_ERROR("###################### %d ", this->cur_task->getCountPoseChange());
+
             if (this->cur_task->getCountPoseChange() >= 10)
             {
 
