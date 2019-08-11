@@ -33,7 +33,7 @@ vwpp::Task::Task() :
     sub_blue = nh.subscribe<std_msgs::Float32>
             ("/blue_angle", 10, &Task::sub_blue_angular_cb, this);
 
-    client_change_point = nh.serviceClient<dector::PointServer>("check_point");
+    client_change_point = nh.serviceClient<dector::PointServer>("/check_point");
 
     ROS_ERROR("subscribe created");
 
@@ -454,6 +454,7 @@ void vwpp::Task::taskChange()
     if (this->task_change_point_state == 1)
     {
 
+        ROS_ERROR("Now change point is 1");
         goal.header.frame_id = "map";
         goal.header.stamp = ros::Time::now();
         goal.pose.orientation.w = 0;
@@ -466,7 +467,7 @@ void vwpp::Task::taskChange()
     }
     else if (this->task_change_point_state == 2)
     {
-
+        ROS_ERROR("Now change point is 2");
         goal.header.frame_id = "map";
         goal.header.stamp = ros::Time::now();
         goal.pose.orientation.w = 0;
@@ -479,7 +480,7 @@ void vwpp::Task::taskChange()
     }
     else
     {
-
+        ROS_ERROR("Now change point is 3");
         goal.header.frame_id = "map";
         goal.header.stamp = ros::Time::now();
         goal.pose.orientation.w = 0;
@@ -494,16 +495,22 @@ void vwpp::Task::taskChange()
     dector::PointServer srv;
 
     srv.request.point = goal.pose.position;
-    // changeTask 1 from taskPutBall to
+    // changeTask 1 from taskPutBall to,
+
     if (client_change_point.call(srv))
     {
+
+        ROS_ERROR("The goal is right");
 
         this->cur_action->action_move_base(goal);
     }
     else
     {
         ROS_ERROR("change the change goal");
-        goal.pose.position.x = goal.pose.position.x - 0.1;
+        goal.pose.position.x = goal.pose.position.x - 0.15;
+
+        this->cur_action->action_move_base(goal);
+        ROS_ERROR("%lf %lf ",goal.pose.position.x, goal.pose.position.y);
     }
 
 }
@@ -521,7 +528,7 @@ void vwpp::Task::taskCatchBall(bool state)
 
 }
 
-void vwpp::Task::taskDeletePoint()
+void vwpp::Task::deletePoint()
 {
     std_msgs::Bool delete_point;
     delete_point.data = true;
@@ -727,4 +734,7 @@ double vwpp::Task::getChange()
                 (this->vwbot_pose.pose.orientation.z - this->last_pose.pose.orientation.z)
              +(this->vwbot_pose.pose.orientation.w - this->last_pose.pose.orientation.w) *
                 (this->vwbot_pose.pose.orientation.w - this->last_pose.pose.orientation.w));
+    ROS_ERROR("%lf ", change);
+    return  change;
+
 }

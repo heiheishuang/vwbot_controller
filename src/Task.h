@@ -64,7 +64,6 @@ namespace vwpp
         void taskPutBall();  // Task3 When vwbot in the right door
         void taskChange();   // Task4 When vwbot need to change the task
         void taskCatchBall(bool state); //Task5 When vwbot need to control the hand
-        void taskDeletePoint();
 
         vwbot_controller::PoseAndColor getBallPose();
         geometry_msgs::PoseStamped getVwbotPose();
@@ -87,6 +86,8 @@ namespace vwpp
 
         void initBallOrientation();
 
+        void deletePoint();
+
     private:
 
         ros::NodeHandle nh;
@@ -101,7 +102,6 @@ namespace vwpp
         void sub_red_angular_cb(const std_msgs::Float32::ConstPtr &msg );
         void sub_yellow_angular_cb(const std_msgs::Float32::ConstPtr &msg);
         void sub_blue_angular_cb(const std_msgs::Float32::ConstPtr &msg);
-        void sub_check_point(bool check);
 
         ros::Subscriber sub_ball_pose_color;  //sub ball's pose and color
         ros::Subscriber sub_ball_state;  // sub ball'state when catch the ball
@@ -133,6 +133,8 @@ namespace vwpp
         int count_pose_change;
         geometry_msgs::PoseStamped last_pose;
         //need to calculate the number of ball
+
+
     };
 
 

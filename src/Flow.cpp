@@ -31,25 +31,7 @@ void vwpp::FlowController::run()
     if (cur_flow_state == FLOW_START)
     {
 
-        std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
-                  << std::endl;
-        std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
-                  << std::endl;
-        std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
-                  << std::endl;
-        std::cout << GREEN << "Now action STATE" << this->cur_task->getActionState() << "\033[0m"
-                  << std::endl;
-
-        //New in 8.11
-        if (cur_task_state == HAS_BALL_START and this->cur_task->getCountPoseChange() >= 10)
-        {
-
-            this->cur_task->taskDeletePoint();
-            cur_task_state = NO_BALL_START;
-
-        }
-        //New in 8.11
-        if (cur_task_state == NO_BALL_START)
+        if (cur_task_state == NO_BALL_START )
         {
 
             if (this->cur_task->getBallState().data != 0)
@@ -114,9 +96,7 @@ void vwpp::FlowController::run()
 
             if (this->cur_task->getLengthBetweenBallAndVwbot() <= DIS_LENGTH_WHEN_CATCH
                 and this->cur_task->getTaskHasBallState() == 2)
-                // TODO
-                //New in 8.6
-                //else if (this->cur_task->getLengthBetweenBallAndVwbot() <= 0.05 and this->cur_task->getTaskHasBallState() == 2)
+
             {
 
                 std::cout << GREEN << "getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH "  << "\033[0m" << std::endl;
@@ -136,8 +116,17 @@ void vwpp::FlowController::run()
 
             }
 
+            if (this->cur_task->getCountPoseChange() >= 10)
+            {
+
+                ROS_ERROR("Delete the point");
+                this->cur_task->deletePoint();
+                this->cur_task->sendToTaskHasBall(0);
+                cur_task_state = NO_BALL_START;
+            }
+
         }
-        else if (cur_task_state == CATCH_BALL_START_CATCH)
+        else if (cur_task_state == CATCH_BALL_START_CATCH )
         {
 
             ROS_INFO("Now cur_task_state is CATCH_BALL_START_CATCH !");
@@ -167,7 +156,7 @@ void vwpp::FlowController::run()
             }
 
         }
-        else if (cur_task_state == CATCH_BALL_START_PUT)
+        else if (cur_task_state == CATCH_BALL_START_PUT )
         {
 
             ROS_INFO("Now cur_task_state is CATCH_BALL_START_PUT !");
@@ -267,7 +256,6 @@ void vwpp::FlowController::run()
             }
 
         }
-
 
     }
     else if (cur_flow_state == FLOW_FINSH)
