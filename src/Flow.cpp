@@ -146,7 +146,7 @@ void vwpp::FlowController::run()
 
             this->cur_task->taskCatchBall(true);
 
-            static JudgeAchieveCounter judge_achieve_counter(WAIT_TIME);
+            static JudgeAchieveCounter judge_achieve_counter(1);
 
             if (judge_achieve_counter.isAchieve())
             {
@@ -176,7 +176,7 @@ void vwpp::FlowController::run()
 
             this->cur_task->taskCatchBall(false);
 
-            static JudgeAchieveCounter judge_achieve_counter(WAIT_TIME);
+            static JudgeAchieveCounter judge_achieve_counter(1);
 
             if (judge_achieve_counter.isAchieve())
             {

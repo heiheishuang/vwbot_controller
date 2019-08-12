@@ -225,10 +225,10 @@ void vwpp::Task::taskHasBall()
         // target_pose.pose.orientation = ball_orientation.pose.orientation;
         // this->cur_action->action_move_base(target_pose);
 
-        std_msgs::Float32 angular;
-        if (this->ball_pose.color == "red") angular = this->red_angular;
-        if (this->ball_pose.color == "green") angular = this->yellow_angular;
-        if (this->ball_pose.color == "blue") angular = this->blue_angular;
+        std_msgs::Float32 angle;
+        if (this->ball_pose.color == "red") angle = this->red_angle;
+        if (this->ball_pose.color == "green") angle = this->yellow_angle;
+        if (this->ball_pose.color == "blue") angle = this->blue_angle;
 
         geometry_msgs::Twist vel;
 
@@ -240,8 +240,8 @@ void vwpp::Task::taskHasBall()
         static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
 
         pid_controller_toward_angular.setTarget(0.0);
-        ROS_ERROR("Current angular data: %lf", angular.data);
-        pid_controller_toward_angular.update(-(angular.data * M_PI / 180.));
+        ROS_ERROR("Current angle data: %lf", angle.data);
+        pid_controller_toward_angular.update(-(angle.data * M_PI / 180.));
 
         vel.linear.x = PID_VEL;
         vel.linear.y = 0.0;
@@ -250,51 +250,103 @@ void vwpp::Task::taskHasBall()
         vel.angular.z = pid_controller_toward_angular.output();
         // vel.angular.z = 0.1;
 
+        ROS_ERROR("Now in Action 3 and angle is %lf ", angle.data);
+
         this->cur_action->send_cmd_vel(vel);
-        if (angular.data < -500)
+        if (angle.data > 500)
         {
             this->task_has_ball_state = 3;
         }
 
-        aim_angle = yaw + angular.data;
+        aim_angle = yaw + angle.data;
 
     }
     if (this->task_has_ball_state == 3)
     {
 
-        ROS_ERROR("Now action 4");
+        static JudgeAchieveCounter judge_achieve_counter(WAIT_TIME);
 
-        geometry_msgs::Twist vel;
-
-        std_msgs::Float32 angular;
-        if (this->ball_pose.color == "red") angular = this->red_angular;
-        if (this->ball_pose.color == "green") angular = this->yellow_angular;
-        if (this->ball_pose.color == "blue") angular = this->blue_angular;
-
-
-        std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
-                  << std::endl;
-        std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
-
-
-        static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
-
-        pid_controller_toward_angular.setTarget(aim_angle);
-        ROS_ERROR("Aim angle data: %lf", aim_angle);
-
-        vel.linear.x = 0.0;
-        vel.linear.y = 0.0;
-        vel.angular.x = 0.0;
-        vel.angular.y = 0.0;
-        vel.angular.z = pid_controller_toward_angular.output();
-        // vel.angular.z = 0.1;
-        this->cur_action->send_cmd_vel(vel);
-
-        if (angular.data > -500)
+        if (judge_achieve_counter.isAchieve())
         {
-            this->task_has_ball_state = 1;
-            this->task_ball_cancel = 1;
+
+            this->deletePoint();
+
+            ROS_ERROR("Now action 4");
+            ROS_ERROR("Now in action 4");
+            ROS_ERROR("Now in Action 4 !!!!!!!");
+
+            geometry_msgs::Twist vel;
+
+            std_msgs::Float32 angular;
+            if (this->ball_pose.color == "red") angular = this->red_angle;
+            if (this->ball_pose.color == "green") angular = this->yellow_angle;
+            if (this->ball_pose.color == "blue") angular = this->blue_angle;
+
+
+            std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
+                      << std::endl;
+            std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
+
+
+            static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
+
+            pid_controller_toward_angular.setTarget(aim_angle);
+            ROS_ERROR("Aim angle data: %lf", aim_angle);
+
+            vel.linear.x = PID_VEL;
+            vel.linear.y = 0.0;
+            vel.angular.x = 0.0;
+            vel.angular.y = 0.0;
+            vel.angular.z = pid_controller_toward_angular.output();
+            // vel.angular.z = 0.1;
+            this->cur_action->send_cmd_vel(vel);
+
+            if (angular.data < 500)
+            {
+                this->task_has_ball_state = 1;
+                this->task_ball_cancel = 1;
+            }
+
         }
+        else
+        {
+            ROS_ERROR("Now action 4");
+            ROS_ERROR("Now in action 4");
+            ROS_ERROR("Now in Action 4 !!!!!!!");
+
+            geometry_msgs::Twist vel;
+
+            std_msgs::Float32 angular;
+            if (this->ball_pose.color == "red") angular = this->red_angle;
+            if (this->ball_pose.color == "green") angular = this->yellow_angle;
+            if (this->ball_pose.color == "blue") angular = this->blue_angle;
+
+
+            std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
+                      << std::endl;
+            std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
+
+
+            static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
+
+            pid_controller_toward_angular.setTarget(aim_angle);
+            ROS_ERROR("Aim angle data: %lf", aim_angle);
+
+            vel.linear.x = PID_VEL;
+            vel.linear.y = 0.0;
+            vel.angular.x = 0.0;
+            vel.angular.y = 0.0;
+            vel.angular.z = pid_controller_toward_angular.output();
+            // vel.angular.z = 0.1;
+            this->cur_action->send_cmd_vel(vel);
+
+            if (angular.data < 500)
+            {
+                this->task_has_ball_state = 1;
+                this->task_ball_cancel = 1;
+            }
+        }
+
 
 
     }
@@ -381,6 +433,7 @@ void vwpp::Task::taskNoBall()
     //###################
     // printf("Orientation %lf %lf \n", cur_pose.pose.orientation.z, cur_pose.pose.orientation.w);
     //
+
     //
     //
     // yaw = yaw / 3.14 * 180 + 20;
@@ -707,19 +760,19 @@ void vwpp::Task::initBallOrientation()
 
 void vwpp::Task::sub_red_angular_cb(const std_msgs::Float32::ConstPtr &msg)
 {
-    this->red_angular.data = -msg->data;
+    this->red_angle.data = -msg->data;
 }
 
 
 void vwpp::Task::sub_blue_angular_cb(const std_msgs::Float32::ConstPtr &msg)
 {
-    this->blue_angular.data = -msg->data;
+    this->blue_angle.data = -msg->data;
 }
 
 
 void vwpp::Task::sub_yellow_angular_cb(const std_msgs::Float32::ConstPtr &msg)
 {
-    this->yellow_angular.data = -msg->data;
+    this->yellow_angle.data = -msg->data;
 }
 
 

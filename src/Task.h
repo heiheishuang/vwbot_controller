@@ -10,6 +10,7 @@
 #include "PointServer.h"
 #include "PointServerRequest.h"
 #include "PointServerResponse.h"
+#include "JudgeAchieveCounter.h"
 #include <std_msgs/Float32.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_datatypes.h>
@@ -19,7 +20,7 @@
 #define MID_X 1.5
 #define MID_Y 0.0
 
-#define PID_ANGULAR_P 1.3
+#define PID_ANGULAR_P 1.7
 #define PID_ANGULAR_I 0.0
 #define PID_ANGULAR_D 0.55
 #define PID_VEL 0.30
@@ -119,9 +120,9 @@ namespace vwpp
         geometry_msgs::PoseStamped ball_orientation;
         dector::ColorBool ball_state; //ball's state when catch the ball
 
-        std_msgs::Float32 red_angular;
-        std_msgs::Float32 yellow_angular;
-        std_msgs::Float32 blue_angular;
+        std_msgs::Float32 red_angle;
+        std_msgs::Float32 yellow_angle;
+        std_msgs::Float32 blue_angle;
 
         int task_has_ball_state;
         int task_no_ball_state;

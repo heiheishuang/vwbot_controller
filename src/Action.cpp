@@ -76,6 +76,7 @@ void vwpp::Action::send_flow_state(const std_msgs::Bool &_flow)
     this->pub_flow.publish(_flow);
 
 }
+
 void vwpp::Action::send_cmd_vel(const geometry_msgs::Twist &_vel)
 {
 
@@ -84,9 +85,10 @@ void vwpp::Action::send_cmd_vel(const geometry_msgs::Twist &_vel)
     this->pub_cmd_vel.publish(_vel);
 
 }
+
 void vwpp::Action::send_cancel(const actionlib_msgs::GoalID &_goal_id)
 {
-    ROS_ERROR("##########Now Cancel");
+    ROS_ERROR("##########Now Cancel the navigation goal");
     this->pub_goal_id.publish(_goal_id);
 }
 
