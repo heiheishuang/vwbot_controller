@@ -28,7 +28,7 @@ vwpp::FlowState vwpp::FlowController::getFlowState()
 void vwpp::FlowController::run()
 {
 
-    if (cur_flow_state == FLOW_START)
+    if (cur_flow_state == FLOW_START )
     {
 
         if (cur_task_state == NO_BALL_START )
@@ -127,6 +127,7 @@ void vwpp::FlowController::run()
                 cur_task_state = NO_BALL_START;
             }
 
+
         }
         else if (cur_task_state == CATCH_BALL_START_CATCH )
         {
@@ -177,7 +178,7 @@ void vwpp::FlowController::run()
             }
 
         }
-        else if (cur_task_state == PUT_BALL_START)
+        else if (cur_task_state == PUT_BALL_START )
         {
 
             ROS_INFO("Now cur_task_state is PUT_BALL_START !");
@@ -202,7 +203,7 @@ void vwpp::FlowController::run()
 
 
         }
-        else if (cur_task_state == CHANGE_START)
+        else if (cur_task_state == CHANGE_START )
         {
             ROS_INFO("Now cur_task_state is CHANGE_START !");
 
@@ -266,6 +267,8 @@ void vwpp::FlowController::run()
         //Need cur_flow_state = FLOW_FINSH
         //When all the ball is over
     }
+
+
 }
 
 
