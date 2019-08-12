@@ -523,8 +523,6 @@ void vwpp::Task::taskCatchBall(bool state)
     std_msgs::Bool hand_state;
     hand_state.data = state;
     this->cur_action->send_to_hand(hand_state);
-    //TODO
-    this->deletePoint();
 
 }
 

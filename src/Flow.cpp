@@ -46,6 +46,9 @@ void vwpp::FlowController::run()
                 this->cur_task->sendToTaskHasBall(0);  //change the task_has_ball_state
                 cur_task_state = CATCH_BALL_START_CATCH;
 
+                //New in 8.12
+                this->cur_task->deletePoint();
+
             }
 
             ROS_INFO("Now cur_task_state is NO_BALL_START !");
@@ -92,6 +95,10 @@ void vwpp::FlowController::run()
                 this->cur_task->sendToTaskHasBall(0);  //change the task_has_ball_state
                 cur_task_state = CATCH_BALL_START_CATCH;
 
+                //New 8.12
+
+                this->cur_task->deletePoint();
+
             }
 
             if (this->cur_task->getLengthBetweenBallAndVwbot() <= DIS_LENGTH_WHEN_CATCH
@@ -99,10 +106,13 @@ void vwpp::FlowController::run()
 
             {
 
-                std::cout << GREEN << "getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH "  << "\033[0m" << std::endl;
+                std::cout << GREEN << "!!!!!   getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH "  << "\033[0m" << std::endl;
                 this->cur_task->sendToTaskHasBall(0);
+
                 cur_task_state = CATCH_BALL_START_CATCH;
 
+                //New 8.12
+                this->cur_task->deletePoint();
             }
 
 
@@ -221,6 +231,9 @@ void vwpp::FlowController::run()
                 ROS_ERROR("SPECIALLY ! Now cur_task_state is from HAS_BALL_START to CATCH_BALL_START_CATCH!");
                 this->cur_task->sendToTaskHasBall(0);  //change the task_has_ball_state
                 cur_task_state = CATCH_BALL_START_CATCH;
+
+                //New in 8.12
+                this->cur_task->deletePoint();
 
             }
 
