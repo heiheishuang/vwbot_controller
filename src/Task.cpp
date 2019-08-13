@@ -270,6 +270,7 @@ void vwpp::Task::taskHasBall()
         {
 
             this->deletePoint();
+            this->task_has_ball_state = 0;
 
             ROS_ERROR("Now action 4");
             ROS_ERROR("Now in action 4");

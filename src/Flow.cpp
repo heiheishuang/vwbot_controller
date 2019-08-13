@@ -31,6 +31,9 @@ void vwpp::FlowController::run()
     if (cur_flow_state == FLOW_START )
     {
 
+
+        std::cout << GREEN << " DIS_LENGTH_WHEN_CATCH = " << this->cur_task->getLengthBetweenBallAndVwbot() << "\033[0m" << std::endl;
+
         if (cur_task_state == NO_BALL_START )
         {
 
@@ -107,6 +110,7 @@ void vwpp::FlowController::run()
             {
 
                 std::cout << GREEN << "!!!!!   getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH "  << "\033[0m" << std::endl;
+                std::cout << GREEN << " DIS_LENGTH_WHEN_CATCH = " << this->cur_task->getLengthBetweenBallAndVwbot() << "\033[0m" << std::endl;
                 this->cur_task->sendToTaskHasBall(0);
 
                 cur_task_state = CATCH_BALL_START_CATCH;
