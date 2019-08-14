@@ -154,54 +154,86 @@ void vwpp::Task::taskHasBall()
 
     }
 
+    // if (this->task_has_ball_state == 1)
+    // {
+    //     ROS_WARN("taskHasBall action 2!");
+    //     target_pose.header.frame_id = "map";
+    //     target_pose.header.stamp = ros::Time::now();
+    //
+    //     target_pose.pose = now_ball.pose.pose;
+    //     target_pose.pose.position.x =
+    //             (dis_length - 0.20) / dis_length * dis_x * FAST_ACTION_2 + now_vwbot_pose.pose.position.x;
+    //     target_pose.pose.position.y =
+    //             (dis_length - 0.20) / dis_length * dis_y * FAST_ACTION_2 + now_vwbot_pose.pose.position.y;
+    //
+    //     tf::Quaternion q;
+    //     q.setRPY(0, 0, dis_yaw);
+    //     target_pose.pose.orientation.x = q[0];
+    //     target_pose.pose.orientation.y = q[1];
+    //     target_pose.pose.orientation.z = q[2];
+    //     target_pose.pose.orientation.w = q[3];
+    //
+    //     ball_orientation.pose.orientation = target_pose.pose.orientation;
+    //
+    //
+    //
+    //     this->cur_action->action_move_base(target_pose);
+    //
+    //     std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
+    //               << std::endl;
+    //     std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
+    //
+    //     if (dis_length <= 0.25 and fabs(dis_yaw - yaw) / 3.14 * 180 <= 15)
+    //     {
+    //         this->task_has_ball_state = 2;
+    //     }
+    //
+    // }
+
     if (this->task_has_ball_state == 1)
     {
-        // length less than 30cm has problem
-        // TODO
-        ROS_WARN("taskHasBall action 2!");
-        target_pose.header.frame_id = "map";
-        target_pose.header.stamp = ros::Time::now();
-
-        target_pose.pose = now_ball.pose.pose;
-        target_pose.pose.position.x =
-                (dis_length - 0.20) / dis_length * dis_x * FAST_ACTION_2 + now_vwbot_pose.pose.position.x;
-        target_pose.pose.position.y =
-                (dis_length - 0.20) / dis_length * dis_y * FAST_ACTION_2 + now_vwbot_pose.pose.position.y;
-
-        //Less than 30cm using the goal at 30cm
-        // target_pose.pose.position = ball_orientation.pose.position;
-        tf::Quaternion q;
-        q.setRPY(0, 0, dis_yaw);
-        target_pose.pose.orientation.x = q[0];
-        target_pose.pose.orientation.y = q[1];
-        target_pose.pose.orientation.z = q[2];
-        target_pose.pose.orientation.w = q[3];
-
-        ball_orientation.pose.orientation = target_pose.pose.orientation;
-
-
-
-        this->cur_action->action_move_base(target_pose);
+        ROS_ERROR("Now in action 2");
 
         std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
                   << std::endl;
         std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
+
+
+        double angle;
+        angle = dis_yaw;
+
+        geometry_msgs::Twist vel_action2;
+        static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
+
+        pid_controller_toward_angular.setTarget(0.0);
+
+        ROS_ERROR("Current angle data: %lf", angle);
+
+        pid_controller_toward_angular.update(-(angle * M_PI / 180.));
+
+        vel_action2.linear.x = PID_VEL;
+        vel_action2.linear.y = 0.0;
+        vel_action2.angular.x = 0.0;
+        vel_action2.angular.y = 0.0;
+        vel_action2.angular.z = pid_controller_toward_angular.output();
+
+        this->cur_action->send_cmd_vel(vel_action2);
 
         if (dis_length <= 0.25 and fabs(dis_yaw - yaw) / 3.14 * 180 <= 15)
         {
             this->task_has_ball_state = 2;
         }
 
-    }
 
+    }
     if (this->task_has_ball_state == 2)
     {
 
         // if (this->getLengthBetweenBallAndVwbot() >= 0.30 or this->getYawBetweenBallAndVwbot() / 3.14 * 180 >= 15)
         // {
-            // ROS_INFO( "Now cur_task_state is from HAS_BALL_START to NO_BALL_START");
-            // this->sendToTaskHasBall(0);
-            // this->task_has_ball_state = 0;
+        // ROS_INFO( "Now cur_task_state is from HAS_BALL_START to NO_BALL_START");
+        // this->sendToTaskHasBall(0);
+        // this->task_has_ball_state = 0;
         // }
 
         //Cancel the navigation goal
@@ -347,7 +379,6 @@ void vwpp::Task::taskHasBall()
                 this->task_ball_cancel = 1;
             }
         }
-
 
 
     }
