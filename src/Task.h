@@ -25,6 +25,11 @@
 #define PID_ANGULAR_D 0.55
 #define PID_VEL 0.30
 
+#define PID_ACTION2_P 3.5
+#define PID_ACTION2_I 0.0
+#define PID_ACTION2_D 1.0
+#define PID_ACTION_VEL 0.25
+
 #define CHANGE_1_X 1.5
 #define CHANGE_1_Y -1.0
 #define CHANGE_2_X 1.5
@@ -36,11 +41,11 @@
 #define FAST_ACTION_3 1      //Using in the taskHasBall in order to improve the speed
 #define WAIT_TIME 5 //Waiting for the hand to catch ball
 
-#define YELLOW_X 3.10
+#define YELLOW_X 3.30
 #define YELLOW_Y 0.55
-#define RED_X 3.10
+#define RED_X 3.30
 #define RED_Y 0.00
-#define BLUE_X 3.10
+#define BLUE_X 3.30
 #define BLUE_Y -0.55
 
 #define RED "\033[31m"

@@ -122,7 +122,7 @@ void vwpp::Task::taskHasBall()
 
     //New in 8.11 add the last pose;
     //*****************************
-    if (getChange() <= 0.03)
+    if (getChange() <= 0.035)
         this->count_pose_change = this->count_pose_change + 1;
     else
         this->count_pose_change = 0;
@@ -154,6 +154,10 @@ void vwpp::Task::taskHasBall()
         {
             this->task_has_ball_state = 1;
             this->task_ball_cancel = 1;
+
+            actionlib_msgs::GoalID goal_id;
+            this->cur_action->send_cancel(goal_id);
+
         }
 
     }
@@ -198,24 +202,39 @@ void vwpp::Task::taskHasBall()
     {
         ROS_ERROR("Now in action 2");
 
+
+
         std::cout << YELLOW << "####   DIS_YAW  %lf  #### " << fabs(dis_yaw - yaw) / 3.14 * 180 << "\033[0m"
                   << std::endl;
         std::cout << YELLOW << "####   DIS_LENGTH  %lf  #### " << dis_length << "\033[0m" << std::endl;
 
 
-        double angle;
-        angle = dis_yaw;
+        double angle_dis_yaw;
+        double angle_yaw;
+
+        angle_dis_yaw = dis_yaw / 3.14 * 180;
+        angle_yaw = yaw / 3.14 * 180;
+
+        if (angle_dis_yaw > 180 ) angle_dis_yaw = angle_dis_yaw - 360;
+        if (angle_dis_yaw < -180) angle_yaw = angle_yaw + 360;
 
         geometry_msgs::Twist vel_action2;
-        static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
+        static vwpp::PIDController pid_controller_toward_angular(PID_ACTION2_P, PID_ACTION2_I, PID_ACTION2_D);
 
-        pid_controller_toward_angular.setTarget(0.0);
+        pid_controller_toward_angular.setTarget(0);
 
-        ROS_ERROR("Current angle data: %lf", angle);
+        ROS_ERROR("dis_yaw: %lf",angle_dis_yaw);
+        ROS_ERROR("Now vwbot angle date: %lf ",angle_yaw);
+        ROS_ERROR("Now ball and car dis_yaw = %lf" ,angle_dis_yaw - angle_yaw);
 
-        pid_controller_toward_angular.update(-(angle * M_PI / 180.));
+        double update_angle;
 
-        vel_action2.linear.x = PID_VEL;
+        update_angle = (yaw - dis_yaw) / M_PI * 180;
+        if (update_angle > 180 ) update_angle = update_angle - 360;
+        if (update_angle < -180) update_angle = update_angle + 360;
+        pid_controller_toward_angular.update(update_angle / 180 * M_PI);
+
+        vel_action2.linear.x = PID_ACTION_VEL;
         vel_action2.linear.y = 0.0;
         vel_action2.angular.x = 0.0;
         vel_action2.angular.y = 0.0;
@@ -289,12 +308,13 @@ void vwpp::Task::taskHasBall()
         ROS_ERROR("Now in Action 3 and angle is %lf ", angle.data);
 
         this->cur_action->send_cmd_vel(vel);
+
         if (angle.data > 500)
         {
             this->task_has_ball_state = 3;
         }
 
-        aim_angle = yaw + 28;
+        aim_angle = yaw + 28 / 180.0 * M_PI;
 
     }
     if (this->task_has_ball_state == 3)
@@ -327,8 +347,9 @@ void vwpp::Task::taskHasBall()
 
             static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
 
-            pid_controller_toward_angular.setTarget(aim_angle);
+            pid_controller_toward_angular.setTarget(0);
             ROS_ERROR("Aim angle data: %lf", aim_angle);
+            pid_controller_toward_angular.update(aim_angle);
 
             vel.linear.x = PID_VEL;
             vel.linear.y = 0.0;
@@ -366,7 +387,8 @@ void vwpp::Task::taskHasBall()
 
             static vwpp::PIDController pid_controller_toward_angular(PID_ANGULAR_P, PID_ANGULAR_I, PID_ANGULAR_D);
 
-            pid_controller_toward_angular.setTarget(aim_angle);
+            pid_controller_toward_angular.setTarget(0);
+            pid_controller_toward_angular.update(aim_angle);
             ROS_ERROR("Aim angle data: %lf", aim_angle);
 
             vel.linear.x = PID_VEL;

@@ -193,26 +193,24 @@ void vwpp::FlowController::run()
         else if (cur_task_state == PUT_BALL_START)
         {
 
-            // ROS_INFO("Now cur_task_state is PUT_BALL_START !");
-            // this->cur_task->taskPutBall();
-            //
-            //
-            // if (this->cur_task->getActionState() == GOT_GOAL)
-            // {
-            //     ROS_INFO("Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is GOT_GOAL!");
-            //
-            //     cur_task_state = CATCH_BALL_START_PUT;
-            //            this->cur_task->taskPutBall();
-            // }
-            // else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
-            // {
-            //
-            //     ROS_INFO(
-            //             "Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is FAILED_TO_GOAL!");
-            //     cur_task_state = CATCH_BALL_START_PUT;
-            // }
-
             ROS_INFO("Now cur_task_state is PUT_BALL_START !");
+            this->cur_task->taskPutBall();
+
+
+            if (this->cur_task->getActionState() == GOT_GOAL)
+            {
+                ROS_INFO("Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is GOT_GOAL!");
+
+                cur_task_state = CATCH_BALL_START_PUT;
+                       this->cur_task->taskPutBall();
+            }
+            else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
+            {
+
+                ROS_INFO(
+                        "Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is FAILED_TO_GOAL!");
+                cur_task_state = CATCH_BALL_START_PUT;
+            }
 
 
             if (this->cur_task->getVwbotPose().pose.position.x > 3.1 and
