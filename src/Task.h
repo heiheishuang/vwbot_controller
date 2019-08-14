@@ -25,9 +25,9 @@
 #define PID_ANGULAR_D 0.55
 #define PID_VEL 0.30
 
-#define PID_ACTION2_P 3.5
+#define PID_ACTION2_P 4.5
 #define PID_ACTION2_I 0.0
-#define PID_ACTION2_D 1.0
+#define PID_ACTION2_D -0.2
 #define PID_ACTION_VEL 0.25
 
 #define CHANGE_1_X 1.5
