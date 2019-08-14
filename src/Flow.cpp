@@ -33,7 +33,7 @@ void vwpp::FlowController::run()
 
 
         std::cout << GREEN << " DIS_LENGTH_WHEN_CATCH = " << this->cur_task->getLengthBetweenBallAndVwbot() << "\033[0m" << std::endl;
-
+        ROS_ERROR("Vwbot Pose x = %lf y = %lf",this->cur_task->getVwbotPose().pose.position.x,this->cur_task->getVwbotPose().pose.position.y);
         if (cur_task_state == NO_BALL_START )
         {
 
@@ -49,8 +49,6 @@ void vwpp::FlowController::run()
                 this->cur_task->sendToTaskHasBall(0);  //change the task_has_ball_state
                 cur_task_state = CATCH_BALL_START_CATCH;
 
-                //New in 8.12
-                this->cur_task->deletePoint();
 
             }
 
@@ -98,9 +96,6 @@ void vwpp::FlowController::run()
                 this->cur_task->sendToTaskHasBall(0);  //change the task_has_ball_state
                 cur_task_state = CATCH_BALL_START_CATCH;
 
-                //New 8.12
-
-                this->cur_task->deletePoint();
 
             }
 
@@ -150,7 +145,7 @@ void vwpp::FlowController::run()
 
             this->cur_task->taskCatchBall(true);
 
-            static JudgeAchieveCounter judge_achieve_counter(1);
+            static JudgeAchieveCounter judge_achieve_counter(2);
 
             if (judge_achieve_counter.isAchieve())
             {
@@ -236,8 +231,6 @@ void vwpp::FlowController::run()
                 this->cur_task->sendToTaskHasBall(0);  //change the task_has_ball_state
                 cur_task_state = CATCH_BALL_START_CATCH;
 
-                //New in 8.12
-                this->cur_task->deletePoint();
 
             }
 
