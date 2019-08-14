@@ -67,6 +67,7 @@ namespace vwpp
         void taskCatchBall(bool state); //Task5 When vwbot need to control the hand
 
         vwbot_controller::PoseAndColor getBallPose();
+        geometry_msgs::PoseStamped getAimPutBallPoint();
         geometry_msgs::PoseStamped getVwbotPose();
         dector::ColorBool getBallState();
 
@@ -84,6 +85,7 @@ namespace vwpp
         void sendToTaskChange(int state);
         void sendToColor(std::string color);
         void sendToAngularLast(double angular);
+        void sendToTaskCancelBall(int cancel);
 
         void initBallOrientation();
 
@@ -118,6 +120,8 @@ namespace vwpp
         std::string now_color;
         geometry_msgs::PoseStamped vwbot_pose;
         geometry_msgs::PoseStamped ball_orientation;
+        geometry_msgs::PoseStamped aim_put_ball_point;
+
         dector::ColorBool ball_state; //ball's state when catch the ball
 
         std_msgs::Float32 red_angle;
@@ -130,6 +134,7 @@ namespace vwpp
         int task_ball_cancel;
 
         double angular_last;
+
         double aim_angle;
         int count_pose_change;
         geometry_msgs::PoseStamped last_pose;

@@ -28,13 +28,15 @@ vwpp::FlowState vwpp::FlowController::getFlowState()
 void vwpp::FlowController::run()
 {
 
-    if (cur_flow_state == FLOW_START )
+    if (cur_flow_state == FLOW_START)
     {
 
 
-        std::cout << GREEN << " DIS_LENGTH_WHEN_CATCH = " << this->cur_task->getLengthBetweenBallAndVwbot() << "\033[0m" << std::endl;
-        ROS_ERROR("Vwbot Pose x = %lf y = %lf",this->cur_task->getVwbotPose().pose.position.x,this->cur_task->getVwbotPose().pose.position.y);
-        if (cur_task_state == NO_BALL_START )
+        std::cout << GREEN << " DIS_LENGTH_WHEN_CATCH = " << this->cur_task->getLengthBetweenBallAndVwbot() << "\033[0m"
+                  << std::endl;
+        ROS_ERROR("Vwbot Pose x = %lf y = %lf", this->cur_task->getVwbotPose().pose.position.x,
+                  this->cur_task->getVwbotPose().pose.position.y);
+        if (cur_task_state == NO_BALL_START)
         {
 
             if (this->cur_task->getBallState().data != 0)
@@ -101,11 +103,12 @@ void vwpp::FlowController::run()
 
             if (this->cur_task->getLengthBetweenBallAndVwbot() <= DIS_LENGTH_WHEN_CATCH
                 and this->cur_task->getTaskHasBallState() == 2)
-
             {
 
-                std::cout << GREEN << "!!!!!   getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH "  << "\033[0m" << std::endl;
-                std::cout << GREEN << " DIS_LENGTH_WHEN_CATCH = " << this->cur_task->getLengthBetweenBallAndVwbot() << "\033[0m" << std::endl;
+                std::cout << GREEN << "!!!!!   getLengthBetweenBallAndVwbot()<=DIS_LENGTH_WHEN_CATCH " << "\033[0m"
+                          << std::endl;
+                std::cout << GREEN << " DIS_LENGTH_WHEN_CATCH = " << this->cur_task->getLengthBetweenBallAndVwbot()
+                          << "\033[0m" << std::endl;
                 this->cur_task->sendToTaskHasBall(0);
 
                 cur_task_state = CATCH_BALL_START_CATCH;
@@ -138,7 +141,7 @@ void vwpp::FlowController::run()
 
 
         }
-        else if (cur_task_state == CATCH_BALL_START_CATCH )
+        else if (cur_task_state == CATCH_BALL_START_CATCH)
         {
 
             ROS_INFO("Now cur_task_state is CATCH_BALL_START_CATCH !");
@@ -168,7 +171,7 @@ void vwpp::FlowController::run()
             }
 
         }
-        else if (cur_task_state == CATCH_BALL_START_PUT )
+        else if (cur_task_state == CATCH_BALL_START_PUT)
         {
 
             ROS_INFO("Now cur_task_state is CATCH_BALL_START_PUT !");
@@ -187,32 +190,45 @@ void vwpp::FlowController::run()
             }
 
         }
-        else if (cur_task_state == PUT_BALL_START )
+        else if (cur_task_state == PUT_BALL_START)
         {
 
+            // ROS_INFO("Now cur_task_state is PUT_BALL_START !");
+            // this->cur_task->taskPutBall();
+            //
+            //
+            // if (this->cur_task->getActionState() == GOT_GOAL)
+            // {
+            //     ROS_INFO("Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is GOT_GOAL!");
+            //
+            //     cur_task_state = CATCH_BALL_START_PUT;
+            //            this->cur_task->taskPutBall();
+            // }
+            // else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
+            // {
+            //
+            //     ROS_INFO(
+            //             "Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is FAILED_TO_GOAL!");
+            //     cur_task_state = CATCH_BALL_START_PUT;
+            // }
+
             ROS_INFO("Now cur_task_state is PUT_BALL_START !");
+
+
+            if (this->cur_task->getVwbotPose().pose.position.x > 3.1 and
+                fabs(this->cur_task->getAimPutBallPoint().pose.position.y -
+                     this->cur_task->getVwbotPose().pose.position.y) <= 0.05)
+            {
+
+                this->cur_task->sendToTaskCancelBall(1);
+                cur_task_state = CATCH_BALL_START_PUT;
+
+            }
             this->cur_task->taskPutBall();
 
 
-            if (this->cur_task->getActionState() == GOT_GOAL)
-            {
-                ROS_INFO("Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is GOT_GOAL!");
-
-                cur_task_state = CATCH_BALL_START_PUT;
-
-            }
-            else if (this->cur_task->getActionState() == FAILED_TO_GOAL)
-            {
-
-                ROS_INFO(
-                        "Now cur_task_state is from PUT_BALL_START to CATCH_BALL_START_PUT! Action is FAILED_TO_GOAL!");
-                cur_task_state = CATCH_BALL_START_PUT;
-                //TODO
-            }
-
-
         }
-        else if (cur_task_state == CHANGE_START )
+        else if (cur_task_state == CHANGE_START)
         {
             ROS_INFO("Now cur_task_state is CHANGE_START !");
 

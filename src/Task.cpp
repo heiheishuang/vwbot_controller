@@ -73,6 +73,10 @@ vwpp::Task::Task() :
     count_pose_change = 0;
     last_pose = vwbot_pose;
 
+    aim_put_ball_point.pose.position.x = 3.1;
+    aim_put_ball_point.pose.position.y = 0.0;
+
+
 
 }
 
@@ -406,6 +410,7 @@ void vwpp::Task::taskPutBall()
         door.pose.position.x = YELLOW_X;
         door.pose.position.y = YELLOW_Y;
 
+
         std::cout << YELLOW << "I WILL MOVE TO YELLOW DOOR!" << "\033[0m" << std::endl;
 
     }
@@ -428,7 +433,16 @@ void vwpp::Task::taskPutBall()
     door.header.frame_id = "map";
     door.header.stamp = ros::Time::now();
 
+    aim_put_ball_point = door;
+
     this->cur_action->action_move_base(door);
+
+    if (this->task_ball_cancel == 1)
+    {
+        actionlib_msgs::GoalID goal_id;
+        this->cur_action->send_cancel(goal_id);
+        this->task_ball_cancel = 0;
+    }
 
 }
 
@@ -662,6 +676,11 @@ geometry_msgs::PoseStamped vwpp::Task::getVwbotPose()
     return this->vwbot_pose;
 }
 
+geometry_msgs::PoseStamped vwpp::Task::getAimPutBallPoint()
+{
+    return this->aim_put_ball_point;
+}
+
 
 double vwpp::Task::getYawBetweenBallAndVwbot()
 {
@@ -842,3 +861,12 @@ double vwpp::Task::getChange()
 
 
 }
+
+void vwpp::Task::sendToTaskCancelBall(int cancel)
+{
+
+    this->task_ball_cancel = 1;
+
+}
+
+
