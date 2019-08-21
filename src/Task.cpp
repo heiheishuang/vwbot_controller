@@ -199,9 +199,9 @@ void vwpp::Task::taskHasBall()
 
         // if (this->getLengthBetweenBallAndVwbot() >= 0.30 or this->getYawBetweenBallAndVwbot() / 3.14 * 180 >= 15)
         // {
-            // ROS_INFO( "Now cur_task_state is from HAS_BALL_START to NO_BALL_START");
-            // this->sendToTaskHasBall(0);
-            // this->task_has_ball_state = 0;
+        // ROS_INFO( "Now cur_task_state is from HAS_BALL_START to NO_BALL_START");
+        // this->sendToTaskHasBall(0);
+        // this->task_has_ball_state = 0;
         // }
 
         //Cancel the navigation goal
@@ -347,7 +347,6 @@ void vwpp::Task::taskHasBall()
                 this->task_ball_cancel = 1;
             }
         }
-
 
 
     }
