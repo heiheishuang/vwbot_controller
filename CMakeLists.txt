@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
         std_msgs
         geometry_msgs
         message_generation
+		dynamic_reconfigure
         )
 
 ## System dependencies are found with CMake's conventions
@@ -92,10 +93,9 @@ generate_messages(
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+  	 cfg/vwbot_dynamic_reconfigure.cfg
+ )
 
 ###################################
 ## catkin specific configuration ##
@@ -108,7 +108,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
         #  INCLUDE_DIRS include
-        #  LIBRARIES vwbot_controller
+        LIBRARIES vwbot_controller
         CATKIN_DEPENDS actionlib move_base_msgs roscpp roscpp std_msgs message_runtime
         #  DEPENDS system_lib
 )
@@ -133,28 +133,31 @@ include_directories(
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#  add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(vwbot_controller_node
         src/vwbot_controller_node.cpp
-        src/Action.cpp
-        src/Action.h
-        src/Task.cpp
-        src/Task.h
-        src/Flow.cpp
-        src/Flow.h
-        src/PoseAndColor.h
-        src/JudgeAchieveCounter.cpp
-        src/JudgeAchieveCounter.h
-        src/ColorBool.h
-        src/PIDController.cpp
-        src/PIDController.h
-        src/PointServer.h
-        src/PointServerRequest.h
-        src/PointServerResponse.h
+        src/controller/Action.cpp
+        src/controller/Action.h
+        src/controller/Task.cpp
+        src/controller/Task.h
+        src/controller/Flow.cpp
+        src/controller/Flow.h
+        src/utils/JudgeAchieveCounter.cpp
+        src/utils/JudgeAchieveCounter.h
+        src/controller/PIDController.cpp
+        src/controller/PIDController.h
+		src/interface/WorldInterface.h
+		src/interface/WorldInterface.cpp
+		src/interface/ParamInterface.cpp
+		src/interface/ParamInterface.h
+		src/interface/VwbotInterface.cpp
+		src/interface/VwbotInterface.h
+		src/interface/VisionInterface.cpp
+		src/interface/VisionInterface.h
         )
 
 ## Rename C++ executable without prefix
@@ -165,7 +168,7 @@ add_executable(vwbot_controller_node
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vwbot_controller_node

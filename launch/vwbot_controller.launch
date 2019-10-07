@@ -1,0 +1,10 @@
+<launch>
+    <node pkg="vwbot_controller"
+          name="vwbot_controller_node"
+          type="vwbot_controller_node"
+          output="screen"
+          required="true">
+	
+    </node>
+    <node pkg="dynamic_reconfigure" name="dynparam" type="dynparam" args="load fira_esi_node $(find vwbot_controller)/param/vwbot.yaml"/>
+</launch>

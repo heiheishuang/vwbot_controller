@@ -6,10 +6,11 @@
 #define VWBOT_CONTROLLER_FLOW_H_
 
 
-#define  DIS_LENGTH_WHEN_CATCH 0.14
 
+#include "vwbot_controller/TutorialsConfig.h"
+#include "../interface/ParamInterface.h"
 #include "Task.h"
-#include "JudgeAchieveCounter.h"
+#include "../utils/Color.h"
 
 namespace vwpp
 {
@@ -22,7 +23,7 @@ namespace vwpp
     enum TaskState
     {
         HAS_BALL_START,
-        NO_BALL_START,
+        NO_BALL,
         PUT_BALL_START,
         CHANGE_START,
         CATCH_BALL_START_CATCH,
@@ -45,7 +46,12 @@ namespace vwpp
 
         FlowState cur_flow_state;
         TaskState cur_task_state;
-        Task* cur_task;
+
+        TaskHasBall* task_has_ball;
+        TaskNoBall* task_no_ball;
+        TaskChangeWatchTower* task_change_watch_tower;
+        TaskPutBall* task_put_ball;
+
 
     };
 }

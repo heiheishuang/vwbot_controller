@@ -1,0 +1,51 @@
+!!python/object/new:dynamic_reconfigure.encoding.Config
+dictitems:
+  change_1_x: 1.5
+  change_1_y: 0.0
+  change_2_x: 1.5
+  change_2_y: 0.0
+  change_3_x: 1.5
+  change_3_y: 1.0
+  dis_length_when_catch: 0.14
+  groups: !!python/object/new:dynamic_reconfigure.encoding.Config
+    dictitems:
+      change_1_x: 1.5
+      change_1_y: 0.0
+      change_2_x: 1.5
+      change_2_y: 0.0
+      change_3_x: 1.5
+      change_3_y: 1.0
+      dis_length_when_catch: 0.14
+      groups: !!python/object/new:dynamic_reconfigure.encoding.Config
+        state: []
+      id: 0
+      name: Default
+      param_pid_action1_d: 0.55
+      param_pid_action1_i: 0.0
+      param_pid_action1_p: 1.7
+      param_pid_action1_vel: 0.3
+      parameters: !!python/object/new:dynamic_reconfigure.encoding.Config
+        state: []
+      parent: 0
+      point_blue_x: 3.3
+      point_blue_y: 0.0
+      point_red_x: 3.3
+      point_red_y: 0.0
+      point_yellow_x: 3.3
+      point_yellow_y: 0.55
+      state: true
+      type: ''
+      wait_the_task_has_ball3: 0.0
+    state: []
+  param_pid_action1_d: 0.55
+  param_pid_action1_i: 0.0
+  param_pid_action1_p: 1.7
+  param_pid_action1_vel: 0.3
+  point_blue_x: 3.3
+  point_blue_y: 0.0
+  point_red_x: 3.3
+  point_red_y: 0.0
+  point_yellow_x: 3.3
+  point_yellow_y: 0.55
+  wait_the_task_has_ball3: 0.0
+state: []
