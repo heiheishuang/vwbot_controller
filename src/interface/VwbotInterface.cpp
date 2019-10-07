@@ -30,7 +30,7 @@ vwpp::VwbotInterface::~VwbotInterface()
 }
 
 vwpp::VwbotInterface* vwpp::VwbotInterface::instance = nullptr;
-boost::mutex vwpp::VwbotInterface::mutex_instance;  //TODO
+boost::mutex vwpp::VwbotInterface::mutex_instance;
 
 vwpp::VwbotInterface* vwpp::VwbotInterface::getInstance()
 {

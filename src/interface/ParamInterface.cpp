@@ -16,7 +16,7 @@ vwpp::ParamInterface::ParamInterface()
     server.setCallback(callback_type);
 }
 vwpp::ParamInterface* vwpp::ParamInterface::instance = nullptr;
-boost::mutex vwpp::ParamInterface::mutex_instance;  //TODO
+boost::mutex vwpp::ParamInterface::mutex_instance;
 
 vwpp::ParamInterface* vwpp::ParamInterface::getInstance()
 {
@@ -150,6 +150,17 @@ double vwpp::ParamInterface::getWaitTheTaskHasBall3() const
     return wait_the_task_has_ball3;
 }
 
+double vwpp::ParamInterface::getAbsoluteYawToBall() const
+{
+    return absolute_yaw_to_ball;
+}
+
+
+double vwpp::ParamInterface::getPoseVariation() const
+{
+    return pose_variation;
+}
+
 void vwpp::ParamInterface::update()
 {
     ros::spinOnce();
@@ -179,9 +190,13 @@ void vwpp::ParamInterface::reconfig_cb(vwbot_controller::TutorialsConfig &_confi
     this->point_blue_x = _config.point_blue_x;
     this->point_blue_y = _config.point_blue_y;
 
+    this->absolute_yaw_to_ball = _config.absolute_yaw_to_ball;
+    this->pose_variation = _config.pose_variation;
+
 
 
 }
+
 
 
 

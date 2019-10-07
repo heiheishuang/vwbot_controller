@@ -4,21 +4,21 @@
 
 #include "Action.h"
 
-vwpp::ActionGoToPoint::ActionGoToPoint() :
+vwpp::ActionGetBall::ActionGetBall() :
         target(0.0)
 {
 
 }
 
-vwpp::ActionGoToPoint::~ActionGoToPoint()
+vwpp::ActionGetBall::~ActionGetBall()
 = default;
 
-void vwpp::ActionGoToPoint::setTarget(const double &_target)
+void vwpp::ActionGetBall::setTarget(const double &_target)
 {
     this->target = _target;
 }
 
-void vwpp::ActionGoToPoint::calculateCmdVelByAngle(const double &_angle) //By angle
+void vwpp::ActionGetBall::calculateCmdVelByAngle(const double &_angle) //By angle
 {
     geometry_msgs::Twist cmd_vel;
     static vwpp::PIDController pid_controller_toward_angular(ParamInterface::getInstance()->getParamPidAction1P(),
@@ -38,8 +38,8 @@ void vwpp::ActionGoToPoint::calculateCmdVelByAngle(const double &_angle) //By an
 
 }
 
-void vwpp::ActionGoToPoint::calculateCmdVelByPoint(const geometry_msgs::PoseStamped &_vwbot,
-                                                                   const double &_ball_x, const double&_ball_y)
+void vwpp::ActionGetBall::calculateCmdVelByPoint(const geometry_msgs::PoseStamped &_vwbot,
+                                                 const double &_ball_x, const double&_ball_y)
 {
 
     double dis_yaw, dis_x, dis_y;
@@ -80,7 +80,7 @@ void vwpp::ActionGoToPoint::calculateCmdVelByPoint(const geometry_msgs::PoseStam
 
 }
 
-void vwpp::ActionGoToPoint::moveToPoint(const geometry_msgs::PoseStamped &_vwbot)
+void vwpp::ActionGetBall::moveToPoint(const geometry_msgs::PoseStamped &_vwbot)
 {
     VwbotInterface::getInstance()->send_move_base(_vwbot);
 }

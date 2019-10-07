@@ -19,12 +19,12 @@
 namespace vwpp
 {
 
-    class ActionGoToPoint
+    class ActionGetBall
     {
     public:
 
-        ActionGoToPoint();
-        virtual ~ActionGoToPoint();
+        ActionGetBall();
+        virtual ~ActionGetBall();
 
         void calculateCmdVelByAngle(const double &_angle);
         void calculateCmdVelByPoint(const geometry_msgs::PoseStamped &_vwbot,

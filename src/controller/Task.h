@@ -31,7 +31,7 @@ namespace vwpp
         TaskRunState getTaskRunState() const;
         void setTaskRunState(TaskRunState _task_run_state);
 
-        ActionGoToPoint* action_go_to_point;
+        ActionGetBall* action_go_to_point;
 
     private:
         geometry_msgs::PoseStamped last_pose;

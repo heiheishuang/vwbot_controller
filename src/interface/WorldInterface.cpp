@@ -20,7 +20,7 @@ vwpp::WorldInterface::~WorldInterface()
 }
 
 vwpp::WorldInterface* vwpp::WorldInterface::instance = nullptr;
-boost::mutex vwpp::WorldInterface::mutex_instance;  //TODO
+boost::mutex vwpp::WorldInterface::mutex_instance;
 
 vwpp::WorldInterface* vwpp::WorldInterface::getInstance()
 {

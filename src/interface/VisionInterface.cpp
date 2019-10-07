@@ -41,7 +41,7 @@ vwpp::VisionInterface::~VisionInterface()
 }
 
 vwpp::VisionInterface* vwpp::VisionInterface::instance = nullptr;
-boost::mutex vwpp::VisionInterface::mutex_instance;  //TODO
+boost::mutex vwpp::VisionInterface::mutex_instance;
 
 vwpp::VisionInterface* vwpp::VisionInterface::getInstance()
 {

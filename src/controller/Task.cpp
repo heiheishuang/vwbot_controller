@@ -26,7 +26,7 @@ void vwpp::TaskHasBall::taskHasBall()
 
     mat.getEulerYPR(yaw, pitch, roll);
 
-    if (this->task_base->getPoseVariation() <= 0.035)
+    if (this->task_base->getPoseVariation() <= ParamInterface::getInstance()->getPoseVariation())
         WorldInterface::getInstance()->setCountPoseChange(WorldInterface::getInstance()->getCountPoseChange() + 1);
     else
         WorldInterface::getInstance()->setCountPoseChange(0);
@@ -48,7 +48,7 @@ void vwpp::TaskHasBall::taskHasBall()
 
         this->task_base->action_go_to_point->moveToPoint(target_pose);
 
-        if (fabs(this->getAbsoluteYawToBall()) / 3.14 * 180 <= 15)
+        if (fabs(this->getAbsoluteYawToBall()) / 3.14 * 180 <= ParamInterface::getInstance()->getAbsoluteYawToBall())
         {
             this->task_has_ball_state = 1;
 
@@ -68,7 +68,7 @@ void vwpp::TaskHasBall::taskHasBall()
 
         this->task_base->action_go_to_point->calculateCmdVelByPoint(now_vwbot_pose, now_ball.pose.pose.position.x, now_ball.pose.pose.position.y);
 
-        if (this->getDistanceToBall() <= 0.35 and fabs(this->getAbsoluteYawToBall()) / 3.14 * 180 <= 15)
+        if (this->getDistanceToBall() <= 0.35 and fabs(this->getAbsoluteYawToBall()) / 3.14 * 180 <= ParamInterface::getInstance()->getAbsoluteYawToBall())
         {
             this->task_has_ball_state = 2;
         }

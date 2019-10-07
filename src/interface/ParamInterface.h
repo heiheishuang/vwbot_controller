@@ -58,6 +58,10 @@ namespace vwpp
 
         double getWaitTheTaskHasBall3() const;
 
+        double getAbsoluteYawToBall() const;
+
+        double getPoseVariation() const;
+
     private:
         ParamInterface();
 
@@ -96,6 +100,9 @@ namespace vwpp
 
         double dis_length_when_catch;
         double wait_the_task_has_ball3;
+
+        double absolute_yaw_to_ball;
+        double pose_variation;
 
 
     };
